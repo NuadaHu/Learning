@@ -1,0 +1,2 @@
+#多账号换行，以下示例：（通过正则获取此文件的ck，理论上可以自定义名字标记ck，也可以随意摆放ck）
+账号1【Nuada】pt_key=AAJg0u1PADD64PjVeTezJfXkEEXH9eI2bX0cGBpDZLJ_Yc5t3DCZQdA6jddBZmt-y8ZAYRN5_WQ;pt_pin=jd_4a12988a5437e;
