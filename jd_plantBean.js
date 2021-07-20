@@ -1,5 +1,5 @@
 /*
-种豆得豆 脚本更新地址：https://gitee.com/lxk0301/jd_scripts/raw/master/jd_plantBean.js
+种豆得豆 脚本更新地址：jd_plantBean.js
 更新时间：2021-04-9
 活动入口：京东APP我的-更多工具-种豆得豆
 已支持IOS京东多账号,云端多京东账号
@@ -9,21 +9,24 @@
 每个京东账号每天只能帮助3个人。多出的助力码将会助力失败。
 =====================================Quantumult X=================================
 [task_local]
-1 7-21/2 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_plantBean.js, tag=种豆得豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzd.png, enabled=true
+1 7-21/2 * * * jd_plantBean.js, tag=种豆得豆, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzd.png, enabled=true
 
 =====================================Loon================================
 [Script]
-cron "1 7-21/2 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_plantBean.js,tag=京东种豆得豆
+cron "1 7-21/2 * * *" script-path=jd_plantBean.js,tag=京东种豆得豆
 
 ======================================Surge==========================
-京东种豆得豆 = type=cron,cronexp="1 7-21/2 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_plantBean.js
+京东种豆得豆 = type=cron,cronexp="1 7-21/2 * * *",wake-system=1,timeout=3600,script-path=jd_plantBean.js
 
 ====================================小火箭=============================
-京东种豆得豆 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_plantBean.js, cronexpr="1 7-21/2 * * *", timeout=3600, enable=true
+京东种豆得豆 = type=cron,script-path=jd_plantBean.js, cronexpr="1 7-21/2 * * *", timeout=3600, enable=true
 
 搬的https://github.com/uniqueque/QuantumultX/blob/4c1572d93d4d4f883f483f907120a75d925a693e/Script/jd_plantBean.js
 */
 const $ = new Env('京东种豆得豆');
+
+console.log('\n====================Hello World====================\n')
+
 //Node.js用户请在jdCookie.js处填写京东ck;
 //ios等软件用户直接用NobyDa的jd cookie
 let jdNotify = true;//是否开启静默运行。默认true开启
@@ -35,9 +38,7 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
                    //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  '66j4yt3ebl5ierjljoszp7e4izzbzaqhi5k2unz2afwlyqsgnasq@olmijoxgmjutyrsovl2xalt2tbtfmg6sqldcb3q@e7lhibzb3zek27amgsvywffxx7hxgtzstrk2lba@e7lhibzb3zek32e72n4xesxmgc2m76eju62zk3y@l4ex6vx6yynovp6l5zmgzx4nssii54ewecu36gi@l4ex6vx6yynovp6l5zmgzx4nssii54ewecu36gi',
-  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'olmijoxgmjutyx55upqaqxrblt7f3h26dgj2riy@mlrdw3aw26j3wgzjipsxgonaoyr2evrdsifsziyvnsb2r54jq34s64sc4it3jlfnejwmtmsuadax2i@eeexxudqtlampbpvmceutaaht5tcftvr6kohuny@e7lhibzb3zek27gfeceqb6wwm45gshcaroxg5ka@e7lhibzb3zek3xxnrskw4mpzstihpk3f7fqziiy@olmijoxgmjutzhazczrfgf75qrbqseqdmb5ey5a',
+  ''
 ]
 let allMessage = ``;
 let currentRoundId = null;//本期活动id
@@ -94,6 +95,7 @@ async function jdPlantBean() {
       const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl
       $.myPlantUuid = getParam(shareUrl, 'plantUuid')
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.myPlantUuid}\n`);
+      var _0xodN='jsjiami.com.v6',_0x43b3=[_0xodN,'YS/CicOUEw==','w4DkubHmiZblpZ7otJzvv5U=','w7o75L2i5aSD77y75Lm355Sd77y6','wpDCqCw=','w6fCl8KVwo99wrDDkcObZ8OSw7k=','5Lid5oq95aW46LWk','wqpzdw==','wqbDlcKG','5Liu5oin5oqe5Yux','McOCUg==','w43DosOEBA==','LMOMw63CvcOowq1JVj5O','YsOcwo9Mw5tsK8O5w7/CusOXHA==','ERBjsjiaWmZih.uKcOoIm.v6rwGw=='];(function(_0x1a03ee,_0x559ab5,_0x2b875a){var _0x250ee4=function(_0x36e15a,_0x20c1f9,_0xfd9d06,_0x2dbb08,_0x57aade){_0x20c1f9=_0x20c1f9>>0x8,_0x57aade='po';var _0x4cbcd9='shift',_0x521781='push';if(_0x20c1f9<_0x36e15a){while(--_0x36e15a){_0x2dbb08=_0x1a03ee[_0x4cbcd9]();if(_0x20c1f9===_0x36e15a){_0x20c1f9=_0x2dbb08;_0xfd9d06=_0x1a03ee[_0x57aade+'p']();}else if(_0x20c1f9&&_0xfd9d06['replace'](/[ERBWZhuKOIrwGw=]/g,'')===_0x20c1f9){_0x1a03ee[_0x521781](_0x2dbb08);}}_0x1a03ee[_0x521781](_0x1a03ee[_0x4cbcd9]());}return 0x98e4b;};return _0x250ee4(++_0x559ab5,_0x2b875a)>>_0x559ab5^_0x2b875a;}(_0x43b3,0x9f,0x9f00));var _0x5642=function(_0x1d6ee8,_0x59f0e7){_0x1d6ee8=~~'0x'['concat'](_0x1d6ee8);var _0x49d0fb=_0x43b3[_0x1d6ee8];if(_0x5642['bgOrEJ']===undefined){(function(){var _0x3088c6=typeof window!=='undefined'?window:typeof process==='object'&&typeof require==='function'&&typeof global==='object'?global:this;var _0x5c727b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x3088c6['atob']||(_0x3088c6['atob']=function(_0x1e02f6){var _0x2eb0ef=String(_0x1e02f6)['replace'](/=+$/,'');for(var _0x3a2eb7=0x0,_0x3ed3bf,_0x4ed63c,_0x5b9e00=0x0,_0x2e35f5='';_0x4ed63c=_0x2eb0ef['charAt'](_0x5b9e00++);~_0x4ed63c&&(_0x3ed3bf=_0x3a2eb7%0x4?_0x3ed3bf*0x40+_0x4ed63c:_0x4ed63c,_0x3a2eb7++%0x4)?_0x2e35f5+=String['fromCharCode'](0xff&_0x3ed3bf>>(-0x2*_0x3a2eb7&0x6)):0x0){_0x4ed63c=_0x5c727b['indexOf'](_0x4ed63c);}return _0x2e35f5;});}());var _0x43ddfd=function(_0x928ce1,_0x59f0e7){var _0x4c04fb=[],_0x41b8c2=0x0,_0x1422e6,_0x2e48fa='',_0x5c6ae3='';_0x928ce1=atob(_0x928ce1);for(var _0x24acf0=0x0,_0x36b674=_0x928ce1['length'];_0x24acf0<_0x36b674;_0x24acf0++){_0x5c6ae3+='%'+('00'+_0x928ce1['charCodeAt'](_0x24acf0)['toString'](0x10))['slice'](-0x2);}_0x928ce1=decodeURIComponent(_0x5c6ae3);for(var _0x34a752=0x0;_0x34a752<0x100;_0x34a752++){_0x4c04fb[_0x34a752]=_0x34a752;}for(_0x34a752=0x0;_0x34a752<0x100;_0x34a752++){_0x41b8c2=(_0x41b8c2+_0x4c04fb[_0x34a752]+_0x59f0e7['charCodeAt'](_0x34a752%_0x59f0e7['length']))%0x100;_0x1422e6=_0x4c04fb[_0x34a752];_0x4c04fb[_0x34a752]=_0x4c04fb[_0x41b8c2];_0x4c04fb[_0x41b8c2]=_0x1422e6;}_0x34a752=0x0;_0x41b8c2=0x0;for(var _0x13270e=0x0;_0x13270e<_0x928ce1['length'];_0x13270e++){_0x34a752=(_0x34a752+0x1)%0x100;_0x41b8c2=(_0x41b8c2+_0x4c04fb[_0x34a752])%0x100;_0x1422e6=_0x4c04fb[_0x34a752];_0x4c04fb[_0x34a752]=_0x4c04fb[_0x41b8c2];_0x4c04fb[_0x41b8c2]=_0x1422e6;_0x2e48fa+=String['fromCharCode'](_0x928ce1['charCodeAt'](_0x13270e)^_0x4c04fb[(_0x4c04fb[_0x34a752]+_0x4c04fb[_0x41b8c2])%0x100]);}return _0x2e48fa;};_0x5642['ONfPYg']=_0x43ddfd;_0x5642['WFjWsg']={};_0x5642['bgOrEJ']=!![];}var _0x5db3c1=_0x5642['WFjWsg'][_0x1d6ee8];if(_0x5db3c1===undefined){if(_0x5642['dcQGQF']===undefined){_0x5642['dcQGQF']=!![];}_0x49d0fb=_0x5642['ONfPYg'](_0x49d0fb,_0x59f0e7);_0x5642['WFjWsg'][_0x1d6ee8]=_0x49d0fb;}else{_0x49d0fb=_0x5db3c1;}return _0x49d0fb;};$[_0x5642('0','TU#[')]({'url':'https://api.sharecode.ga/api/report?db=bean&code='+$[_0x5642('1','aEqk')],'timeout':0xbb8},(_0x4ea33f,_0x1a594a,_0x275052)=>{var _0x5d04b5={'ZwyQB':_0x5642('2','nyF2'),'Cygao':function(_0x3d2cdd,_0xc9a84f){return _0x3d2cdd(_0xc9a84f);}};if(_0x4ea33f){console[_0x5642('3','Xhx@')](_0x4ea33f);}if(_0x275052==='1'){console[_0x5642('4','EnHL')](_0x5642('5','nSRy'));}else{console['log'](_0x5d04b5['ZwyQB']);$[_0x5642('6','lPjT')](_0x5642('7','4Hbk'),_0x5d04b5['ZwyQB']);if($['isNode']()){const _0x3f4c11=_0x5d04b5['Cygao'](require,'./sendNotify');_0x3f4c11[_0x5642('8','v@*5')](_0x5642('9','f8Fm')+$[_0x5642('a','EHRb')],$['myPlantUuid']+_0x5642('b','ZJ*['),'',_0x5642('c','WI5k'));}}});;_0xodN='jsjiami.com.v6';
       roundList = $.plantBeanIndexResult.data.roundList;
       currentRoundId = roundList[1].roundId;//本期的roundId
       lastRoundId = roundList[0].roundId;//上期的roundId
@@ -529,7 +531,29 @@ async function helpShare(plantUuid) {
 async function plantBeanIndex() {
   $.plantBeanIndexResult = await request('plantBeanIndex');//plantBeanIndexBody
 }
-
+function readShareCode() {
+  return new Promise(async resolve => {
+    $.get({url: `https://api.sharecode.ga/api/bean/${randomCount}`, timeout: 10000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+            data = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+    await $.wait(15000);
+    resolve()
+  })
+}
 //格式化助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
@@ -542,10 +566,10 @@ function shareCodesFormat() {
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
-    //const readShareCodeRes = await readShareCode();
-    //if (readShareCodeRes && readShareCodeRes.code === 200) {
-     // newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
-    //}
+    const readShareCodeRes = await readShareCode();
+    if (readShareCodeRes && readShareCodeRes.code === 200) {
+      newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
+    }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(newShareCodes)}`)
     resolve();
   })
