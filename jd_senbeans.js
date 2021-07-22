@@ -48,6 +48,7 @@ if ($.isNode()) {
     console.log(`获取活动ID失败`);
     return ;
   }
+  console.log(cookiesArr.length)
   let openCount = Math.floor((Number(cookiesArr.length)-1)/Number($.completeNumbers));
   console.log(`\n共有${cookiesArr.length}个账号，前${openCount}个账号可以开团\n`);
   $.openTuanList = [];
@@ -77,7 +78,6 @@ if ($.isNode()) {
   console.log('\n开团信息\n'+JSON.stringify($.openTuanList));
   console.log(`\n开始互助\n`);
   let ckList = getRandomArrayElements(cookiesArr, cookiesArr.length);
-  console.log($.openTuanList)
   for (let i = 0; i < ckList.length && $.openTuanList.length > 0; i++) {
     $.cookie = ckList[i];
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
