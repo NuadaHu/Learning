@@ -23,7 +23,6 @@ const $ = new Env('金榜创造营');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-console.log(jdCookieNode)
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 
@@ -49,6 +48,8 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
+      console.log(cookie)
+      console.log($.cookie)
       $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
       $.index = i + 1;
       $.isLogin = true;
