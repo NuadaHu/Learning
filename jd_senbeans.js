@@ -164,7 +164,7 @@ async function getActivityList() {
         data = JSON.parse(data);
         if (data.success) {
           $.activityList = data.data.items;
-          console.log(data.data.items)
+          console.log(data)
         } else {
           console.log(JSON.stringify(data));
         }
