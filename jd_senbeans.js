@@ -28,10 +28,8 @@ if ($.isNode()) {
   $.activityId = '';
   $.completeNumbers = '';
   console.log(`开始获取活动信息`);
-  console.log(cookiesArr.length)
   for (let i = 0; i < cookiesArr.length && $.activityId === '' && i < 3; i++) {
     $.cookie = cookiesArr[i];
-    $.msg($.cookie);
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1]);
     $.isLogin = true;
     $.nickName = $.UserName;
@@ -78,7 +76,8 @@ if ($.isNode()) {
   }
   console.log('\n开团信息\n'+JSON.stringify($.openTuanList));
   console.log(`\n开始互助\n`);
-  let ckList = getRandomArrayElements(cookiesArr,cookiesArr.length);
+  let ckList = getRandomArrayElements(cookiesArr, cookiesArr.length);
+  console.log($.openTuanList)
   for (let i = 0; i < ckList.length && $.openTuanList.length > 0; i++) {
     $.cookie = ckList[i];
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
