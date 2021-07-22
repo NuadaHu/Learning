@@ -120,7 +120,6 @@ if ($.isNode()) {
 async function getActivityInfo() {
   $.activityList = [];
   await getActivityList();
-  console.log($.activityList.length)
   if ($.activityList.length === 0) {
     return;
   }
@@ -165,6 +164,7 @@ async function getActivityList() {
         data = JSON.parse(data);
         if (data.success) {
           $.activityList = data.data.items;
+          console.log(data.data.items)
         } else {
           console.log(JSON.stringify(data));
         }
