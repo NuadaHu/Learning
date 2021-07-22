@@ -28,10 +28,8 @@ if ($.isNode()) {
   $.activityId = '';
   $.completeNumbers = '';
   console.log(`开始获取活动信息`);
-  console.log(cookiesArr.length)
   for (let i = 0; i < cookiesArr.length && $.activityId === '' && i < 3; i++) {
     $.cookie = cookiesArr[i];
-    console.log($.cookie)
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1]);
     $.isLogin = true;
     $.nickName = $.UserName;
@@ -122,6 +120,7 @@ if ($.isNode()) {
 async function getActivityInfo() {
   $.activityList = [];
   await getActivityList();
+  console.log($.activityList.length)
   if ($.activityList.length === 0) {
     return;
   }
