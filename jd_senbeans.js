@@ -30,6 +30,7 @@ if ($.isNode()) {
   console.log(`开始获取活动信息`);
   for (let i = 0; i < cookiesArr.length && $.activityId === '' && i < 3; i++) {
     $.cookie = cookiesArr[i];
+    $.msg($.cookie);
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1]);
     $.isLogin = true;
     $.nickName = $.UserName;
