@@ -111,7 +111,7 @@ function getIsvToken() {
     $.post(jdUrl('genToken', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
