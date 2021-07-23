@@ -1377,7 +1377,7 @@ function requireConfig() {
     //Node.js用户请在jdCookie.js处填写京东ck;
     const shareCodes = $.isNode() ? require('./jdDreamFactoryShareCodes.js') : '';
     console.log(`共${cookiesArr.length}个京东账号\n`);
-    $.shareCodesArr = [];
+    $.shareCodesArr = ['rR0iS78iapcvappblWjrcQ=='];
     if ($.isNode()) {
       Object.keys(shareCodes).forEach((item) => {
         if (shareCodes[item]) {
