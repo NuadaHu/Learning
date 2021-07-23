@@ -122,7 +122,7 @@ async function unsubscribeGoods() {
         if (res.iRet === 0 && res.errMsg === 'success') {
           console.log(`取消关注商品---${item.commTitle.substring(0, 20).concat('...')}---成功`)
           $.unsubscribeGoodsCount++;
-          console.log(`已成功取消关注【商品】：${$.unsubscribeGoodsCount}个\n`)
+          // console.log(`已成功取消关注【商品】：${$.unsubscribeGoodsCount}个\n`)
         } else {
           console.log(`取关商品失败：${JSON.stringify(res)}`)
           console.log(`取消关注商品---${item.commTitle.substring(0, 20).concat('...')}---失败\n`)
@@ -225,7 +225,7 @@ async function unsubscribeShops() {
         if (res.iRet === '0') {
           console.log(`取消已关注店铺---${item.shopName}----成功`)
           $.unsubscribeShopsCount++;
-          console.log(`已成功取消关注【店铺】：${$.unsubscribeShopsCount}个\n`)
+          // console.log(`已成功取消关注【店铺】：${$.unsubscribeShopsCount}个\n`)
         } else {
           console.log(`取消已关注店铺---${item.shopName}----失败\n`)
         }
