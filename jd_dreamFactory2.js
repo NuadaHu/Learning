@@ -393,6 +393,8 @@ async function helpFriends() {
   if ($.canHelpFlag) {
     await shareCodesFormat();
     for (let code of $.newShareCodes) {
+      console.log(code)
+      console.log($.encryptPin)
       if (code) {
         if ($.encryptPin === code) {
           console.log(`不能为自己助力,跳过`);
