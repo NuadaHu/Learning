@@ -134,7 +134,7 @@ function getIsvToken2() {
     $.post(jdUrl('isvObfuscator', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -156,7 +156,7 @@ function getActCk() {
     $.get(taskUrl("dingzhi/book/develop/activity", `activityId=${ACT_ID}`), (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if($.isNode())
             for (let ck of resp['headers']['set-cookie']) {
@@ -183,7 +183,7 @@ function getActInfo() {
     $.post(taskPostUrl('dz/common/getSimpleActInfoVo', `activityId=${ACT_ID}`), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -208,7 +208,7 @@ function getToken() {
     $.post(taskPostUrl('customer/getMyPing', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -231,7 +231,7 @@ function getUserInfo() {
     $.post(taskPostUrl('wxActionCommon/getUserInfo', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -258,7 +258,7 @@ function accessLogWithAD() {
     $.post(taskPostUrl('common/accessLogWithAD', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
     //      if (safeGet(data)) {
           if($.isNode())
@@ -287,7 +287,7 @@ function getActContent(info = false, shareUuid = '') {
     $.post(taskPostUrl('dingzhi/book/develop/activityContent', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
    //     console.log(data)
           if (data && safeGet(data)) {
@@ -355,7 +355,7 @@ function doHelpList(taskType, value) {
     $.post(taskPostUrl('dingzhi/taskact/common/getDayShareRecord', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -378,7 +378,7 @@ function doTask(taskType, value) {
     $.post(taskPostUrl('dingzhi/book/develop/saveTask', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -407,7 +407,7 @@ function draw() {
     $.post(taskPostUrl('dingzhi/book/develop/startDraw', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (data && safeGet(data)) {
             data = JSON.parse(data);
@@ -438,7 +438,7 @@ function getAllBook() {
     $.post(taskPostUrl('dingzhi/book/develop/getAllBook', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -469,7 +469,7 @@ function buyBook(bookUuid, num) {
     $.post(taskPostUrl('dingzhi/book/develop/buyBook', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -493,7 +493,7 @@ function getMyBook() {
     $.post(taskPostUrl('dingzhi/book/develop/getMyBook', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -522,7 +522,7 @@ function upBook(bookUuid) {
     $.post(taskPostUrl('dingzhi/book/develop/upBook', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -548,7 +548,7 @@ function chargeGold() {
     $.post(taskPostUrl('dingzhi/book/develop/chargeGold', body), async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
@@ -646,7 +646,7 @@ function TotalBean() {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} API请求失败，${err}`)
         } else {
           if (data) {
             data = JSON.parse(data);
