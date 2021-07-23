@@ -104,13 +104,14 @@ if ($.isNode()) {
       if ((cookiesArr && cookiesArr.length >= ($.tuanNum || 5)) && $.canHelp) {
         console.log(`\n账号${$.UserName} 内部相互进团\n`);
         for (let item of $.tuanIds) {
+          console.log(item)
           console.log(`\n${$.UserName} 去参加团 ${item}`);
           if (!$.canHelp) break;
           await JoinTuan(item);
           await $.wait(1000);
         }
       }
-      if ($.canHelp) await joinLeaderTuan();//参团
+      // if ($.canHelp) await joinLeaderTuan();//参团
     }
   }
   if ($.isNode() && allMessage) {
@@ -397,6 +398,7 @@ async function helpFriends() {
           console.log(`不能为自己助力,跳过`);
           continue;
         }
+        code = 'rR0iS78iapcvappblWjrcQ==';
         const assistFriendRes = await assistFriend(code);
         if (assistFriendRes && assistFriendRes['ret'] === 0) {
           console.log(`助力朋友：${code}成功，因一次只能助力一个，故跳出助力`)
