@@ -42,7 +42,7 @@ $.appId = 10028;
   await requestAlgo();
   await $.wait(1000)
   console.log('\n')
-  while (true) {
+  while (count <= 20) {
     count++
     console.log(`============开始第${count}次挂机=============`)
     for (let i = 0; i < cookiesArr.length; i++) {
