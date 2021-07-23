@@ -398,7 +398,6 @@ async function helpFriends() {
           console.log(`不能为自己助力,跳过`);
           continue;
         }
-        code = 'rR0iS78iapcvappblWjrcQ==';
         const assistFriendRes = await assistFriend(code);
         if (assistFriendRes && assistFriendRes['ret'] === 0) {
           console.log(`助力朋友：${code}成功，因一次只能助力一个，故跳出助力`)
@@ -593,11 +592,11 @@ function userInfo() {
                 console.log(`当前电力：${data.user.electric}`)
                 console.log(`当前等级：${data.user.currentLevel}`)
                 console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.user.encryptPin}`);
-                await $.get({
-                  url: 'http://51.15.187.136:8080/activeJdFactoryCode?code=' + data.user.encryptPin
-                }, function (err, resp, data) {
-                  console.log('互助码状态:' + resp.body);
-                })
+                // await $.get({
+                //   url: 'http://51.15.187.136:8080/activeJdFactoryCode?code=' + data.user.encryptPin
+                // }, function (err, resp, data) {
+                //   console.log('互助码状态:' + resp.body);
+                // })
                 console.log(`已投入电力：${production.investedElectric}`);
                 console.log(`所需电力：${production.needElectric}`);
                 console.log(`生产进度：${((production.investedElectric / production.needElectric) * 100).toFixed(2)}%`);
@@ -1336,7 +1335,7 @@ function readShareCode() {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    $.newShareCodes = [];
+    $.newShareCodes = ['rR0iS78iapcvappblWjrcQ=='];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     } else {
