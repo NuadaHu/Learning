@@ -44,7 +44,7 @@ const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%2
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = ['@'];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tuanIds = [];
+$.tuanIds = ['jZuHk6De2N1zy1Xya0L9Dg=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -393,8 +393,6 @@ async function helpFriends() {
   if ($.canHelpFlag) {
     await shareCodesFormat();
     for (let code of $.newShareCodes) {
-      console.log(code)
-      console.log($.encryptPin)
       if (code) {
         if ($.encryptPin === code) {
           console.log(`不能为自己助力,跳过`);
