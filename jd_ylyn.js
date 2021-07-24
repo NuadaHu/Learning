@@ -272,6 +272,7 @@ function adlog() {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
                     //  data = JSON.parse(data);
+                    console.log(resp)
                     if ($.isNode())
                         for (let ck of resp['headers']['set-cookie']) {
                             cookie = `${cookie}; ${ck.split(";")[0]};`
