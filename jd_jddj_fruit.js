@@ -266,7 +266,7 @@ async function _runTask(tslist) {
                 if (item.browseTime > -1) {
                     for (let t = 0; t < parseInt(item.browseTime); t++) {
                         await $.wait(1000);
-                        console.log('计时:' + (t + 1) + '秒...')
+                        // console.log('计时:' + (t + 1) + '秒...')
                     }
                 };
                 option = urlTask('https://daojia.jd.com/client?_jdrandom=' + Math.round(new Date()) + '&functionId=task%2Ffinished&isNeedDealError=true&body=%7B%22modelId%22%3A%22' + item.modelId + '%22%2C%22taskId%22%3A%22' + encodeURIComponent(item.taskId) + '%22%2C%22taskType%22%3A' + item.taskType + '%2C%22plateCode%22%3A1%2C%22subNode%22%3Anull%7D&channel=ios&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&traceId=' + deviceid + Math.round(new Date()) + '&deviceToken=' + deviceid + '&deviceId=' + deviceid, '');
@@ -324,7 +324,7 @@ async function runTask(tslist) {
                         if (item.browseTime > -1) {
                             for (let t = 0; t < parseInt(item.browseTime); t++) {
                                 await $.wait(1000);
-                                console.log('计时:' + (t + 1) + '秒...')
+                                // console.log('计时:' + (t + 1) + '秒...')
                             }
                         }
                     } else {
@@ -390,7 +390,7 @@ async function runTask2(tslist) {
                     if (item.browseTime > -1) {
                         for (let t = 0; t < parseInt(item.browseTime); t++) {
                             await $.wait(1000);
-                            console.log('计时:' + (t + 1) + '秒...')
+                            // console.log('计时:' + (t + 1) + '秒...')
                         }
                     };
                     option = urlTask('https://daojia.jd.com/client?_jdrandom=' + Math.round(new Date()) + '&functionId=task%2Ffinished&isNeedDealError=true&body=%7B%22modelId%22%3A%22' + item.modelId + '%22%2C%22taskId%22%3A%22' + encodeURIComponent(item.taskId) + '%22%2C%22taskType%22%3A' + item.taskType + '%2C%22plateCode%22%3A1%2C%22subNode%22%3Anull%7D&channel=ios&platform=6.6.0&platCode=h5&appVersion=6.6.0&appName=paidaojia&deviceModel=appmodel&traceId=' + deviceid + Math.round(new Date()) + '&deviceToken=' + deviceid + '&deviceId=' + deviceid, '');

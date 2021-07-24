@@ -318,7 +318,8 @@ async function petSport() {
     resultCode = response.resultCode;
     if (resultCode == 0) {
       let sportRevardResult = await request('getSportReward');
-      console.log(`领取遛狗奖励完成: ${JSON.stringify(sportRevardResult)}`);
+      // console.log(`领取遛狗奖励完成: ${JSON.stringify(sportRevardResult)}`);
+      console.log(`领取遛狗奖励完成，获得了：${JSON.stringify(sportRevardResult).result.rewardName}`);
     }
     times++;
   } while (resultCode == 0 && code == 0)

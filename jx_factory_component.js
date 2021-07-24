@@ -146,6 +146,8 @@ function getFriends() {
           }
         }
         if (!statusArr[statusArr.length - 1] && $.authExecute) {
+          console.log(statusArr)
+          console.log($.authExecute)
           await $.wait(5000);
           await getFriends();
         }
