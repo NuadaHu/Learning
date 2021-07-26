@@ -100,6 +100,7 @@ if ($.isNode()) {
 
       if (cookiesArr && $.canHelp) {
         console.log(`\n账号${$.UserName} 内部相互进团\n`);
+        console.log($.tuanIds)
         for (let item of $.tuanIds) {
           console.log(`\n${$.UserName} 去参加团 ${item}`);
           if (!$.canHelp) break;
@@ -961,6 +962,8 @@ async function tuanActivity() {
               }
             }
           } else {
+            console.log(encryptPin)
+            console.log($.newShareCodes)
             if (encryptPin === $.newShareCodes) {
               $.tuanIds.push(tuanId);
             // $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
