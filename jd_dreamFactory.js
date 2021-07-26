@@ -1051,12 +1051,12 @@ function CreateTuan() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`);
         } else {
+          console.log(data)
           if (safeGet(data)) {
             data = JSON.parse(data);
-            console.log(data)
             if (data['ret'] === 0) {
               console.log(`【开团成功】tuanId为 ${data.data['tuanId']}`);
-              
+
               $.tuanIds.push(data.data['tuanId']);
             } else {
               //{"msg":"活动已结束，请稍后再试~","nowTime":1621551005,"ret":10218}
