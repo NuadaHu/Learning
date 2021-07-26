@@ -929,6 +929,7 @@ async function tuanActivity() {
   if (tuanConfig && tuanConfig.ret === 0) {
     console.log(tuanConfig)
     const { activeId, surplusOpenTuanNum, tuanId } = tuanConfig['data']['userTuanInfo'];
+    const { encryptPin } = tuanConfig['data']['userInfo'];
     console.log(`今日剩余开团次数：${surplusOpenTuanNum}次`);
     $.surplusOpenTuanNum = surplusOpenTuanNum;
     if (!tuanId && surplusOpenTuanNum > 0) {
@@ -961,8 +962,10 @@ async function tuanActivity() {
               }
             }
           } else {
-            $.tuanIds.push(tuanId);
-            $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
+            if (encryptPin === $.newShareCodes) {
+              $.tuanIds.push(tuanId);
+            // $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
+            }
           }
         }
       }
