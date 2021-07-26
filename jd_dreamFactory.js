@@ -129,13 +129,13 @@ async function jdDreamFactory() {
     await helpFriends();
     if (!$.unActive) return
     // await collectElectricity()
-    await getUserElectricity();
-    await taskList();
-    await investElectric();
+    await getUserElectricity(); // 收电力
+    await taskList(); // 做任务
+    await investElectric(); // 投电力
     await QueryHireReward();//收取招工电力
     await PickUp();//收取自家的地下零件
-    await stealFriend();
-    await tuanActivity();
+    await stealFriend();// 偷取好友零件
+    await tuanActivity();// 团活动详情
     await QueryAllTuan();
     await exchangeProNotify();
     await showMsg();
@@ -927,6 +927,7 @@ function getFactoryIdByPin(pin) {
 async function tuanActivity() {
   const tuanConfig = await QueryActiveConfig();
   if (tuanConfig && tuanConfig.ret === 0) {
+    console.log(tuanConfig)
     const { activeId, surplusOpenTuanNum, tuanId } = tuanConfig['data']['userTuanInfo'];
     console.log(`今日剩余开团次数：${surplusOpenTuanNum}次`);
     $.surplusOpenTuanNum = surplusOpenTuanNum;
