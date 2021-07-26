@@ -41,7 +41,7 @@ let tuanActiveId = `T_zZaWP6by9yA1wehxM4mg==`, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tuanIds = [];
+$.tuanIds = ['Bl1UaMhU_rq0_4QQa9BCUA=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -100,7 +100,6 @@ if ($.isNode()) {
 
       if (cookiesArr && $.canHelp) {
         console.log(`\n账号${$.UserName} 内部相互进团\n`);
-        console.log($.tuanIds)
         for (let item of $.tuanIds) {
           console.log(`\n${$.UserName} 去参加团 ${item}`);
           if (!$.canHelp) break;
@@ -962,12 +961,10 @@ async function tuanActivity() {
               }
             }
           } else {
-            console.log(encryptPin)
-            console.log($.newShareCodes)
-            if (encryptPin === $.newShareCodes) {
-              $.tuanIds.push(tuanId);
-            // $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
-            }
+            // if (encryptPin === 'rR0iS78iapcvappblWjrcQ==') {
+            //   $.tuanIds.push(tuanId);
+            $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
+            // }
           }
         }
       }
@@ -1057,7 +1054,6 @@ function CreateTuan() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`);
         } else {
-          console.log(data)
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data['ret'] === 0) {
