@@ -927,7 +927,6 @@ function getFactoryIdByPin(pin) {
 async function tuanActivity() {
   const tuanConfig = await QueryActiveConfig();
   if (tuanConfig && tuanConfig.ret === 0) {
-    console.log(tuanConfig)
     const { activeId, surplusOpenTuanNum, tuanId } = tuanConfig['data']['userTuanInfo'];
     const { encryptPin } = tuanConfig['data']['userInfo'];
     console.log(`今日剩余开团次数：${surplusOpenTuanNum}次`);
