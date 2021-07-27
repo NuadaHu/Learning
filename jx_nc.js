@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-03-13 18:33:10
+ * @LastEditTime: 2021-01-18 13:43:28
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -12,24 +12,24 @@
   [task_local]
   0 9,12,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
   [rewrite_local]
-  ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js
+  ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
 
   loon:
   [Script]
-  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js, requires-body=false, timeout=10, tag=京喜农场cookie
+  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜农场cookie
   cron "0 9,12,18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场
 
   surge:
   [Script]
   京喜农场 = type=cron,cronexp=0 9,12,18 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,
-  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js
+  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
  *
  **/
 
 const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tokens = JSON.parse($.getdata('jx_tokens') || '[]');
+$.tokens = [$.getdata('jxnc_token1') || '{}', $.getdata('jxnc_token2') || '{}'];
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
 $.openUrl = `openjd://virtual?params=${encodeURIComponent(
   '{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}',
@@ -48,7 +48,7 @@ $.drip = 0;
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
-    $.currentToken = $.tokens[i] || {};
+    $.currentToken = JSON.parse($.tokens[i] || '{}');
     $.drip = 0;
     if ($.currentCookie) {
       const userName = decodeURIComponent(
@@ -81,7 +81,7 @@ function getCookies() {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
     const CookiesJd = JSON.parse($.getdata("CookiesJD") || "[]").filter(x => !!x).map(x => x.cookie);
-    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd].filter(x=>!!x);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
@@ -174,7 +174,7 @@ function answerTask() {
         'dotask',
         `active=${$.info.active}&answer=${$.info.indexday}:${['A', 'B', 'C', 'D'][$.answer]}:0&joinnum=${
           $.info.joinnum
-        }&tasklevel=${tasklevel}&_stk=active%2Canswer%2Cch%2Cfarm_jstoken%2Cjoinnum%2Cphoneid%2Ctasklevel%2Ctimestamp`,
+        }&tasklevel=${tasklevel}`,
       ),
       async (err, resp, data) => {
         try {
@@ -214,7 +214,7 @@ function doTask({ tasklevel, left, taskname, eachtimeget }) {
     $.get(
       taskUrl(
         'dotask',
-        `active=${$.info.active}&answer=${$.info.indexday}:D:0&joinnum=${$.info.joinnum}&tasklevel=${tasklevel}&_stk=active%2Canswer%2Cch%2Cfarm_jstoken%2Cjoinnum%2Cphoneid%2Ctasklevel%2Ctimestamp`,
+        `active=${$.info.active}&answer=${$.info.indexday}:D:0&joinnum=${$.info.joinnum}&tasklevel=${tasklevel}`,
       ),
       (err, resp, data) => {
         try {
@@ -250,7 +250,7 @@ function submitInviteId(userName) {
     $.log(`你的活动id: ${$.info.active}`);
     $.post(
       {
-        url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}&joinnum=${$.info.joinnum}`,
+        url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}`,
       },
       (err, resp, _data) => {
         try {
@@ -273,15 +273,15 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}` }, async (err, resp, _data) => {
       try {
-        const { code, data: { value, extra = {} } = {} } = JSON.parse(_data);
+        const { code, data = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
-        if (!value) {
-          $.result.push('获取助力码失败，请稍后再次手动执行脚本！');
+        if (!data.value) {
+          $.result.push('助力失败或者同活动助力码不存在，请再次手动执行脚本！');
           resolve();
           return;
         }
         $.get(
-          taskUrl('help', `active=${extra.active}&joinnum=${extra.joinnum}&smp=${value}`),
+          taskUrl('help', `active=${$.info.active}&joinnum=${$.info.joinnum}&smp=${data.value}`),
           async (err, resp, data) => {
             try {
               const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
@@ -299,7 +299,6 @@ function createAssistUser() {
         );
       } catch (e) {
         $.logErr(e, resp);
-        resolve();
       }
     });
   });
@@ -327,7 +326,6 @@ function taskUrl(function_path, body) {
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `wq.jd.com`,
       'Accept-Language': `zh-cn`,
-      'User-Agent': 'jdpingou;iPhone;'
     },
   };
 }
