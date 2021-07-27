@@ -1,12 +1,35 @@
 /*
+特别声明：
+本脚本搬运自 https://github.com/whyour/hundun/blob/master/quanx/jx_nc.js
+感谢 @whyour 大佬
 
-0 9,12,18 * * * jd_jxnc.js
+无需京喜token,只需京东cookie即可.
 
+京喜农场:脚本更新地址 jd_jxnc.js
+更新时间：2021-06-3
+活动入口：京喜APP我的-京喜农场
+东东农场活动链接：https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2
+已支持IOS,Node.js支持N个京东账号
+理论上脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+助力码shareCode请先手动运行脚本查看打印可看到
+
+==========================Quantumultx=========================
+[task_local]
+0 9,12,18 * * * jd_jxnc.js, tag=京喜农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
+=========================Loon=============================
+[Script]
+cron "0 9,12,18 * * *" script-path=jd_jxnc.js,tag=京喜农场
+
+=========================Surge============================
+京喜农场 = type=cron,cronexp="0 9,12,18 * * *",timeout=3600,script-path=jd_jxnc.js
+
+=========================小火箭===========================
+京喜农场 = type=cron,script-path=jd_jxnc.js, cronexpr="0 9,12,18 * * *", timeout=3600, enable=true
 */
 
 const $ = new Env('京喜农场');
 let notify = ''; // nodejs 发送通知脚本
-let notifyLevel = 2; // 通知级别 0=只通知成熟;1=本次获得水滴>0;2=任务执行;3=任务执行+未种植种子;
+let notifyLevel = $.isNode() ? process.env.JXNC_NOTIFY_LEVEL || 1 : 1; // 通知级别 0=只通知成熟;1=本次获得水滴>0;2=任务执行;3=任务执行+未种植种子;
 let notifyBool = true; // 代码内部使用，控制是否通知
 let cookieArr = []; // 用户 cookie 数组
 let currentCookie = ''; // 当前用户 cookie
@@ -164,7 +187,7 @@ function requireConfig() {
 
     try {
       let options = {
-        "url": `https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jxnc.txt`,
+        "url": ``,
         "headers": {
           "Accept": "application/json,text/plain, */*",
           "Content-Type": "application/x-www-form-urlencoded",
