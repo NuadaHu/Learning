@@ -1059,7 +1059,7 @@ function CreateTuan() {
             if (data['ret'] === 0) {
               console.log(`【开团成功】tuanId为 ${data.data['tuanId']}`);
 
-              $.tuanIds.push(data.data['tuanId']);
+              // $.tuanIds.push(data.data['tuanId']);
             } else {
               //{"msg":"活动已结束，请稍后再试~","nowTime":1621551005,"ret":10218}
               if (data['ret'] === 10218 && !hasSend && (new Date().getHours() % 6 === 0)) {
