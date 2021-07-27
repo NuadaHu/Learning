@@ -33,7 +33,7 @@ function randomString(e) {
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-let helpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
+let helpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 let helpInfo = []
 let helpAuthorInfo = []
 if ($.isNode()) {
@@ -89,14 +89,14 @@ const JD_API_HOST = 'https://car-member.jd.com/api/';
                     continue
                 }
                 //抽取一名幸运娃儿助力
-                if (helpAuthorFlag && helpAuthorInfo.length > 0){
-                    let authorList = getRandomArrayElements(helpAuthorInfo,1);
-                    let author = authorList[0];
-                    console.log(`${$.UserName}给作者助力一次`)
-                    await doHelp(author.groupCode, author.shareCode, author.activityId)
-                    helpAuthorFlag = false;
-                    await $.wait(1000)
-                }
+                // if (helpAuthorFlag && helpAuthorInfo.length > 0){
+                //     let authorList = getRandomArrayElements(helpAuthorInfo,1);
+                //     let author = authorList[0];
+                //     console.log(`${$.UserName}给作者助力一次`)
+                //     await doHelp(author.groupCode, author.shareCode, author.activityId)
+                //     helpAuthorFlag = false;
+                //     await $.wait(1000)
+                // }
                 console.log(`${$.UserName}助力-》》 ${helpItem.userName}`)
                 await doHelp($.groupCode, $.shareCode, $.activityId)
                 await $.wait(1000)
