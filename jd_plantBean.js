@@ -74,7 +74,7 @@ let randomCount = $.isNode() ? 20 : 5;
       option = {};
       await shareCodesFormat();
       await jdPlantBean();
-      await showMsg();
+      // await showMsg();
     }
   }
   if ($.isNode() && allMessage) {
