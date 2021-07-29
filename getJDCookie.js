@@ -49,6 +49,7 @@ function generateQrcode() {
         } else {
           $.stepsHeaders = resp.headers;
           data = JSON.parse(data);
+          console.log(data)
           token = data['token'];
           // $.log('token', token)
 
