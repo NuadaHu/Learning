@@ -26,7 +26,7 @@ const openTuanCK = $.isNode() ? (process.env.OPEN_DREAMFACTORY_TUAN ? process.en
 const helpFlag = false;//是否参考作者团
 let tuanActiveId = `T_zZaWP6by9yA1wehxM4mg==`;
 let cookiesArr = [], cookie = '', message = '';
-$.tuanIds = ['vHuE2H9r56hhsr8Qps6U7A=='];
+$.tuanIds = ['ZEVZzwghyC4cxTZfEFWOnw=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
