@@ -24,9 +24,9 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openTuanCK = $.isNode() ? (process.env.OPEN_DREAMFACTORY_TUAN ? process.env.OPEN_DREAMFACTORY_TUAN : '1'):'1';
 const helpFlag = false;//是否参考作者团
-let tuanActiveId = ``;
+let tuanActiveId = `T_zZaWP6by9yA1wehxM4mg==`;
 let cookiesArr = [], cookie = '', message = '';
-$.tuanIds = [];
+$.tuanIds = ['vHuE2H9r56hhsr8Qps6U7A=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -113,28 +113,28 @@ if ($.isNode()) {
     }
   }
   let res = [];
-  if(helpFlag){
-    res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/dreamFactory_tuan.json');
-    if(!res){
-      res = [];
-    }
-    if(res.length === 0){
-      return ;
-    }
-    console.log(`\n===============开始助力作者团===================`);
-    let thisTuanID = getRandomArrayElements(res, 1)[0];
-    $.tuanMax = false;
-    for (let i = 0; i < cookiesArr.length && !$.tuanMax; i++) {
-      if(openTuanCKList.includes((i+1).toString())){
-        $.index = i + 1;
-        cookie = cookiesArr[i];
-        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-        console.log(`账号${$.UserName} 去参加作者团： ${thisTuanID}`);
-        await JoinTuan(thisTuanID);
-        await $.wait(2000);
-      }
-    }
-  }
+  // if(helpFlag){
+  //   res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/dreamFactory_tuan.json');
+  //   if(!res){
+  //     res = [];
+  //   }
+  //   if(res.length === 0){
+  //     return ;
+  //   }
+  //   console.log(`\n===============开始助力作者团===================`);
+  //   let thisTuanID = getRandomArrayElements(res, 1)[0];
+  //   $.tuanMax = false;
+  //   for (let i = 0; i < cookiesArr.length && !$.tuanMax; i++) {
+  //     if(openTuanCKList.includes((i+1).toString())){
+  //       $.index = i + 1;
+  //       cookie = cookiesArr[i];
+  //       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+  //       console.log(`账号${$.UserName} 去参加作者团： ${thisTuanID}`);
+  //       await JoinTuan(thisTuanID);
+  //       await $.wait(2000);
+  //     }
+  //   }
+  // }
 })().catch((e) => {$.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')}).finally(() => {$.done();});
 
 async function jdDreamFactoryTuan() {try {await userInfo();await tuanActivity();} catch (e) {$.logErr(e);}}
