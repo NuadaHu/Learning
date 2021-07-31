@@ -37,11 +37,11 @@ const $ = new Env('京喜工厂');
 const JD_API_HOST = 'https://m.jingxi.com';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
-let tuanActiveId = `T_zZaWP6by9yA1wehxM4mg==`, hasSend = false;
+let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tuanIds = ['9eskpKjFwnt9E8-zIil13g=='];
+$.tuanIds = [''];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -962,7 +962,7 @@ async function tuanActivity() {
             }
           } else {
             // if (encryptPin === 'rR0iS78iapcvappblWjrcQ==') {
-            //   $.tuanIds.push(tuanId);
+            $.tuanIds.push(tuanId);
             $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
             // }
           }
@@ -1058,8 +1058,7 @@ function CreateTuan() {
             data = JSON.parse(data);
             if (data['ret'] === 0) {
               console.log(`【开团成功】tuanId为 ${data.data['tuanId']}`);
-
-              // $.tuanIds.push(data.data['tuanId']);
+              $.tuanIds.push(data.data['tuanId']);
             } else {
               //{"msg":"活动已结束，请稍后再试~","nowTime":1621551005,"ret":10218}
               if (data['ret'] === 10218 && !hasSend && (new Date().getHours() % 6 === 0)) {
@@ -1375,21 +1374,22 @@ function requireConfig() {
     // }
     console.log(`开始获取${$.name}配置文件\n`);
     //Node.js用户请在jdCookie.js处填写京东ck;
-    // const shareCodes = $.isNode() ? require('./jdDreamFactoryShareCodes.js') : '';
-    // console.log(`共${cookiesArr.length}个京东账号\n`);
-    $.shareCodesArr = ['rR0iS78iapcvappblWjrcQ=='];
-    // if ($.isNode()) {
-    //   Object.keys(shareCodes).forEach((item) => {
-    //     if (shareCodes[item]) {
-    //       $.shareCodesArr.push(shareCodes[item])
-    //     }
-    //   })
-    // } else {
-    //   if ($.getdata('jd_jxFactory')) $.shareCodesArr = $.getdata('jd_jxFactory').split('\n').filter(item => item !== "" && item !== null && item !== undefined);
-    //   console.log(`\nBoxJs设置的${$.name}好友邀请码:${$.getdata('jd_jxFactory')}\n`);
-    // }
+    // $.shareCodesArr = ['rR0iS78iapcvappblWjrcQ=='];
+    const shareCodes = $.isNode() ? require('./jdDreamFactoryShareCodes.js') : '';
+    console.log(`共${cookiesArr.length}个京东账号\n`);
+    $.shareCodesArr = [];
+    if ($.isNode()) {
+      Object.keys(shareCodes).forEach((item) => {
+        if (shareCodes[item]) {
+          $.shareCodesArr.push(shareCodes[item])
+        }
+      })
+    } else {
+      if ($.getdata('jd_jxFactory')) $.shareCodesArr = $.getdata('jd_jxFactory').split('\n').filter(item => item !== "" && item !== null && item !== undefined);
+      console.log(`\nBoxJs设置的${$.name}好友邀请码:${$.getdata('jd_jxFactory')}\n`);
+    }
     // console.log(`\n种豆得豆助力码::${JSON.stringify($.shareCodesArr)}`);
-    // console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
+    console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
     resolve()
   })
 }
