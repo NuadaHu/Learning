@@ -52,12 +52,12 @@ const JD_API_HOST = 'https://car-member.jd.com/api/';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    if(helpAuthorFlag){
-        try{
-            helpAuthorInfo = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/jiulan/platypus/main/json/qjd.json');
-        }catch (e) {}
-        if(!helpAuthorInfo){helpAuthorInfo = [];}
-    }
+    // if(helpAuthorFlag){
+    //     try{
+    //         helpAuthorInfo = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/jiulan/platypus/main/json/qjd.json');
+    //     }catch (e) {}
+    //     if(!helpAuthorInfo){helpAuthorInfo = [];}
+    // }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];

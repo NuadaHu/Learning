@@ -30,7 +30,7 @@ function randomString(e) {
 }
 $.InviteList = []
 $.innerInviteList = [];
-const HelpAuthorFlag = true;//是否助力  true 助力，false 不助力
+const HelpAuthorFlag = false;//是否助力  true 助力，false 不助力
 
 let codeIndex = $.getval('gua_wealth_island_codeId') || '' // 定义提交助力码的账号如2,3,5
 if ($.isNode() && process.env.gua_wealth_island_codeId) {
@@ -79,17 +79,17 @@ $.appId = 10032;
   $.InviteLists = []
   let getShareNum = 10
   let getShareNums = 0
-  if (HelpAuthorFlag) {
-    $.innerInviteList = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code_one.json');
-    if(!$.innerInviteList[0]) $.innerInviteList = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code_one.json');
-    res2 = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code.json');
-    if(!res2[0]) res2 = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code.json');
-    getShareNums = [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length
-    $.innerInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length );
-    $.InviteLists.push(...$.InviteList,...$.innerInviteList,...$.innerInviteLists);
-  }else{
+  // if (HelpAuthorFlag) {
+  //   $.innerInviteList = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code_one.json');
+  //   if(!$.innerInviteList[0]) $.innerInviteList = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code_one.json');
+  //   res2 = await getAuthorShareCode('https://raw.githubusercontent.com/smiek2221/updateTeam/master/shareCodes/wealth_island_code.json');
+  //   if(!res2[0]) res2 = await getAuthorShareCode('https://gitee.com/smiek2221/updateTeam/raw/master/shareCodes/wealth_island_code.json');
+  //   getShareNums = [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length
+  //   $.innerInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length >= getShareNum ? getShareNum : [...res, ...res2].length );
+  //   $.InviteLists.push(...$.InviteList,...$.innerInviteList,...$.innerInviteLists);
+  // }else{
     $.InviteLists.push(...$.InviteList);
-  }
+  // }
   for (let i = 0; i < cookiesArr.length; i++) {
     UA = `jdapp;iPhone;10.0.5;${Math.ceil(Math.random()*2+12)}.${Math.ceil(Math.random()*4)};${randomString(40)};`
     $.cookie = cookiesArr[i];
@@ -139,10 +139,10 @@ async function run() {
     if($.HomeInfo){
       $.InviteList.push($.HomeInfo.strMyShareId)
       console.log(`等级:${$.HomeInfo.dwLandLvl} 当前金币:${$.HomeInfo.ddwCoinBalance} 当前财富:${$.HomeInfo.ddwRichBalance} 助力码:${$.HomeInfo.strMyShareId}`)
-      if(HelpAuthorFlag && codeIndexArr.includes($.index)){
-        await updateIsland($.HomeInfo.strMyShareId)
-        await infoIsland()
-      }
+      // if(HelpAuthorFlag && codeIndexArr.includes($.index)){
+      //   await updateIsland($.HomeInfo.strMyShareId)
+      //   await infoIsland()
+      // }
     }
     if($.LeadInfo && $.LeadInfo.dwLeadType == 2){
       await $.wait(2000)

@@ -97,9 +97,9 @@ async function jdSuperMarket() {
     await smtgHome();
     await receiveUserUpgradeBlue();
     await Home();
-    if (helpAu === true) {
-      await helpAuthor();
-    }
+    // if (helpAu === true) {
+    //   await helpAuthor();
+    // }
   } catch (e) {
     $.logErr(e)
   }

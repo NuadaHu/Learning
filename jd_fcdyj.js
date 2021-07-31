@@ -24,7 +24,7 @@ const $ = new Env('发财大赢家');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openred = $.isNode() ? (process.env.openred ? process.env.openred : 1) : 1 //选择哪个号开包
 const dyjCode = $.isNode() ? (process.env.dyjCode ? process.env.dyjCode : null) : null //选择哪个号开包
-let helpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
+let helpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 let helpAuthorInfo = []
 
 //let code =
@@ -59,15 +59,15 @@ const JD_API_HOST = `https://api.m.jd.com`;
     $.canHelp = true;
     $.linkid = "yMVR-_QKRd2Mq27xguJG-w"
 
-    if (helpAuthorFlag) {
-        try {
-            helpAuthorInfo = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/jiulan/platypus/main/json/dyj.json');
-        } catch (e) {
-        }
-        if (!helpAuthorInfo) {
-            helpAuthorInfo = [];
-        }
-    }
+    // if (helpAuthorFlag) {
+    //     try {
+    //         helpAuthorInfo = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/jiulan/platypus/main/json/dyj.json');
+    //     } catch (e) {
+    //     }
+    //     if (!helpAuthorInfo) {
+    //         helpAuthorInfo = [];
+    //     }
+    // }
 
     //开包 查询
     let dyjStr;
@@ -100,14 +100,14 @@ const JD_API_HOST = `https://api.m.jd.com`;
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
         }
         //抽取一名幸运娃儿助力
-        if (helpAuthorFlag && helpAuthorInfo.length > 0) {
-            let authorList = getRandomArrayElements(helpAuthorInfo, 1);
-            let author = authorList[0];
-            console.log(`${$.UserName}给作者助力一次`)
-            await help(author.rid, author.inviter, $.helptype)
-            helpAuthorFlag = false;
-            await $.wait(1000)
-        }
+        // if (helpAuthorFlag && helpAuthorInfo.length > 0) {
+        //     let authorList = getRandomArrayElements(helpAuthorInfo, 1);
+        //     let author = authorList[0];
+        //     console.log(`${$.UserName}给作者助力一次`)
+        //     await help(author.rid, author.inviter, $.helptype)
+        //     helpAuthorFlag = false;
+        //     await $.wait(1000)
+        // }
         if ($.rid && $.inviter && $.needhelp) {
             await help($.rid, $.inviter, $.helptype)
         } else {

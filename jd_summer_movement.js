@@ -22,7 +22,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const ShHelpFlag = true;//是否SH助力  true 助力，false 不助力
-const ShHelpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
+const ShHelpAuthorFlag = false;//是否助力作者SH  true 助力，false 不助力
 const OPEN_MEMBERCARD = (process.env.OPEN_MEMBERCARD && process.env.OPEN_MEMBERCARD === "true") ? true : false //默认不开通会员卡
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], uuid = '', UA = '', joyToken = '';
@@ -103,12 +103,12 @@ if ($.isNode()) {
     await $.wait(1000)
     res3 = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_summer_movement_run.json') || []
   }
-  if (ShHelpAuthorFlag) {
-    $.innerShInviteList = getRandomArrayElements([...$.innerShInviteList, ...res], [...$.innerShInviteList, ...res].length)
-    $.ShInviteList.push(...$.innerShInviteList)
-    $.inviteList.push(...res2)
-    $.groupInviteIdList.push(...res3)
-  }
+  // if (ShHelpAuthorFlag) {
+  //   $.innerShInviteList = getRandomArrayElements([...$.innerShInviteList, ...res], [...$.innerShInviteList, ...res].length)
+  //   $.ShInviteList.push(...$.innerShInviteList)
+  //   $.inviteList.push(...res2)
+  //   $.groupInviteIdList.push(...res3)
+  // }
   for (let i = 0; i < cookiesArr.length; i++) {
     $.cookie = cookiesArr[i] + `pwdt_id:${cookiesArr[i].match(/pt_pin=([^; ]+)(?=;?)/) && cookiesArr[i].match(/pt_pin=([^; ]+)(?=;?)/)[1]};`;
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
