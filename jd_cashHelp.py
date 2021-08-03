@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*
+#签到领现金-助力
 '''
 项目名称: JD-Script / jd_cash
 Author: Curtin
@@ -7,13 +8,15 @@ Author: Curtin
 Date: 2021/7/4 上午09:35
 TG交流 https://t.me/topstyle996
 TG频道 https://t.me/TopStyle2021
-update 2021.7.17 15:02
+update 2021.7.24 18:02
+建议cron: 0 0 * * *  python3 jd_cashHelp.py
+new Env('签到领现金-助力');
 '''
 
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 cookies = ''
 # 设置被助力的账号可填用户名 或 pin的值不要; env 设置 export cash_zlzh="用户1&用户N"
-cash_zlzh = ['jd_4a12988a5437e']
+cash_zlzh = ['Your JD_User', '买买买']
 
 # Env环境设置 通知服务
 # export BARK=''                   # bark服务,苹果商店自行搜索;
@@ -208,25 +211,30 @@ getCk = getJDCookie()
 getCk.getCookie()
 
 # 获取v4环境 特殊处理
-try:
-    with open(v4f, 'r', encoding='utf-8') as v4f:
-        v4Env = v4f.read()
-    r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$',
-                   re.M | re.S | re.I)
-    r = r.findall(v4Env)
-    curenv = locals()
-    for i in r:
-        if i[0] != 'JD_COOKIE':
-            curenv[i[0]] = getEnvs(i[1])
-except:
-    pass
+if os.path.exists(v4f):
+    try:
+        with open(v4f, 'r', encoding='utf-8') as f:
+            curenv = locals()
+            for i in f.readlines():
+                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#!&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
+                r = r.findall(i)
+                if len(r) > 0:
+                    for i in r:
+                        if i[0] != 'JD_COOKIE':
+                            curenv[i[0]] = getEnvs(i[1])
+    except:
+        pass
 
 if "cash_zlzh" in os.environ:
     if len(os.environ["cash_zlzh"]) > 1:
         cash_zlzh = os.environ["cash_zlzh"]
-        cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split(',')
+        if '&' in cash_zlzh:
+            cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split('&')
+        elif ',' in cash_zlzh:
+            cash_zlzh = cash_zlzh.replace('[', '').replace(']', '').replace('\'', '').replace(' ', '').split(',')
         print("已获取并使用Env环境 cash_zlzh:", cash_zlzh)
-
+if not isinstance(cash_zlzh, list):
+    cash_zlzh = cash_zlzh.split(" ")
 
 
 ## 获取通知服务
