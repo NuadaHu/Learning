@@ -28,7 +28,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
 //let code =
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [],
+let cookiesArr = ['pt_key=AAJg-oUJADAGZnfMxiox5GphvovALFVrtSdFLa0oG5cWxn24XSO3yWWItlFWVLMg7oyLjaP2K1s;pt_pin=jd_4a12988a5437e;'],
     cookie = '';
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
