@@ -24,9 +24,9 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openTuanCK = $.isNode() ? (process.env.OPEN_DREAMFACTORY_TUAN ? process.env.OPEN_DREAMFACTORY_TUAN : '1'):'1';
 const helpFlag = false;//是否参考作者团
-let tuanActiveId = ``;
+let tuanActiveId = `bozIUUFcANuUdWpw3QdvPw==`;
 let cookiesArr = [], cookie = '', message = '';
-$.tuanIds = [];
+$.tuanIds = ['L0QH90Y0Wl9FVFgMBrMa_g=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
