@@ -37,12 +37,13 @@ const $ = new Env('京喜工厂');
 const JD_API_HOST = 'https://m.jingxi.com';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
-let tuanActiveId = ``, hasSend = false;
+let tuanActiveId = `bozIUUFcANuUdWpw3QdvPw==`, hasSend = false;
+const randomCount = $.isNode() ? 20 : 5;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [''];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tuanIds = [''];
+$.tuanIds = ['L0QH90Y0Wl9FVFgMBrMa_g=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
