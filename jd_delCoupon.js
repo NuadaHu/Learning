@@ -73,8 +73,7 @@ function delCoupon(couponId, couponTitle) {
     }
     $.get(options, (err, resp, data) => {
       try {
-        console.log(data)
-        data = JSON.parse(data.match(new RegExp(/jsonpCBKC.?\((.*);*/))[1]);
+        data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*)\);*/))[1]);
         if (data.retcode === 0) {
           console.log(`删除优惠券---${couponTitle}----成功\n`);
           delCount++;
@@ -105,7 +104,7 @@ function getCoupon() {
       }
       $.get(options, async (err, resp, data) => {
         try {
-          data = JSON.parse(data.match(new RegExp(/jsonpCBKC.?\((.*);*/))[1]);
+          data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*)\);*/))[1]);
           let couponTitle = ''
           let couponId = ''
           if (states[s] === '6') {
