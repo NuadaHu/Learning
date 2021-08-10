@@ -36,7 +36,7 @@ let codeIndex = $.getval('gua_wealth_island_codeId') || '' // 定义提交助力
 if ($.isNode() && process.env.gua_wealth_island_codeId) {
   codeIndex = process.env.gua_wealth_island_codeId;
 }
-let codeIndexArr = []
+let codeIndexArr = ['3F39807A6844DFDD86A0504453C4EFC16E1E1B0D33158A51C8F7F3E04B7C8201']
 
 // 热气球接客 每次运行接客次数
 let serviceNum = 10;// 每次运行接客次数

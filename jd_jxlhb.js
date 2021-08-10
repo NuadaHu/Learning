@@ -31,7 +31,7 @@ if ($.isNode()) {
 } else {
 	cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.packetIdArr = [];
+$.packetIdArr = [{"strUserPin":"UzTw_HBwuwgxbKEojW2JRz1qQMmSc702EE0rcFnnMeVIQIId800sJHigMy12N3A4","userName":"jd_4a12988a5437e"}];
 $.activeId = '489177';
 const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
 
@@ -175,12 +175,12 @@ function getUserInfo() {
 							console.log(`${$.grades[$.grades.length - 1]}个阶梯红包已全部拆完\n`)
 						} else {
 							console.log(`获取助力码成功：${data.Data.strUserPin}\n`);
-							if (data.Data.strUserPin) {
-								$.packetIdArr.push({
-									strUserPin: data.Data.strUserPin,
-									userName: $.UserName
-								})
-							}
+							// if (data.Data.strUserPin) {
+							// 	$.packetIdArr.push({
+							// 		strUserPin: data.Data.strUserPin,
+							// 		userName: $.UserName
+							// 	})
+							// }
 						}
 					} else {
 						console.log(`获取助力码失败：${data.sErrMsg}\n`);
