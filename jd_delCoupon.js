@@ -104,6 +104,7 @@ function getCoupon() {
       }
       $.get(options, async (err, resp, data) => {
         try {
+          console.log(data)
           data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*)\);*/))[1]);
           let couponTitle = ''
           let couponId = ''
