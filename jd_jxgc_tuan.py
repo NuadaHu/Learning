@@ -37,8 +37,7 @@ from hashlib import sha256, sha512, md5
 import hmac
 
 appId = 10001
-# activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
-activeId = ''
+activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
 
 countElectric = {}
 def userAgent():
@@ -450,7 +449,6 @@ def QueryAllTuan(ck):
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
         for i in data['tuanInfo']:
-            print(i['tuanId'])
             AllTuan.append(i['tuanId'])
         if len(AllTuan) > 0:
             return AllTuan
@@ -509,7 +507,6 @@ def CreateTuan(ck):
             return tuanId, surplusOpenTuanNum
         else:
             return tuanId, surplusOpenTuanNum
-        print('tuanId：', tuanId)
     except Exception as e:
         print("CreateTuan Error", e)
 
