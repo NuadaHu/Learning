@@ -42,6 +42,9 @@ $.info = {};
 $.userTuanInfo = {};
 $.appId = 10001;
 
+console.log(Object.values(jdCookieNode))
+return
+
 !(async () => {
   if (!getCookies()) return;
   await requestAlgo();
@@ -93,7 +96,9 @@ $.appId = 10001;
           `【账户剩余】：${endInfo.user.electric}`,
         );
       await $.wait(500);
-      await investElectric();
+      // if ($.currentCookie !== ) {
+        await investElectric();
+      // }
       if (checkProductProcess()) continue;
       await $.wait(500);
       await submitInviteId(userName);
