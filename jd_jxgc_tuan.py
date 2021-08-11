@@ -504,8 +504,10 @@ def CreateTuan(ck):
             headers, url = buildURL(ck, url)
             r = requests.get(url, headers=headers, timeout=30, verify=False).text
             getResult(r)
+            print('tuanId:', tuanId)
             return tuanId, surplusOpenTuanNum
         else:
+            print('tuanId:', tuanId)
             return tuanId, surplusOpenTuanNum
     except Exception as e:
         print("CreateTuan Error", e)
