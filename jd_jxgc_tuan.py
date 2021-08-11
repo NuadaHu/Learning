@@ -394,7 +394,7 @@ msg("").main()
 
 def getResult(text):
     try:
-        r = re.compile(r'try\s{jsonp.*?\((.*?)\)', re.M | re.S | re.I)
+        r = re.compile(r'try\s{jsonpCBK.*?\((.*?)\)', re.M | re.S | re.I)
         r = r.findall(text)
         if len(r) > 0:
             return json.loads(r[0])
