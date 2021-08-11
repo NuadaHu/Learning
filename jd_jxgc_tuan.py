@@ -394,7 +394,7 @@ msg("").main()
 
 def getResult(text):
     try:
-        r = re.compile(r'try\s{jsonpCBK.*?\((.*?)\)', re.M | re.S | re.I)
+        r = re.compile(r'try\s{jsonp.*?\((.*?)\)', re.M | re.S | re.I)
         r = r.findall(text)
         if len(r) > 0:
             return json.loads(r[0])
@@ -470,7 +470,6 @@ def QueryActiveConfig(ck):
         encryptPin = data['data']['userInfo']['encryptPin']
         return tuanId, isOpenTuan, surplusOpenTuanNum, encryptPin
     except Exception as e:
-        print(data)
         print("QueryActiveConfig Errpr", e)
 
 def Award(ck, tuanId):
@@ -514,7 +513,7 @@ def CreateTuan(ck):
 
 def JoinTuan(ck, tuanId, u, suser, user):
     print('tuanIdShow:', tuanId)
-    tuanId = 'Erz7qsDh-2J4UDmo3jqbHQ=='
+    tuanId = 'gdAHeFDscD5fioS_C-2Gzw=='
     global cookiesList
     try:
         _time = stimestamp()
