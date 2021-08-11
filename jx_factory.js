@@ -42,7 +42,7 @@ $.info = {};
 $.userTuanInfo = {};
 $.appId = 10001;
 
-console.log(Object.values(jdCookieNode))
+console.log(process.env.noFactory)
 return
 
 !(async () => {
