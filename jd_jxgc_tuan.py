@@ -16,7 +16,7 @@ new Env('京喜工厂开团');
 cookies = ''
 # 设置开团的账号可填用户名 或 pin的值不要; env 设置 export jxgc_kaituan="用户1&用户2"
 # jxgc_kaituan = ['用户1','用户2']
-jxgc_kaituan = ['jd_4a12988a5437e']
+jxgc_kaituan = ['']
 
 #京喜UA
 UserAgent = ''
@@ -37,7 +37,8 @@ from hashlib import sha256, sha512, md5
 import hmac
 
 appId = 10001
-activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
+# activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
+activeId = ''
 
 countElectric = {}
 def userAgent():
@@ -448,6 +449,7 @@ def QueryAllTuan(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
+        print('allTuan：', data)
         for i in data['tuanInfo']:
             AllTuan.append(i['tuanId'])
         if len(AllTuan) > 0:
@@ -464,6 +466,7 @@ def QueryActiveConfig(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
+        print('active：', data)
         tuanId = data['data']['userTuanInfo']['tuanId']
         isOpenTuan = data['data']['userTuanInfo']['isOpenTuan']
         surplusOpenTuanNum = data['data']['userTuanInfo']['surplusOpenTuanNum']
@@ -507,6 +510,9 @@ def CreateTuan(ck):
             return tuanId, surplusOpenTuanNum
         else:
             return tuanId, surplusOpenTuanNum
+        print('encryptPin：', encryptPin)
+        print('tuanId：', tuanId)
+        print('surplusOpenTuanNum：', surplusOpenTuanNum)
     except Exception as e:
         print("CreateTuan Error", e)
 
