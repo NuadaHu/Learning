@@ -466,7 +466,7 @@ def QueryActiveConfig(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
-        print('active：', data)
+        # print('active：', data)
         tuanId = data['data']['userTuanInfo']['tuanId']
         isOpenTuan = data['data']['userTuanInfo']['isOpenTuan']
         surplusOpenTuanNum = data['data']['userTuanInfo']['surplusOpenTuanNum']
