@@ -576,6 +576,7 @@ def start():
                 if surplusOpenTuanNum == s_label:
                     print(f'好友没有助力机会了')
                     break
+            tuanId = 'wC0Xn27RsbFfNGYrjcX94Q=='
             if tuanId:
                 u = 1
                 for i in cookiesList:
