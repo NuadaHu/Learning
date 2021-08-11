@@ -38,7 +38,7 @@ import hmac
 
 appId = 10001
 # activeId = 'Xj2_3G-hQ4GRLCsLqIxFeQ%3D%3D'
-activeId = ''
+activeId = 'bozIUUFcANuUdWpw3QdvPw%3D%3D'
 
 countElectric = {}
 def userAgent():
