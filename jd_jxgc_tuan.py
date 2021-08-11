@@ -449,7 +449,7 @@ def QueryAllTuan(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
-        print('allTuan：', data)
+        # print('allTuan：', data)
         for i in data['tuanInfo']:
             AllTuan.append(i['tuanId'])
         if len(AllTuan) > 0:
@@ -471,6 +471,12 @@ def QueryActiveConfig(ck):
         isOpenTuan = data['data']['userTuanInfo']['isOpenTuan']
         surplusOpenTuanNum = data['data']['userTuanInfo']['surplusOpenTuanNum']
         encryptPin = data['data']['userInfo']['encryptPin']
+        print('---------------------------------------------')
+        print('tuanId：', tuanId)
+        print('isOpenTuan：', isOpenTuan)
+        print('surplusOpenTuanNum：', surplusOpenTuanNum)
+        print('encryptPin：', encryptPin)
+        print('---------------------------------------------')
         return tuanId, isOpenTuan, surplusOpenTuanNum, encryptPin
     except Exception as e:
         print(data)
