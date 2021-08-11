@@ -62,14 +62,12 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n咱江湖再见`);
     return
   }
-  // await readShareCode();
+  await readShareCode();
   //await requireConfig();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      // console.log($.UserName)
-      // $.UserName = 'jd_4a12988a5437e'
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
@@ -83,8 +81,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       message = '';
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       getUA()
-      // await shareCodesFormat();
-      await getHelp();
+      await shareCodesFormat();
       await JD818();
     }
   }
@@ -105,10 +102,10 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
           }
         }
       }
-      // if ($.canHelp) {
-      //   console.log(`\n\n如果有剩余助力机会，则随机助力`)
-      //   await doHelp();
-      // }
+      if ($.canHelp) {
+        console.log(`\n\n如果有剩余助力机会，则随机助力`)
+        await doHelp();
+      }
     }
   }
   // console.log(JSON.stringify($.temp))
@@ -131,7 +128,7 @@ async function JD818() {
   try {
     await indexInfo();//获取任务
     await supportList();//助力情况
-    // await getHelp();//获取邀请码
+    await getHelp();//获取邀请码
     if ($.blockAccount) return
     await indexInfo(true);//获取任务
     await doHotProducttask();//做热销产品任务
@@ -558,7 +555,7 @@ async function doHelp() {
   }
 }
 //助力API
-function toHelp(code) {
+function toHelp(code = "ece29e04-0319-4c47-8a73-9d6bc3525e15") {
   return new Promise(resolve => {
     const body = {"shareId":`${code}`};
     const options = taskPostUrl('/khc/task/doSupport', body)
@@ -820,7 +817,7 @@ function taskPostUrl(a,t = {}) {
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://carnivalcity.m.jd.com",
       "Referer": "https://carnivalcity.m.jd.com/",
-      "Cookie": 'jd_4a12988a5437e',
+      "Cookie": cookie,
       "User-Agent": $.UA,
     }
   }
