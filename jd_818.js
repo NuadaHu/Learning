@@ -62,12 +62,13 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     if ($.isNode()) await notify.sendNotify($.name + '活动已结束', `请删除此脚本\n咱江湖再见`);
     return
   }
-  await readShareCode();
+  // await readShareCode();
   //await requireConfig();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      console.log($.UserName)
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
@@ -81,7 +82,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       message = '';
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       getUA()
-      await shareCodesFormat();
+      // await shareCodesFormat();
       await JD818();
     }
   }
@@ -102,10 +103,10 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
           }
         }
       }
-      if ($.canHelp) {
-        console.log(`\n\n如果有剩余助力机会，则随机助力`)
-        await doHelp();
-      }
+      // if ($.canHelp) {
+      //   console.log(`\n\n如果有剩余助力机会，则随机助力`)
+      //   await doHelp();
+      // }
     }
   }
   // console.log(JSON.stringify($.temp))
