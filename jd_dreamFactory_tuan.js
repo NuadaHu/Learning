@@ -54,8 +54,8 @@ if ($.isNode()) {
     return;
   }
   let runFlag = true;
-  console.log(cookiesArr)
-  return
+  // console.log(cookiesArr)
+  // return
   for (let i = 0; i < cookiesArr.length; i++) {
     if(!openTuanCKList.includes((i+1).toString())){
       continue;
@@ -289,9 +289,9 @@ async function tuanActivity() {
                   }
                 }
               }
-            // } else {
-            //   $.tuanIds.push(tuanId);
-            //   $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
+            } else {
+              $.tuanIds.push(tuanId);
+              $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
             }
           }
         }
@@ -370,7 +370,7 @@ function CreateTuan() {
             data = JSON.parse(data);
             if (data['ret'] === 0) {
               console.log(`开团成功tuanId为：${data.data['tuanId']}`);
-              // $.tuanIds.push(data.data['tuanId']);
+              $.tuanIds.push(data.data['tuanId']);
             } else {
               console.log(`开团异常：${JSON.stringify(data)}`);
             }
