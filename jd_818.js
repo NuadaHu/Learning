@@ -68,7 +68,8 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      console.log($.UserName)
+      // console.log($.UserName)
+      // $.UserName = 'jd_4a12988a5437e'
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
@@ -83,6 +84,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*
       console.log(`\n开始【京东账号${$.index}】${$.nickName || $.UserName}\n`);
       getUA()
       // await shareCodesFormat();
+      await getHelp();
       await JD818();
     }
   }
@@ -129,7 +131,7 @@ async function JD818() {
   try {
     await indexInfo();//获取任务
     await supportList();//助力情况
-    await getHelp();//获取邀请码
+    // await getHelp();//获取邀请码
     if ($.blockAccount) return
     await indexInfo(true);//获取任务
     await doHotProducttask();//做热销产品任务
@@ -556,7 +558,7 @@ async function doHelp() {
   }
 }
 //助力API
-function toHelp(code = "ece29e04-0319-4c47-8a73-9d6bc3525e15") {
+function toHelp(code) {
   return new Promise(resolve => {
     const body = {"shareId":`${code}`};
     const options = taskPostUrl('/khc/task/doSupport', body)
@@ -818,7 +820,7 @@ function taskPostUrl(a,t = {}) {
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://carnivalcity.m.jd.com",
       "Referer": "https://carnivalcity.m.jd.com/",
-      "Cookie": cookie,
+      "Cookie": 'jd_4a12988a5437e',
       "User-Agent": $.UA,
     }
   }
