@@ -54,8 +54,6 @@ if ($.isNode()) {
     return;
   }
   let runFlag = true;
-  // console.log(cookiesArr)
-  // return
   for (let i = 0; i < cookiesArr.length; i++) {
     if(!openTuanCKList.includes((i+1).toString())){
       continue;
