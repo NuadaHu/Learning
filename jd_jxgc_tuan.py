@@ -449,8 +449,8 @@ def QueryAllTuan(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
-        # print('allTuan：', data)
         for i in data['tuanInfo']:
+            print(i['tuanId'])
             AllTuan.append(i['tuanId'])
         if len(AllTuan) > 0:
             return AllTuan
@@ -466,17 +466,10 @@ def QueryActiveConfig(ck):
         headers, url = buildURL(ck, url)
         r = requests.get(url, headers=headers, timeout=30, verify=False).text
         data = getResult(r)
-        # print('active：', data)
         tuanId = data['data']['userTuanInfo']['tuanId']
         isOpenTuan = data['data']['userTuanInfo']['isOpenTuan']
         surplusOpenTuanNum = data['data']['userTuanInfo']['surplusOpenTuanNum']
         encryptPin = data['data']['userInfo']['encryptPin']
-        print('---------------------------------------------')
-        print('tuanId：', tuanId)
-        print('isOpenTuan：', isOpenTuan)
-        print('surplusOpenTuanNum：', surplusOpenTuanNum)
-        print('encryptPin：', encryptPin)
-        print('---------------------------------------------')
         return tuanId, isOpenTuan, surplusOpenTuanNum, encryptPin
     except Exception as e:
         print(data)
@@ -516,9 +509,7 @@ def CreateTuan(ck):
             return tuanId, surplusOpenTuanNum
         else:
             return tuanId, surplusOpenTuanNum
-        print('encryptPin：', encryptPin)
         print('tuanId：', tuanId)
-        print('surplusOpenTuanNum：', surplusOpenTuanNum)
     except Exception as e:
         print("CreateTuan Error", e)
 
@@ -582,7 +573,6 @@ def start():
                 if surplusOpenTuanNum == s_label:
                     print(f'好友没有助力机会了')
                     break
-            tuanId = 'wC0Xn27RsbFfNGYrjcX94Q=='
             if tuanId:
                 u = 1
                 for i in cookiesList:
