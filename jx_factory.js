@@ -42,9 +42,6 @@ $.info = {};
 $.userTuanInfo = {};
 $.appId = 10001;
 
-console.log(process.env.noFactory)
-return
-
 !(async () => {
   if (!getCookies()) return;
   await requestAlgo();
@@ -96,9 +93,11 @@ return
           `【账户剩余】：${endInfo.user.electric}`,
         );
       await $.wait(500);
-      // if ($.currentCookie !== ) {
+      if ($.currentCookie !== process.env.noFactory) {
         await investElectric();
-      // }
+      } else {
+        console.log(`${$.info.commodityInfo.name}设置不加电量`)
+      }
       if (checkProductProcess()) continue;
       await $.wait(500);
       await submitInviteId(userName);
