@@ -16,7 +16,7 @@ new Env('京喜工厂开团');
 cookies = ''
 # 设置开团的账号可填用户名 或 pin的值不要; env 设置 export jxgc_kaituan="用户1&用户2"
 # jxgc_kaituan = ['用户1','用户2']
-jxgc_kaituan = ['']
+jxgc_kaituan = []
 
 #京喜UA
 UserAgent = ''
