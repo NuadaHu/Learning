@@ -80,7 +80,7 @@ message = ""
       $.nickName = '';
       console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       await run();
-      if(i == 0 && !$.actorUuid) return
+      // if(i == 0 && !$.actorUuid) return
     }
   }
 })()
@@ -106,12 +106,12 @@ async function run(){
     await adLog();
     $.attrTouXiang = 'https://img10.360buyimg.com/imgzone/jfs/t1/7020/27/13511/6142/5c5138d8E4df2e764/5a1216a3a5043c5d.png'
     await getUserInfo();
-    $.actorUuid = '';
-    await getActorUuid();
-    if(!$.actorUuid){
-      console.log('获取不到[actorUuid]退出执行，请重新执行')
-      return
-    }
+    $.actorUuid = 'cee5956e570f4f0985e6f8dddeca9817';
+    // await getActorUuid();
+    // if(!$.actorUuid){
+    //   console.log('获取不到[actorUuid]退出执行，请重新执行')
+    //   return
+    // }
     await drawContent();
     await $.wait(1000)
     let checkOpenCardData = await checkOpenCard();
@@ -138,7 +138,7 @@ async function run(){
     if(!$.addSku && guaopencard_addSku+"" != "true") console.log('如需加购请设置环境变量[guaopencard_addSku8]为"true"');
     if(!$.addSku && guaopencard_addSku) await addSku();
     if(!$.addSku && guaopencard_addSku) await $.wait(1000)
-    await getActorUuid()
+    // await getActorUuid()
     await $.wait(1000)
     await getDrawRecordHasCoupon()
     await $.wait(1000)
