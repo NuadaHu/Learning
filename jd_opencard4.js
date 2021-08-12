@@ -15,7 +15,7 @@
 如需执行脚本请设置环境变量
 guaopencard4="true"
 
-入口：23.0复制整段话 http:/J6jSbEyA8HknJO 速来瓜分千万京豆，赢取万元豪礼！#39fi2ArBIa@扌丁开→鯨咚A/P P
+入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=930faf33cd2f42e399e8ad605e437546
 
 ============Quantumultx===============
 [task_local]
@@ -47,7 +47,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-let guaopencard_addSku4 = false
+let guaopencard_addSku4 = true
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
 !(async () => {
@@ -63,12 +63,15 @@ message = ""
 //       return
 //     }
 //   }
-  guaopencard_addSku4 = process.env.guaopencard_addSku4
-  if (!process.env.guaopencard_addSku4 || process.env.guaopencard_addSku4 == "false") {
-    console.log('如需加购请设置环境变量[guaopencard_addSku4]为"true"')
+  if ($.isNode()) {
+      guaopencard_addSku4 = process.env.guaopencard_addSku4
+      if (!process.env.guaopencard_addSku4 || process.env.guaopencard_addSku4 == "false") {
+        console.log('如需加购请设置环境变量[guaopencard_addSku4]为"true"')
+      }
   } 
+   
   $.shareUuid = '930faf33cd2f42e399e8ad605e437546'
-  console.log(`入口:\n23.0复制整段话 http:/J6jSbEyA8HknJO 速来瓜分千万京豆，赢取万元豪礼！#39fi2ArBIa@扌丁开→鯨咚A/P P`)
+  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`)
   // 134
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
@@ -479,8 +482,12 @@ function getMyPing() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           data = JSON.parse(data);
-          let setcookie = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
-          if(setcookie){
+          let setcookies = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
+          let setcookie = ''
+          if(setcookies){
+            if(typeof setcookies != 'object'){
+              setcookie = setcookies.split(',')
+            }else setcookie = setcookies
             let lz_jdpin_token = setcookie.filter(row => row.indexOf("lz_jdpin_token") !== -1)[0]
             $.lz_jdpin_token = ''
             if(lz_jdpin_token && lz_jdpin_token.indexOf("lz_jdpin_token=") > -1){
@@ -548,8 +555,12 @@ function adLog() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           //  data = JSON.parse(data);
-          let setcookie = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
-          if(setcookie){
+          let setcookies = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
+          let setcookie = ''
+          if(setcookies){
+            if(typeof setcookies != 'object'){
+              setcookie = setcookies.split(',')
+            }else setcookie = setcookies
             let LZ_TOKEN_KEY = setcookie.filter(row => row.indexOf("LZ_TOKEN_KEY") !== -1)[0]
             if(LZ_TOKEN_KEY && LZ_TOKEN_KEY.indexOf("LZ_TOKEN_KEY=") > -1){
               $.LZ_TOKEN_KEY = LZ_TOKEN_KEY.split(';') && (LZ_TOKEN_KEY.split(';')[0]) || ''
