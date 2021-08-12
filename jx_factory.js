@@ -74,8 +74,8 @@ $.appId = 10001;
       // await getFriends();
       // await $.wait(500);
       // await pickUserComponents($.info.user.encryptPin, true);
-      await $.wait(500);
-      await awardTuan();
+      // await $.wait(500);
+      // await awardTuan();
       await $.wait(500);
       const endInfo = await getUserInfo();
       $.info.commodityInfo &&
@@ -96,19 +96,19 @@ $.appId = 10001;
       if ($.currentCookie !== process.env.noFactory) {
         await investElectric();
       } else {
-        console.log(`${$.info.commodityInfo.name}设置不加电量`)
+        console.log(`【京东账号${i + 1}】${userName}设置不加电量`)
       }
       if (checkProductProcess()) continue;
       await $.wait(500);
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
-      await $.wait(500);
-      await getTuanId();
-      await $.wait(500);
-      await submitTuanId(userName);
-      await $.wait(500);
-      await joinTuan();
+      // await $.wait(500);
+      // await getTuanId();
+      // await $.wait(500);
+      // await submitTuanId(userName);
+      // await $.wait(500);
+      // await joinTuan();
     }
   }
   await showMsg();
