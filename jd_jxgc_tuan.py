@@ -513,7 +513,7 @@ def CreateTuan(ck):
 
 def JoinTuan(ck, tuanId, u, suser, user):
     print('tuanIdShow:', tuanId)
-    tuanId = 'Sa7UtcIILaOK52pDIFum1A=='
+    tuanId = 'qZXPiVLdRO0H4al24dFfPg=='
     global cookiesList
     try:
         _time = stimestamp()
