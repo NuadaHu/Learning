@@ -8,7 +8,7 @@ new Env('Faker群友家电15周年助力');
 
 # cron 
 #不做浏览，只做助力 建议先运行jd_appliances.js 在运行此脚本
-export jd15_pins=["jd_4a12988a5437e","tao554"]
+# export jd15_pins=["jd_4a12988a5437e","tao554"]
 
 from urllib.parse import unquote, quote
 import time, datetime, os, sys
