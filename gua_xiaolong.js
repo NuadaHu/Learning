@@ -54,7 +54,7 @@ message = ""
     });
     return;
   }
-  $.shareUuid = '9535c849daec4eb0b006dc1ff8ab3b5c'
+  $.shareUuid = ''
   $.activityId = '901080701'
   console.log(`入口:\nhttps://lzdz4-isv.isvjcloud.com/dingzhi/xiaolong/collectcard/activity/1441690?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
