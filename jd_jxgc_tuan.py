@@ -248,8 +248,9 @@ def getactiveId():
         "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Mobile Safari/537.36"
     }
     result = requests.get(url, headers, timeout=30).text
-    console.log(result)
     r = re.compile(r'activeId=(Xj2_.*?),')
+    console.log(re)
+    console.log(r)
     r = r.findall(result)
     if len(r) > 0:
         activeId = r[0]
@@ -514,7 +515,7 @@ def CreateTuan(ck):
 
 def JoinTuan(ck, tuanId, u, suser, user):
     print('tuanIdShow:', tuanId)
-    tuanId = 'wvWUu-zhulmbp342qudUzg=='
+    # tuanId = 'HRUNicIdh6kBJkdQKAFWmw=='
     global cookiesList
     try:
         _time = stimestamp()
