@@ -84,6 +84,15 @@ process.env.go_cqhttp_qq ? go_cqhttp_qq = process.env.go_cqhttp_qq : ''
 process.env.go_cqhttp_method ? go_cqhttp_method = process.env.go_cqhttp_method : ''
 
 //==========================云端环境变量的判断与接收=========================
+if (process.env.GOBOT_URL) {
+  GOBOT_URL = process.env.GOBOT_URL;
+}
+if (process.env.GOBOT_TOKEN) {
+  GOBOT_TOKEN = process.env.GOBOT_TOKEN;
+}
+if (process.env.GOBOT_QQ) {
+  GOBOT_QQ = process.env.GOBOT_QQ;
+}
 if (process.env.PUSH_KEY) {
   SCKEY = process.env.PUSH_KEY;
 }
@@ -98,19 +107,22 @@ if (process.env.QQ_MODE) {
 
 
 if (process.env.BARK_PUSH) {
-  if (process.env.BARK_PUSH.indexOf('https') > -1 || process.env.BARK_PUSH.indexOf('http') > -1) {
+  if(process.env.BARK_PUSH.indexOf('https') > -1 || process.env.BARK_PUSH.indexOf('http') > -1) {
     //兼容BARK自建用户
-    BARK_PUSH = process.env.BARK_PUSH
+    BARK_PUSH = process.env.BARK_PUSH;
   } else {
-    BARK_PUSH = `https://api.day.app/${process.env.BARK_PUSH}`
+    BARK_PUSH = `https://api.day.app/${process.env.BARK_PUSH}`;
   }
   if (process.env.BARK_SOUND) {
-    BARK_SOUND = process.env.BARK_SOUND
+    BARK_SOUND = process.env.BARK_SOUND;
+  }
+  if (process.env.BARK_GROUP) {
+    BARK_GROUP = process.env.BARK_GROUP;
   }
 } else {
-  if (BARK_PUSH && BARK_PUSH.indexOf('https') === -1 && BARK_PUSH.indexOf('http') === -1) {
+  if(BARK_PUSH && BARK_PUSH.indexOf('https') === -1 && BARK_PUSH.indexOf('http') === -1) {
     //兼容BARK本地用户只填写设备码的情况
-    BARK_PUSH = `https://api.day.app/${BARK_PUSH}`
+    BARK_PUSH = `https://api.day.app/${BARK_PUSH}`;
   }
 }
 if (process.env.TG_BOT_TOKEN) {
@@ -140,7 +152,7 @@ if (process.env.QYWX_AM) {
 }
 
 if (process.env.IGOT_PUSH_KEY) {
-  IGOT_PUSH_KEY = process.env.IGOT_PUSH_KEY
+  IGOT_PUSH_KEY = process.env.IGOT_PUSH_KEY;
 }
 
 if (process.env.PUSH_PLUS_TOKEN) {
@@ -161,8 +173,7 @@ if (process.env.PUSH_PLUS_USER) {
  */
 async function sendNotify(text, desp, params = {}, author = '\n\n仅供用于学习') {
   //提供6种通知
-  //desp += author;//增加作者信息，防止被贩卖等
- desp += '\n\n仅用于学习交流。\n仓库：https://github.com/he1pu/JDHelp';
+  desp += '\n\n仅供用于学习\n';//增加作者信息，防止被贩卖等
   await Promise.all([
     serverNotify(text, desp),//微信server酱
     pushPlusNotify(text, desp)//pushplus(推送加)
@@ -175,44 +186,52 @@ async function sendNotify(text, desp, params = {}, author = '\n\n仅供用于学
     ddBotNotify(text, desp),//钉钉机器人
     qywxBotNotify(text, desp), //企业微信机器人
     qywxamNotify(text, desp), //企业微信应用消息推送
-    iGotNotify(text, desp, params),//iGot
-    goCQhttp(text, desp)  // go-cqhttp
-  ])
+    iGotNotify(text, desp, params), //iGot
+    gobotNotify(text, desp),//go-cqhttp
+  ]);
 }
 
-function goCQhttp(text, desp) {
-  if (go_cqhttp_url && go_cqhttp_qq && go_cqhttp_method) {
-    let msg = (text + '\n' + desp).replace("\n\n仅供用于学习", '');
-
-    let recv_id = ''
-    if (go_cqhttp_method === 'send_private_msg') {
-      recv_id = 'user_id'
-    } else if (go_cqhttp_method === 'send_group_msg') {
-      recv_id = 'group_id'
-    }
-
-    return new Promise(resolve => {
-      $.get({
-        url: `http://${go_cqhttp_url}/${go_cqhttp_method}?${recv_id}=${go_cqhttp_qq}&message=${escape(msg)}`
-      }, (err, resp, data) => {
-        if (!err) {
+function gobotNotify(text, desp, time = 2100) {
+  return new Promise((resolve) => {
+    if (GOBOT_URL) {
+      const options = {
+        url: `${GOBOT_URL}?access_token=${GOBOT_TOKEN}&${GOBOT_QQ}`,
+        json: {message:`${text}\n${desp}`},
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        timeout,
+      };
+      setTimeout(() => {
+        $.post(options, (err, resp, data) => {
           try {
-            // console.log(data);
-            data = JSON.parse(data);
-            if (data.retcode === 0 && data.status === 'ok') {
-              console.log('go-cqhttp发送通知消息成功🎉\n')
+            if (err) {
+              console.log('发送go-cqhttp通知调用API失败！！\n');
+              console.log(err);
             } else {
-              console.log(`go-cqhttp发送通知消息异常\n${JSON.stringify(data)}`)
+              data = JSON.parse(data);
+              if (data.retcode === 0) {
+                console.log('go-cqhttp发送通知消息成功🎉\n');
+              } else if (data.retcode === 100) {
+                console.log(`go-cqhttp发送通知消息异常: ${data.errmsg}\n`);
+              } else {
+                console.log(
+                  `go-cqhttp发送通知消息异常\n${JSON.stringify(data)}`,
+                );
+              }
             }
           } catch (e) {
-            $.logErr(e, resp)
+            $.logErr(e, resp);
           } finally {
-            resolve(200)
+            resolve(data);
           }
-        }
-      })
-    })
-  }
+        });
+      }, time);
+    } else {
+      console.log('您未提供GOBOT的GOBOT_URL和GOBOT_TOKEN和GOBOT_QQ，取消GOBOT推送消息通知🚫\n');
+      resolve();
+    }
+  });
 }
 
 function serverNotify(text, desp, time = 2100) {
@@ -255,6 +274,80 @@ function serverNotify(text, desp, time = 2100) {
       }, time)
     } else {
       console.log('\n\n您未提供server酱的SCKEY，取消微信推送消息通知🚫\n');
+      resolve()
+    }
+  })
+}
+
+function CoolPush(text, desp) {
+  return new Promise(resolve => {
+    if (QQ_SKEY) {
+      let options = {
+        url: `https://push.xuthus.cc/${QQ_MODE}/${QQ_SKEY}`,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+
+      // 已知敏感词
+      text = text.replace(/京豆/g, "豆豆");
+      desp = desp.replace(/京豆/g, "");
+      desp = desp.replace(/🐶/g, "");
+      desp = desp.replace(/红包/g, "H包");
+
+      switch (QQ_MODE) {
+        case "email":
+          options.json = {
+            "t": text,
+            "c": desp,
+          };
+          break;
+        default:
+          options.body = `${text}\n\n${desp}`;
+      }
+
+      let pushMode = function(t) {
+        switch (t){
+          case "send":
+            return "个人";
+          case "group":
+            return "QQ群";
+          case "wx":
+            return "微信";
+          case "ww":
+            return "企业微信";
+          case "email":
+            return "邮件";
+          default:
+            return "未知方式"
+        }
+      }
+
+      $.post(options, (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`发送${pushMode(QQ_MODE)}通知调用API失败！！\n`)
+            console.log(err);
+          } else {
+            data = JSON.parse(data);
+            if (data.code === 200) {
+              console.log(`酷推发送${pushMode(QQ_MODE)}通知消息成功🎉\n`)
+            } else if (data.code === 400) {
+              console.log(`QQ酷推(Cool Push)发送${pushMode(QQ_MODE)}推送失败：${data.msg}\n`)
+            } else if (data.code === 503) {
+              console.log(`QQ酷推出错，${data.message}：${data.data}\n`)
+            }else{
+              console.log(`酷推推送异常: ${JSON.stringify(data)}`);
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
+        }
+      })
+    } else {
+      console.log('您未提供酷推的SKEY，取消QQ推送消息通知🚫\n');
       resolve()
     }
   })
@@ -585,12 +678,12 @@ function qywxamNotify(text, desp) {
   });
 }
 
-function iGotNotify(text, desp, params = {}) {
-  return new Promise(resolve => {
+function iGotNotify(text, desp, params={}){
+  return  new Promise(resolve => {
     if (IGOT_PUSH_KEY) {
       // 校验传入的IGOT_PUSH_KEY是否有效
       const IGOT_PUSH_KEY_REGX = new RegExp("^[a-zA-Z0-9]{24}$")
-      if (!IGOT_PUSH_KEY_REGX.test(IGOT_PUSH_KEY)) {
+      if(!IGOT_PUSH_KEY_REGX.test(IGOT_PUSH_KEY)) {
         console.log('您所提供的IGOT_PUSH_KEY无效\n')
         resolve()
         return
