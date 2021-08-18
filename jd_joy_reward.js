@@ -24,13 +24,17 @@ cron "59 7,15,23 * * *" script-path=jd_joy_reward.js,tag=宠汪汪积分兑换�
 // prettier-ignore
 const $ = new Env('宠汪汪积分兑换奖品');
 const zooFaker = require('./utils/JDJRValidator_Pure');
+const invoke_key = "ztmFUCxcPMNyUq0P";
 // $.get = zooFaker.injectToRequest2($.get.bind($));
 // $.post = zooFaker.injectToRequest2($.post.bind($));
 let allMessage = '';
-let joyRewardName = 0;//是否兑换京豆，默认0不兑换京豆，其中20为兑换20京豆,500为兑换500京豆，0为不兑换京豆.数量有限先到先得
+//是否兑换京豆，默认500；20为兑换20京豆,500为兑换500京豆，0为不兑换京豆。数量有限先到先得
+//可通过joyRewardCount环境变量设置
+let joyRewardName = process.env.joyRewardCount ? process.env.joyRewardCount : 500;
+
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('./sendNotify.js') : '';
 let jdNotify = false;//是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -221,7 +225,7 @@ async function joyReward() {
 }
 function getExchangeRewards() {
   let opt = {
-    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P",
+    url: `//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=${invoke_key}`,
     method: "GET",
     data: {},
     credentials: "include",
@@ -265,7 +269,7 @@ function getExchangeRewards() {
 function exchange(saleInfoId, orderSource) {
   let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
   let opt = {
-    "url": "//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P",
+    "url": `//jdjoy.jd.com/common/gift/new/exchange?reqSource=h5&invokeKey=${invoke_key}`,
     "data":body,
     "credentials":"include","method":"POST","header":{"content-type":"application/json"}
   }
