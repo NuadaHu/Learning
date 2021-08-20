@@ -464,6 +464,7 @@ function getActCk() {
     }
     return new Promise(resolve => {
         $.get(config, (err, resp, data) => {
+            console.log(resp)
             try {
                 if (err) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
