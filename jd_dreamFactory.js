@@ -963,7 +963,7 @@ async function tuanActivity() {
               }
             }
           } else {
-            // if (encryptPin === 'xwYjTjyQJnT1ThJxaV9eWw==') {
+            // if (encryptPin === '3l6MpXr_ipgBQGwDVvgz4A==') {
             $.tuanIds.push(tuanId);
             $.log(`\n此团未达领取团奖励人数：${tuanNum}人\n`)
             // }
@@ -1336,7 +1336,7 @@ function readShareCode() {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    $.newShareCodes = ['xwYjTjyQJnT1ThJxaV9eWw=='];
+    $.newShareCodes = ['3l6MpXr_ipgBQGwDVvgz4A=='];
     // if ($.shareCodesArr[$.index - 1]) {
     //   $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     // } else {
@@ -1376,7 +1376,7 @@ function requireConfig() {
     // }
     console.log(`开始获取${$.name}配置文件\n`);
     //Node.js用户请在jdCookie.js处填写京东ck;
-    $.shareCodesArr = ['xwYjTjyQJnT1ThJxaV9eWw=='];
+    $.shareCodesArr = ['3l6MpXr_ipgBQGwDVvgz4A=='];
     // const shareCodes = $.isNode() ? require('./jdDreamFactoryShareCodes.js') : '';
     // console.log(`共${cookiesArr.length}个京东账号\n`);
     // $.shareCodesArr = [];
