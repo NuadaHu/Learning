@@ -48,6 +48,7 @@ $.appId = 10001;
 const noFactory = process.env.noFactory;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
+    console.log(jdCookieNode[item])
     cookiesArr.push(jdCookieNode[item])
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
@@ -55,6 +56,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
+return;
 !(async () => {
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
