@@ -134,6 +134,8 @@ async function jdDreamFactory() {
     // await collectElectricity()
     await getUserElectricity(); // 收电力
     await taskList(); // 做任务
+    console.log(cookie)
+    console.log(noFactory)
     if (cookie === noFactory) {
       await investElectric(); // 投电力
     }
@@ -141,7 +143,7 @@ async function jdDreamFactory() {
     await PickUp();//收取自家的地下零件
     await stealFriend();// 偷取好友零件
     // await tuanActivity();// 团活动详情
-    await QueryAllTuan();
+    // await QueryAllTuan();
     await exchangeProNotify();
     await showMsg();
   } catch (e) {
