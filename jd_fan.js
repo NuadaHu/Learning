@@ -104,7 +104,7 @@ async function main() {
     }
     $.cookie=$.cookie + `AUTH_C_USER=${$.pin}`;
     await $.wait(1000);
-    await accessLogWithAD();
+    // await accessLogWithAD();
     $.cookie=$.cookie + `AUTH_C_USER=${$.pin}`;
     await $.wait(1000);
     $.activityData = {};
@@ -464,7 +464,6 @@ function getActCk() {
     }
     return new Promise(resolve => {
         $.get(config, (err, resp, data) => {
-            console.log(resp)
             try {
                 if (err) {
                     console.log(`${$.name} API请求失败，请检查网路重试`)
