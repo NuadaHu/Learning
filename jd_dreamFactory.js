@@ -45,7 +45,7 @@ const inviteCodes = [''];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [''];
 $.appId = 10001;
-console.log(process.env.JD_COOKIE)
+console.log(process.env.noFactory)
 return;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
