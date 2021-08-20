@@ -136,7 +136,7 @@ async function jdDreamFactory() {
     await taskList(); // 做任务
     console.log(cookie)
     console.log(noFactory)
-    if (cookie === noFactory) {
+    if (cookie !== noFactory) {
       await investElectric(); // 投电力
     }
     await QueryHireReward();//收取招工电力
