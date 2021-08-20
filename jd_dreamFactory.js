@@ -45,8 +45,7 @@ const inviteCodes = [''];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [''];
 $.appId = 10001;
-console.log(process.env.noFactory)
-return;
+const noFactory = process.env.noFactory;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -135,7 +134,9 @@ async function jdDreamFactory() {
     // await collectElectricity()
     await getUserElectricity(); // 收电力
     await taskList(); // 做任务
-    await investElectric(); // 投电力
+    if (cookie === noFactory) {
+      await investElectric(); // 投电力
+    }
     await QueryHireReward();//收取招工电力
     await PickUp();//收取自家的地下零件
     await stealFriend();// 偷取好友零件
