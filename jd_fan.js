@@ -88,7 +88,7 @@ async function main() {
     }
     console.log(`token:${$.token}`);
     await $.wait(1000);
-    await getActCk();
+    // await getActCk();
     $.shopId = ``;
     await takePostRequest('getSimpleActInfoVo');
     if($.shopid === ``){
