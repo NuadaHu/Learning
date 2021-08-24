@@ -2057,8 +2057,8 @@ function _jdJrTdCommonsObtainPin(t) {
   return u
 };
 
-function getBody(url = document.location.href) {
-  navigator.userAgent = UA
+function getBody(userAgent, url = document.location.href) {
+  navigator.userAgent = userAgent ? userAgent : UA
   let href = url
   let choose = /((https?:)\/\/([^\/]+))(.+)/.exec(url)
   let [, origin, protocol, host, pathname] = choose;

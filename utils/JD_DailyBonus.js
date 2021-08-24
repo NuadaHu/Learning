@@ -756,7 +756,7 @@ async function JDUserSign2(s, key, title, tid) {
           if (data.success && data.data) {
             data = data.data
             if (!data.hasSign) {
-              let ss = await Faker.getBody(`https://prodev.m.jd.com/mall/active/${tid}/index.html`)
+              let ss = await Faker.getBody('', `https://prodev.m.jd.com/mall/active/${tid}/index.html`)
               fp = ss.fp
               await getEid(ss, title)
             }
