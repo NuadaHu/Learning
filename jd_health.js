@@ -234,8 +234,6 @@ function exchange(commodityType, commodityId) {
             if ($.isNode()) {
               allMessage += `【京东账号${$.index}】 ${$.UserName}\n兑换${data.data.result.jingBeanNum}京豆成功🎉${$.index !== cookiesArr.length ? '\n\n' : ''}`
             }
-          } else {
-            console.log(data.data.bizMsg)
           }
         }
       } catch (e) {
