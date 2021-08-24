@@ -70,7 +70,7 @@ let num;
       message = '';
       subTitle = '';
       option = {};
-      //await shareCodesFormat();
+      await shareCodesFormat();
       await jdPlantBean();
       await showMsg();
     }
