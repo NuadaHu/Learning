@@ -28,7 +28,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
 //let code =
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = ['pt_key=AAJg-oUJADAGZnfMxiox5GphvovALFVrtSdFLa0oG5cWxn24XSO3yWWItlFWVLMg7oyLjaP2K1s;pt_pin=jd_4a12988a5437e;'],
+let cookiesArr = ['pt_key=AAJhKH8FADDYsENh4qPIDyUDo06MNtKrTWR2hmwnl1ZhsxvwYkcubiKkpz2O7O6_BPbrF1PSf_o;pt_pin=jd_4a12988a5437e;'],
     cookie = '';
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
@@ -74,7 +74,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
                     $.inviter = dyjStr[1]
                 }
             }
-            await help('e83886265ab9477eb4206ba94764e4b520721628474935213', 'TcRo9GSFphN6X-DAuLLTzkXJgjiVoUJzlYLUvgszEh0', 1, true) //用你开包的号给我助力一次
+            // await help('86cbd9c76a2841af964b39f6e408815216941629907262240', 'TcRo9GSFphN6X-DAuLLTzkXJgjiVoUJzlYLUvgszEh0', 1, true) //用你开包的号给我助力一次
         }
     }
 
