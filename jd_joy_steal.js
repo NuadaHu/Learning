@@ -306,8 +306,8 @@ function getFriends(currentPage = '1') {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
           throw new Error(err);
         } else {
-          console.log('好友列表：')
-          console.log('JSON.parse(data)', JSON.parse(data))
+          // console.log('好友列表：')
+          // console.log('JSON.parse(data)', JSON.parse(data))
           if (data) {
             $.getFriendsData = JSON.parse(data);
           } else {
