@@ -57,7 +57,7 @@ message = ""
   $.appkey = '51B59BB805903DA4CE513D29EC448375'
   $.userId = '10299171'
   $.actId = 'c2a69b3596a948d8b8028b9_820'
-  $.inviteNick = 'D76F9A96B7398106B3BE90CDEF360896E38622668E3F38A739BE980E00BB65E749336DE54E26AA8F2834B248E6398CB7A755DF4FDAE585EC3E1ABE26F3DD3CFFC956D12974FF00A045D8E31A84FE84C18A8357DE96A1F617B8AC4D64BC24B689'
+  $.inviteNick = '449C9BC266928386B1154363863EA6F8817070C92074A5A3F588344F6B9132C349336DE54E26AA8F2834B248E6398CB7A755DF4FDAE585EC3E1ABE26F3DD3CFFC956D12974FF00A045D8E31A84FE84C18A8357DE96A1F617B8AC4D64BC24B689'
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
@@ -130,15 +130,15 @@ async function run(){
     }
     await myAward();
     await missionInviteList();
-    if ($.index === 1) {
-      if($.MixNick){
-        $.inviteNick = $.MixNick;
-        console.log(`后面的号都会助力:${$.inviteNick}`)
-      }else{
-        console.log('账号1获取不到[MixNick]退出执行，请重新执行')
-        return
-      }
-    }
+    // if ($.index === 1) {
+    //   if($.MixNick){
+    //     $.inviteNick = $.MixNick;
+    //     console.log(`后面的号都会助力:${$.inviteNick}`)
+    //   }else{
+    //     console.log('账号1获取不到[MixNick]退出执行，请重新执行')
+    //     return
+    //   }
+    // }
   }catch(e){
     console.log(e)
   }

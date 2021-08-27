@@ -62,7 +62,7 @@ message = ""
       return
     }
   }
-  $.shareUuid = '016ba2d74d69402c946d0f80af002f54'
+  $.shareUuid = '5c8377c0be91452e8e57dc23cf967629'
   $.activityId = '375dbaa9e32c4c70bb8357836956ed2e'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/3542672?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -152,15 +152,15 @@ async function run(){
     await $.wait(1000)
     await getShareRecord()
     $.log($.shareUuid)
-    if ($.index === 1) {
-      if($.actorUuid){
-        $.shareUuid = $.actorUuid;
-        console.log(`后面的号都会助力:${$.shareUuid}`)
-      }else{
-        console.log('账号1获取不到[shareUuid]退出执行，请重新执行')
-        return
-      }
-    }
+    // if ($.index === 1) {
+    //   if($.actorUuid){
+    //     $.shareUuid = $.actorUuid;
+    //     console.log(`后面的号都会助力:${$.shareUuid}`)
+    //   }else{
+    //     console.log('账号1获取不到[shareUuid]退出执行，请重新执行')
+    //     return
+    //   }
+    // }
   }catch(e){
     console.log(e)
   }

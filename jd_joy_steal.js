@@ -45,7 +45,7 @@ let jdNotify = false;//是否开启静默运行，false关闭静默运行(即通
 let jdJoyHelpFeed = true;//是否给好友喂食，false为不给喂食，true为给好友喂食，默认给好友喂食
 let jdJoyStealCoin = true;//是否偷好友积分与狗粮，false为否，true为是，默认是偷
 let JD_API_HOST = 'https://jdjoy.jd.com'
-$.invokeKey = 'ztmFUCxcPMNyUq0P'
+$.invokeKey = 'RtKLB8euDo7KwsO0'
 let lkt = 0
 if(process.env.JOY_HOST){
   JD_API_HOST = process.env.JOY_HOST
@@ -282,22 +282,21 @@ async function helpFriendsFeed() {
 }
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
-    const url = `${JD_API_HOST}/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=${$.invokeKey}`
+    // const url = `${JD_API_HOST}/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=${$.invokeKey}`
+    const url = `https://draw.jdfcloud.com/common/pet/api/getFriends?itemsPerPage=20&currentPage=1&reqSource=weapp&invokeKey=${$.invokeKey}`
     const options = {
       url,
       headers: {
-        'Cookie': cookie,
-        'reqSource': 'h5',
-        'Host': 'jdjoy.jd.com',
+        'LKYLToken': '52b6c74fe8e8c123c704883532f4d96b',
+        'Cookie': 'pt_key=AAJhKJQkADBPXdc3_oDB0pEpiz6YCxa7rUqPSevSfj6HlpFSPPvQ-4NsU5NGVCN0i0jigZtz7eM',
+        'Host': 'draw.jdfcloud.com',
         'Connection': 'keep-alive',
         'Content-Type': 'application/json',
-        "Origin": "https://h5.m.jd.com",
-        'referer': 'https://h5.m.jd.com/',
-        "User-Agent": $.UA,
-        'Accept-Language': 'zh-cn',
-        'Accept-Encoding': 'gzip, deflate, br',
-        "lks": $.md5(""+$.invokeKey+lkt),
-        "lkt": lkt
+        'referer': 'https://servicewechat.com/wxccb5c536b0ecd1bf/752/page-frame.html',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.12(0x18000c24) NetType/WIFI Language/zh_HK',
+        'Accept-Encoding': 'gzip,compress,br,deflate',
+        'lks': $.md5(''+$.invokeKey+lkt),
+        'lkt': lkt
       },
       timeout: 10000
     }
@@ -307,7 +306,8 @@ function getFriends(currentPage = '1') {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
           throw new Error(err);
         } else {
-          // console.log('JSON.parse(data)', JSON.parse(data))
+          console.log('好友列表：')
+          console.log('JSON.parse(data)', JSON.parse(data))
           if (data) {
             $.getFriendsData = JSON.parse(data);
           } else {
