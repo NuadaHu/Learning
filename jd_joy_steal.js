@@ -110,7 +110,9 @@ async function jdJoySteal() {
     $.stealStatus = null;
     $.helpFeedStatus = null;
     message += `【京东账号${$.index}】${$.nickName}\n`;
-    await getFriends();//查询是否有好友
+    if ($.index === 0) {
+      await getFriends();//查询是否有好友
+    }
     await getCoinChanges();//查询喂食好友和偷好友积分是否已达上限
     if ($.getFriendsData && $.getFriendsData.success) {
       if (!$.getFriendsData.datas) {
@@ -129,9 +131,11 @@ async function jdJoySteal() {
             break
           }
           console.log(`偷好友积分 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendCoinFun();
+          if ($.index === 0) {
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await stealFriendCoinFun();
+          }
         }
         for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
           if ($.stealStatus === 'chance_full') {
@@ -158,9 +162,11 @@ async function jdJoySteal() {
             break
           }
           console.log(`偷好友狗粮 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendsFood();
+          if ($.index === 0) {
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await stealFriendsFood();
+          }
         }
         for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
           if ($.help_feed >= 200 || ($.helpFeedStatus && $.helpFeedStatus === 'chance_full')) {
@@ -178,10 +184,12 @@ async function jdJoySteal() {
             break
           }
           console.log(`帮好友喂食 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await helpFriendsFeed();
-        }
+          if ($.index === 0) {
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await helpFriendsFeed();
+          }
+      }
       }
     } else {
       message += `${$.getFriendsData && $.getFriendsData.errorMessage}\n`;
