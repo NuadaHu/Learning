@@ -110,7 +110,7 @@ async function jdJoySteal() {
     $.stealStatus = null;
     $.helpFeedStatus = null;
     message += `【京东账号${$.index}】${$.nickName}\n`;
-    if ($.index === 0) {
+    if ($.index === 1) {
       await getFriends();//查询是否有好友
     }
     await getCoinChanges();//查询喂食好友和偷好友积分是否已达上限
@@ -131,7 +131,7 @@ async function jdJoySteal() {
             break
           }
           console.log(`偷好友积分 开始查询第${i}页好友\n`);
-          if ($.index === 0) {
+          if ($.index === 1) {
             await getFriends(i);
             $.allFriends = $.getFriendsData.datas;
             if ($.allFriends) await stealFriendCoinFun();
@@ -162,7 +162,7 @@ async function jdJoySteal() {
             break
           }
           console.log(`偷好友狗粮 开始查询第${i}页好友\n`);
-          if ($.index === 0) {
+          if ($.index === 1) {
             await getFriends(i);
             $.allFriends = $.getFriendsData.datas;
             if ($.allFriends) await stealFriendsFood();
@@ -184,7 +184,7 @@ async function jdJoySteal() {
             break
           }
           console.log(`帮好友喂食 开始查询第${i}页好友\n`);
-          if ($.index === 0) {
+          if ($.index === 1) {
             await getFriends(i);
             $.allFriends = $.getFriendsData.datas;
             if ($.allFriends) await helpFriendsFeed();
