@@ -140,6 +140,7 @@ async function getauthorId(liveId) {
   let url = `https://api.m.jd.com/client.action?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
   return new Promise(resolve => {
     $.post(taskPostUrl(functionId, body, url), async (err, resp, data) => {
+      console.log(data)
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
