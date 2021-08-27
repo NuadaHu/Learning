@@ -283,7 +283,7 @@ async function helpFriendsFeed() {
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     // const url = `${JD_API_HOST}/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=${$.invokeKey}`
-    const url = `https://draw.jdfcloud.com/common/pet/api/getFriends?itemsPerPage=20&currentPage=1&reqSource=weapp&invokeKey=${$.invokeKey}`
+    const url = `https://draw.jdfcloud.com/common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=weapp&invokeKey=${$.invokeKey}`
     const options = {
       url,
       headers: {
