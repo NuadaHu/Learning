@@ -20,7 +20,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const openTuanCK = $.isNode() ? (process.env.OPEN_DREAMFACTORY_TUAN ? process.env.OPEN_DREAMFACTORY_TUAN : '1'):'1';
 let tuanActiveId = ``;
 let cookiesArr = [], cookie = '', message = '';
-$.tuanIds = ['IJ5ee0UF_MrVDf2OptUXqQ=='];
+$.tuanIds = ['2-xKNeQ3nRcCCDWrBIcyug=='];
 $.appId = 10001;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -96,7 +96,7 @@ if ($.isNode()) {
       if ((cookiesArr && cookiesArr.length >= ($.tuanNum || 5)) && $.canHelp) {
         for (let j = 0; j < $.tuanIds.length; j++) {
           let item = $.tuanIds[j];
-          if ($.index == 1) {item = 'IJ5ee0UF_MrVDf2OptUXqQ=='}
+          if ($.index == 1) {item = '2-xKNeQ3nRcCCDWrBIcyug=='}
           $.tuanMax = false;
           if (!$.canHelp) break;
           console.log(`账号${$.UserName} 去参加团 ${item}`);
