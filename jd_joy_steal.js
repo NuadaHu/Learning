@@ -94,8 +94,10 @@ if ($.isNode() && process.env.jdJoyStealCoin) {
       $.validate = '';
       // const zooFaker = require('./utils/JDJRValidator_Pure');
       // $.validate = await zooFaker.injectToRequest()
-      await jdJoySteal();
-      await showMsg();
+      if ($.index === 1) {
+        await jdJoySteal();
+        await showMsg();
+      }
     }
   }
 })()
@@ -327,6 +329,7 @@ function getFriends(currentPage = '1') {
     const url = "https:"+ taroRequest(opt)['url'] + $.validate;
     let lkt = new Date().getTime()
     let lks = $.md5('' + invoke_key + lkt).toString()
+    console.log(cookie)
     const options = {
       url: url.replace(/reqSource=h5/, 'reqSource=weapp'),
       headers: {
