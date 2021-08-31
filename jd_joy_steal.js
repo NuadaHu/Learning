@@ -46,7 +46,7 @@ let message = '', subTitle = '';
 let jdNotify = false;//是否开启静默运行，false关闭静默运行(即通知)，true打开静默运行(即不通知)
 let jdJoyHelpFeed = true;//是否给好友喂食，false为不给喂食，true为给好友喂食，默认给好友喂食
 let jdJoyStealCoin = true;//是否偷好友积分与狗粮，false为否，true为是，默认是偷
-const JD_API_HOST = 'https://jdjoy.jd.com/pet';
+const JD_API_HOST = 'https://jdjoy.jd.com';
 //是否给好友喂食
 let ctrTemp;
 if ($.isNode() && process.env.JOY_HELP_FEED) {
@@ -91,7 +91,7 @@ if ($.isNode() && process.env.jdJoyStealCoin) {
       }
       message = '';
       subTitle = '';
-      $.validate = '';
+      // $.validate = '';
       // const zooFaker = require('./utils/JDJRValidator_Pure');
       // $.validate = await zooFaker.injectToRequest()
       if ($.index === 1) {
@@ -116,6 +116,7 @@ async function jdJoySteal() {
     $.helpFeedStatus = null;
     message += `【京东账号${$.index}】${$.nickName}\n`;
     await enterRoom()
+    return;
     await $.wait(2000)
     await getFriends();//查询是否有好友
     await $.wait(2000)
@@ -290,23 +291,15 @@ async function helpFriendsFeed() {
 }
 function enterRoom() {
   return new Promise(resolve => {
-    // const url = `${weAppUrl}/enterRoom/h5?reqSource=weapp&invitePin=&openId=`;
-    const host = `draw.jdfcloud.com`;
-    const reqSource = 'weapp';
-    let opt = {
-      url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?invitePin=&openId=&invokeKey=${invoke_key}`,
-      method: "GET",
-      data: {},
-      credentials: "include",
-      header: {"content-type": "application/json"}
-    }
-    const url = "https:"+ taroRequest(opt)['url'] + $.validate;
-    $.post({...taskPostUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource),body:'{}'}, (err, resp, data) => {
+    const url = `https://jdjoy.jd.com/common/pet/enterRoom/h5?invitePin=&reqSource=h5&invokeKey=${invoke_key}`;
+    const host = `jdjoy.jd.com`;
+    const Referer = 'https://h5.m.jd.com/babelDiy/Zeus/2wuqXrZrhygTQzYA7VufBEpj4amH/index.html?babelChannel=ttt12&lng=116.705786&lat=23.352956&sid=69cfde48d7e692816e26eb33bdde223w&un_area=19_1611_19917_56481';
+    $.post({...taskPostUrl(url, host, Referer),body:'{}'}, (err, resp, data) => {
       try {
         if (err) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
         } else {
-          // console.log('JSON.parse(data)', JSON.parse(data))
+          console.log('JSON.parse(data)', JSON.parse(data))
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -319,7 +312,7 @@ function enterRoom() {
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     let opt = {
-      url: `//draw.jdfcloud.com//common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&invokeKey=${invoke_key}`,
+      url: `//jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=${invoke_key}`,
       // url: `//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=${invoke_key}`,
       method: "GET",
       data: {},
@@ -637,19 +630,18 @@ function TotalBean() {
     })
   })
 }
-function taskPostUrl(url, Host, reqSource) {
+function taskPostUrl(url, Host, Referer) {
   let lkt = new Date().getTime()
   let lks = $.md5('' + invoke_key + lkt).toString()
   return {
     url: url,
     headers: {
       'Cookie': cookie,
-      // 'reqSource': reqSource,
       'Host': Host,
       'Connection': 'keep-alive',
       'Content-Type': 'application/json',
-      'Referer': 'https://jdjoy.jd.com/pet/index',
-      'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      'Referer': Referer,
+      'User-Agent': 'jdapp;iPhone;10.1.2;14.6;ef09cf14d76082d41ec7c1fb88ae3d382eb0c333;network/wifi;model/iPhone11,6;addressid/2082334837;appBuild/167802;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
       'Accept-Language': 'zh-cn',
       'Accept-Encoding': 'gzip, deflate, br',
       'lkt': lkt,
