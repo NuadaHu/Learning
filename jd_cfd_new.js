@@ -1187,7 +1187,7 @@ async function pickshell(num = 1) {
             name = '扇贝'
           do 
             {
-              console.log(`去捡${name}第${o}次`)o++;
+            console.log(`去捡${name}第${o}次`);o++;
             let res = await taskGet(`story/pickshell`, '_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', `&ptag=&dwType=${i}`)
             await $.wait(200)
             if (!res || res.iRet != 0) {
