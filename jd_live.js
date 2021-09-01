@@ -105,8 +105,8 @@ function getTaskList() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            if(data.data.starLiveList) {
-                for (let key of Object.keys(data.data.starLiveList)) {
+            if (data.data.starLiveList) {
+              for (let key of Object.keys(data.data.starLiveList)) {
                 let vo = data.data.starLiveList[key]
                 if (vo.state !== 3) {
                   let authorId = (await getauthorId(vo.extra.liveId)).data.author.authorId
@@ -114,7 +114,7 @@ function getTaskList() {
                   await awardTask("starViewTask", vo.extra.liveId)
                 }
               }
-            }  
+            }
             console.log(`去做分享直播间任务`)
             await shareTask()
             await awardTask()
@@ -291,11 +291,13 @@ function getSign(functionid, body, uuid) {
       "client":"apple",
       "clientVersion":"10.1.0"
     }
+    let HostArr = ['jdsign.cf', 'jdsign.tk']
+    let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
       url: `https://cdn.jdsign.cf/ddo`,
       body: JSON.stringify(data),
       headers: {
-        "Host": "jdsign.cf",
+        Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }
     }
