@@ -27,7 +27,7 @@ cron "35 6,20,22 * * *" script-path=jd_opencardHF.js, tag=健康、食品联合�
 
 */
 const $ = new Env('健康、食品联合开卡');
-const Faker=require('./utils/sign_graphics_validate.js')
+const Faker=require('./utils/JDSignValidator.js')
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
