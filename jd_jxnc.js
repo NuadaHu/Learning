@@ -36,7 +36,7 @@ let currentCookie = ''; // 当前用户 cookie
 let tokenNull = {'farm_jstoken': '', 'phoneid': '', 'timestamp': ''}; // 内置一份空的 token
 let tokenArr = []; // 用户 token 数组
 let currentToken = {}; // 当前用户 token
-let shareCode = 'd0b95788febca1ef0f250f7a2f8fe0a0'; // 内置助力码
+let shareCode = ''; // 内置助力码
 let jxncShareCodeArr = []; // 用户 助力码 数组
 let currentShareCode = []; // 当前用户 要助力的助力码
 const openUrl = `openjd://virtual?params=${encodeURIComponent('{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}',)}`; // 打开京喜农场
@@ -580,6 +580,7 @@ async function helpFriends() {
 
 // 执行助力 return true 继续助力  false 助力结束
 function helpShareCode(smp, active, joinnum) {
+  const smp = 'd0b95788febca1ef0f250f7a2f8fe0a0', active = 'jdnc_1_2yuanguoba210601_2', joinnum = '1'
   return new Promise(async resolve => {
     if (smp === $.info.smp) { // 自己的助力码，跳过，继续执行
       $.log('助力码与当前账号相同，跳过助力。准备进行下一个助力');
