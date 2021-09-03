@@ -12,7 +12,7 @@
 // 注意：京喜农场 种植种子发生变化的时候，互助码也会变！！
 // 每个账号 shareCdoe 是一个 json，示例如下
 // {"smp":"22bdadsfaadsfadse8a","active":"jdnc_1_btorange210113_2","joinnum":"1"}
-let JxncShareCodes = ['{"smp":"dad910a2db1379a96b5cfbd0764f7743","active":"jdnc_1_3yuanmitao210616_2","joinnum":"1"}']
+let JxncShareCodes = ['{"smp":"d0b95788febca1ef0f250f7a2f8fe0a0","active":"jdnc_1_2yuanguoba210601_2","joinnum":1}&{"smp":"6b86ebb18ee03ee7c894426d6d9f5f65","active":"jdnc_1_4yuantaimang210422_2","joinnum":1}']
 // 判断github action里面是否有京喜农场助力码
 if (process.env.JXNC_SHARECODES) {
   if (process.env.JXNC_SHARECODES.indexOf('&') > -1) {
