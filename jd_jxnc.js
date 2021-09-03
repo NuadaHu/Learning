@@ -580,7 +580,9 @@ async function helpFriends() {
 
 // 执行助力 return true 继续助力  false 助力结束
 function helpShareCode(smp, active, joinnum) {
-  const smp = 'd0b95788febca1ef0f250f7a2f8fe0a0', active = 'jdnc_1_2yuanguoba210601_2', joinnum = '1'
+  smp = 'd0b95788febca1ef0f250f7a2f8fe0a0';
+  active = 'jdnc_1_2yuanguoba210601_2';
+  joinnum = '1';
   return new Promise(async resolve => {
     if (smp === $.info.smp) { // 自己的助力码，跳过，继续执行
       $.log('助力码与当前账号相同，跳过助力。准备进行下一个助力');
