@@ -112,81 +112,82 @@ async function jdJoySteal() {
     $.stealStatus = null;
     $.helpFeedStatus = null;
     message += `【京东账号${$.index}】${$.nickName}\n`;
-    await enterRoom()
-    return;
-    await $.wait(2000)
-    await getFriends();//查询是否有好友
-    await $.wait(2000)
-    await getCoinChanges();//查询喂食好友和偷好友积分是否已达上限
-    if ($.getFriendsData && $.getFriendsData.success) {
-      if (!$.getFriendsData.datas) {
-        console.log(`\n京东返回宠汪汪好友列表数据为空\n`)
-        return
-      }
-      if ($.getFriendsData && $.getFriendsData.datas && $.getFriendsData.datas.length  > 0) {
-        const { lastPage } = $.getFriendsData.page;
-        // console.log('lastPage', lastPage)
-        console.log(`\n共 ${lastPage * 20 - 1} 个好友\n`);
-        $.allFriends = [];
-        for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
-          if ($.visit_friend >= 100 || $.stealFriendCoin * 1 >= 100) {
-            console.log('偷好友积分已达上限(已获得100积分) 跳出\n')
-            $.stealFriendCoin = `已达上限(已获得100积分)`;
-            break
-          }
-          console.log(`偷好友积分 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendCoinFun();
+    if ($.index === 1) {
+      await enterRoom()
+      await $.wait(2000)
+      await getFriends();//查询是否有好友
+      await $.wait(2000)
+      await getCoinChanges();//查询喂食好友和偷好友积分是否已达上限
+      if ($.getFriendsData && $.getFriendsData.success) {
+        if (!$.getFriendsData.datas) {
+          console.log(`\n京东返回宠汪汪好友列表数据为空\n`)
+          return
         }
-        for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
-          if ($.stealStatus === 'chance_full') {
-            console.log('偷好友狗粮已达上限 跳出\n')
-            if (!$.stealFood) {
-              $.stealFood = `已达上限`;
+        if ($.getFriendsData && $.getFriendsData.datas && $.getFriendsData.datas.length  > 0) {
+          const { lastPage } = $.getFriendsData.page;
+          // console.log('lastPage', lastPage)
+          console.log(`\n共 ${lastPage * 20 - 1} 个好友\n`);
+          $.allFriends = [];
+          for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
+            if ($.visit_friend >= 100 || $.stealFriendCoin * 1 >= 100) {
+              console.log('偷好友积分已达上限(已获得100积分) 跳出\n')
+              $.stealFriendCoin = `已达上限(已获得100积分)`;
+              break
             }
-            break
+            console.log(`偷好友积分 开始查询第${i}页好友\n`);
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await stealFriendCoinFun();
           }
-          if (nowTimes.getHours() < 6 && nowTimes.getHours() >= 0) {
-            $.log('未到早餐时间, 暂不能偷好友狗粮\n')
-            break
+          for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
+            if ($.stealStatus === 'chance_full') {
+              console.log('偷好友狗粮已达上限 跳出\n')
+              if (!$.stealFood) {
+                $.stealFood = `已达上限`;
+              }
+              break
+            }
+            if (nowTimes.getHours() < 6 && nowTimes.getHours() >= 0) {
+              $.log('未到早餐时间, 暂不能偷好友狗粮\n')
+              break
+            }
+            if (nowTimes.getHours() === 10 ? (nowTimes.getMinutes() > 30) : (nowTimes.getHours() === 11 && nowTimes.getMinutes() < 30)) {
+              $.log('未到中餐时间, 暂不能偷好友狗粮\n')
+              break
+            }
+            if ((nowTimes.getHours() >= 15 && nowTimes.getMinutes() > 0) && (nowTimes.getHours() < 17 && nowTimes.getMinutes() <= 59)) {
+              $.log('未到晚餐时间, 暂不能偷好友狗粮\n')
+              break
+            }
+            if (nowTimes.getHours() >= 21 && nowTimes.getMinutes() > 0 && nowTimes.getHours() <= 23 && nowTimes.getMinutes() <= 59) {
+              $.log('已过晚餐时间, 暂不能偷好友狗粮\n')
+              break
+            }
+            console.log(`偷好友狗粮 开始查询第${i}页好友\n`);
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await stealFriendsFood();
           }
-          if (nowTimes.getHours() === 10 ? (nowTimes.getMinutes() > 30) : (nowTimes.getHours() === 11 && nowTimes.getMinutes() < 30)) {
-            $.log('未到中餐时间, 暂不能偷好友狗粮\n')
-            break
+          for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
+            if ($.help_feed >= 200 || ($.helpFeedStatus && $.helpFeedStatus === 'chance_full')) {
+              console.log('帮好友喂食已达上限(已帮喂20个好友获得200积分) 跳出\n');
+              $.helpFood = '已达上限(已帮喂20个好友获得200积分)'
+              break
+            }
+            if ($.helpFeedStatus && $.helpFeedStatus === 'food_insufficient') {
+              console.log('帮好友喂食失败，狗粮不足10g 跳出\n');
+              break
+            }
+            if ($.help_feed >= 10) $.HelpFeedFlag = ctrTemp;//修复每次运行都会给好友喂食一次的bug
+            if (!$.HelpFeedFlag) {
+              console.log('您已设置不为好友喂食，现在跳过喂食，如需为好友喂食请在BoxJs打开喂食开关或者更改脚本 jdJoyHelpFeed 处');
+              break
+            }
+            console.log(`帮好友喂食 开始查询第${i}页好友\n`);
+            await getFriends(i);
+            $.allFriends = $.getFriendsData.datas;
+            if ($.allFriends) await helpFriendsFeed();
           }
-          if ((nowTimes.getHours() >= 15 && nowTimes.getMinutes() > 0) && (nowTimes.getHours() < 17 && nowTimes.getMinutes() <= 59)) {
-            $.log('未到晚餐时间, 暂不能偷好友狗粮\n')
-            break
-          }
-          if (nowTimes.getHours() >= 21 && nowTimes.getMinutes() > 0 && nowTimes.getHours() <= 23 && nowTimes.getMinutes() <= 59) {
-            $.log('已过晚餐时间, 暂不能偷好友狗粮\n')
-            break
-          }
-          console.log(`偷好友狗粮 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await stealFriendsFood();
-        }
-        for (let i = 1; i <= new Array(lastPage).fill('').length; i++) {
-          if ($.help_feed >= 200 || ($.helpFeedStatus && $.helpFeedStatus === 'chance_full')) {
-            console.log('帮好友喂食已达上限(已帮喂20个好友获得200积分) 跳出\n');
-            $.helpFood = '已达上限(已帮喂20个好友获得200积分)'
-            break
-          }
-          if ($.helpFeedStatus && $.helpFeedStatus === 'food_insufficient') {
-            console.log('帮好友喂食失败，狗粮不足10g 跳出\n');
-            break
-          }
-          if ($.help_feed >= 10) $.HelpFeedFlag = ctrTemp;//修复每次运行都会给好友喂食一次的bug
-          if (!$.HelpFeedFlag) {
-            console.log('您已设置不为好友喂食，现在跳过喂食，如需为好友喂食请在BoxJs打开喂食开关或者更改脚本 jdJoyHelpFeed 处');
-            break
-          }
-          console.log(`帮好友喂食 开始查询第${i}页好友\n`);
-          await getFriends(i);
-          $.allFriends = $.getFriendsData.datas;
-          if ($.allFriends) await helpFriendsFeed();
         }
       }
     } else {
@@ -323,7 +324,7 @@ function enterRoom() {
     }
     const url = "https:"+ taroRequest(opt)['url'];
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'ztmFUCxcPMNyUq0P' + lkt).toString()
+    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
     const options = {
       url: url,
       headers: {
@@ -348,7 +349,7 @@ function enterRoom() {
         if (err) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
         } else {
-          console.log('JSON.parse(data)', JSON.parse(data))
+          // console.log('JSON.parse(data)', JSON.parse(data))
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -361,30 +362,31 @@ function enterRoom() {
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     let opt = {
-      url: `//draw.jdfcloud.com//common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&invokeKey=ztmFUCxcPMNyUq0P`,
+      url: `//draw.jdfcloud.com//common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=weapp&invokeKey=RtKLB8euDo7KwsO0`,
       // url: `//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P`,
       method: "GET",
       data: {},
       credentials: "include",
       header: {"content-type": "application/json"}
     }
-    const url = "https:"+ taroRequest(opt)['url'] + $.validate;
+    const url = "https:"+ taroRequest(opt)['url'];
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'ztmFUCxcPMNyUq0P' + lkt).toString()
+    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
     const options = {
-      url: url.replace(/reqSource=h5/, 'reqSource=weapp'),
+      url: url,
       headers: {
-        'Cookie': cookie,
-        // 'reqSource': 'h5',
         'Host': 'draw.jdfcloud.com',
         'Connection': 'keep-alive',
+        'LKYLToken': '3867024ead1b5f3be40939cf08326cac',
+        'lks': lks,
         'Content-Type': 'application/json',
-        'Referer': 'https://jdjoy.jd.com/pet/index',
-        'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-        'Accept-Language': 'zh-cn',
-        'Accept-Encoding': 'gzip, deflate, br',
+        'Cookie': 'pt_key=AAJhLwJPADCn2g5aw7Buhi8HVGthXx21dat_Z6VKmHsjfDRzvsdhOzgcCgqnqM990w5QGA85b24',
         'lkt': lkt,
-        'lks': lks
+        'Accept-Encoding': 'gzip,compress,br,deflate',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.12(0x18000c27) NetType/WIFI Language/zh_HK',
+        'Referer': 'https://servicewechat.com/wxccb5c536b0ecd1bf/754/page-frame.html'
+        // 'reqSource': 'h5',
+        // 'Accept-Language': 'zh-cn',
       },
       timeout: 10000
     }
