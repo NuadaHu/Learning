@@ -13,6 +13,7 @@
 // 每个账号 shareCdoe 是一个 json，示例如下
 // {"smp":"22bdadsfaadsfadse8a","active":"jdnc_1_btorange210113_2","joinnum":"1"}
 let JxncShareCodes = [
+  {"smp":"d0b95788febca1ef0f250f7a2f8fe0a0","active":"jdnc_1_2yuanguoba210601_2","joinnum":1}
 ]
 // 判断github action里面是否有京喜农场助力码
 if (process.env.JXNC_SHARECODES) {
