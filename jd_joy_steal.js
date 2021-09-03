@@ -113,6 +113,7 @@ async function jdJoySteal() {
     $.helpFeedStatus = null;
     message += `【京东账号${$.index}】${$.nickName}\n`;
     await enterRoom()
+    return;
     await $.wait(2000)
     await getFriends();//查询是否有好友
     await $.wait(2000)
@@ -288,22 +289,66 @@ async function helpFriendsFeed() {
 function enterRoom() {
   return new Promise(resolve => {
     // const url = `${weAppUrl}/enterRoom/h5?reqSource=weapp&invitePin=&openId=`;
-    const host = `draw.jdfcloud.com`;
-    const reqSource = 'weapp';
+    // const host = `draw.jdfcloud.com`;
+    // const reqSource = 'weapp';
+    // let opt = {
+    //   // url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?invitePin=&openId=&invokeKey=ztmFUCxcPMNyUq0P`,
+    //   url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?invitePin=&openId=oPcgJ4_j6oXkQ5MzTPdomvyJ5qGM&reqSource=weapp&invokeKey=RtKLB8euDo7KwsO0`,
+    //   method: "GET",
+    //   data: {},
+    //   credentials: "include",
+    //   header: {"content-type": "application/json"}
+    // }
+    // const url = "https:"+ taroRequest(opt)['url'] + $.validate;
+    // $.post({...taskPostUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource),body:'{}'}, (err, resp, data) => {
+    //   try {
+    //     if (err) {
+    //       console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
+    //     } else {
+    //       // console.log('JSON.parse(data)', JSON.parse(data))
+    //     }
+    //   } catch (e) {
+    //     $.logErr(e, resp);
+    //   } finally {
+    //     resolve();
+    //   }
+    // })
     let opt = {
-      url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?invitePin=&openId=&invokeKey=ztmFUCxcPMNyUq0P`,
-      method: "GET",
+      url: `//draw.jdfcloud.com//common/pet/enterRoom/h5?invitePin=&openId=oPcgJ4_j6oXkQ5MzTPdomvyJ5qGM&reqSource=weapp&invokeKey=RtKLB8euDo7KwsO0`,
+      // url: `//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=ztmFUCxcPMNyUq0P`,
+      method: "POST",
       data: {},
       credentials: "include",
       header: {"content-type": "application/json"}
     }
-    const url = "https:"+ taroRequest(opt)['url'] + $.validate;
-    $.post({...taskPostUrl(url.replace(/reqSource=h5/, 'reqSource=weapp'), host, reqSource),body:'{}'}, (err, resp, data) => {
+    const url = "https:"+ taroRequest(opt)['url'];
+    let lkt = new Date().getTime()
+    let lks = $.md5('' + 'ztmFUCxcPMNyUq0P' + lkt).toString()
+    const options = {
+      url: url,
+      headers: {
+        'Host': 'draw.jdfcloud.com',
+        'Connection': 'keep-alive',
+        'Content-Length': 2,
+        'LKYLToken': '3867024ead1b5f3be40939cf08326cac',
+        'lks': lks,
+        'Content-Type': 'application/json',
+        'Cookie': 'pt_key=AAJhLwJPADCn2g5aw7Buhi8HVGthXx21dat_Z6VKmHsjfDRzvsdhOzgcCgqnqM990w5QGA85b24',
+        'lkt': lkt,
+        'Accept-Encoding': 'gzip,compress,br,deflate',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.12(0x18000c27) NetType/WIFI Language/zh_HK',
+        'Referer': 'https://servicewechat.com/wxccb5c536b0ecd1bf/754/page-frame.html'
+        // 'Accept-Language': 'zh-cn',
+        // 'reqSource': 'h5',
+      },
+      timeout: 10000
+    }
+    $.post(options, (err, resp, data) => {
       try {
         if (err) {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
         } else {
-          // console.log('JSON.parse(data)', JSON.parse(data))
+          console.log('JSON.parse(data)', JSON.parse(data))
         }
       } catch (e) {
         $.logErr(e, resp);
