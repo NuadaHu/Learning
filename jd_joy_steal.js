@@ -413,8 +413,9 @@ function getFriends(currentPage = '1') {
 }
 
 async function stealFriendCoin(friendPin) {
-  // console.log(`进入好友 ${friendPin}的房间`)
+  console.log(`进入好友 ${friendPin}的房间`)
   const enterFriendRoomRes = await enterFriendRoom(friendPin);
+  console.log(enterFriendRoomRes)
   if (enterFriendRoomRes) {
     const { friendHomeCoin } =  enterFriendRoomRes.data;
     if (friendHomeCoin > 0) {
