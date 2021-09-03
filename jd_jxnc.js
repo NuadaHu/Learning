@@ -270,12 +270,14 @@ function tokenFormat() {
 // 处理当前账号助力码
 function shareCodesFormat() {
   return new Promise(async resolve => {
-    console.log(`第${$.index}个京东账号的助力码:::${jxncShareCodeArr[$.index - 1]}`)
+    // console.log(`第${$.index}个京东账号的助力码:::${jxncShareCodeArr[$.index - 1]}`)
     if (jxncShareCodeArr[$.index - 1]) {
       currentShareCode = jxncShareCodeArr[$.index - 1].split('@');
       currentShareCode.push(...(shareCode.split('@')));
     } else {
       $.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码`)
+      console.log(shareCode)
+      return;
       currentShareCode = shareCode.split('@');
     }
     $.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(currentShareCode)}`)
