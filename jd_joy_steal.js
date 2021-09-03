@@ -119,8 +119,7 @@ async function jdJoySteal() {
       await $.wait(2000)
       await getCoinChanges();//查询喂食好友和偷好友积分是否已达上限
       if ($.getFriendsData && $.getFriendsData.success) {
-        console.log($.getFriendsData.datas)
-        if (!$.getFriendsData.datas) {
+        if (!$.getFriendsData.datas || $.getFriendsData.datas.length === 0) {
           console.log(`\n京东返回宠汪汪好友列表数据为空\n`)
           return
         }
@@ -397,7 +396,7 @@ function getFriends(currentPage = '1') {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
           throw new Error(err);
         } else {
-          // console.log('JSON.parse(data)', JSON.parse(data))
+          console.log('JSON.parse(data)', JSON.parse(data))
           if (data) {
             $.getFriendsData = JSON.parse(data);
           } else {
