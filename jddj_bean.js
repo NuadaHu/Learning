@@ -110,6 +110,7 @@ async function taskList() {
 
 
 async function runTask(tslist) {
+    console.log(tslist)
     return new Promise(async resolve => {
         try {
             for (let index = 0; index < tslist.result.taskInfoList.length; index++) {
