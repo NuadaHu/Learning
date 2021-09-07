@@ -26,7 +26,7 @@
 
 */
 const $ = new Env('会员“食”力派');
-const Faker=require('./utils/sign_graphics_validate.js')
+const Faker=require('./utils/JDSignValidator.js')
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
