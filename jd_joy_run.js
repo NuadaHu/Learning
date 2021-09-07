@@ -17,25 +17,25 @@ hostname = draw.jdfcloud.com
 
 ===========Surge=================
 [Script]
-宠汪汪邀请助力与赛跑助力 = type=cron,cronexp="15 10 * * *",wake-system=1,timeout=3600,script-path=jd_joy_run.js
-宠汪汪助力更新Token = type=http-response,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code=, requires-body=1, max-size=0, script-path=jd_joy_run.js
-宠汪汪助力获取Token = type=http-request,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId=, max-size=0, script-path=jd_joy_run.js
+宠汪汪邀请助力与赛跑助力 = type=cron,cronexp="15 10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js
+宠汪汪助力更新Token = type=http-response,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code=, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js
+宠汪汪助力获取Token = type=http-request,pattern=^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId=, max-size=0, script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js
 
 ===================Quantumult X=====================
 [task_local]
 # 宠汪汪邀请助力与赛跑助力
-15 10 * * * jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
+15 10 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
 [rewrite_local]
 # 宠汪汪助力更新Token
-^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code= url script-response-body jd_joy_run.js
+^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code= url script-response-body https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js
 # 宠汪汪助力获取Token
-^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= url script-request-header jd_joy_run.js
+^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= url script-request-header https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js
 
 =====================Loon=====================
 [Script]
-cron "15 10 * * *" script-path=jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力
-http-response ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code= script-path=jd_joy_run.js, requires-body=true, timeout=10, tag=宠汪汪助力更新Token
-http-request ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= script-path=jd_joy_run.js, timeout=3600, tag=宠汪汪助力获取Token
+cron "15 10 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力
+http-response ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/addUser\?code= script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js, requires-body=true, timeout=10, tag=宠汪汪助力更新Token
+http-request ^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId= script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_joy_run.js, timeout=3600, tag=宠汪汪助力获取Token
 */
 const $ = new Env('宠汪汪赛跑');
 const zooFaker = require('./utils/JDJRValidator_Pure');
@@ -256,44 +256,28 @@ async function getToken() {
     $.done()
   }
 }
-function getNetToken(url) {
-    return new Promise(async resolve => {
-        const options = {
-            "url": `${url}`,
-            "timeout": 10000,
-            "headers": {
-                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-            }
-        };
-        if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
-            const tunnel = require("tunnel");
-            const agent = {
-                https: tunnel.httpsOverHttp({
-                    proxy: {
-                        host: process.env.TG_PROXY_HOST,
-                        port: process.env.TG_PROXY_PORT * 1
-                    }
-                })
-            }
-            Object.assign(options, { agent })
+function readToken() {
+  return new Promise(resolve => {
+    $.get({url: `https://cdn.nz.lu/gettoken`,headers:{'Host':'jdsign.cf'}, timeout: 15000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            // if ($.isNode() && !run_pins[0].includes("被折叠的记忆33")) resolve(null);
+            console.log(`\n\n搬运我脚本修改我内置互助码的，请不要盗取我服务器token\n\n\n`)
+            data = JSON.parse(data);
+          }
         }
-        $.get(options, async (err, resp, data) => {
-            try {
-                if (err) {
-                } else {
-                    if (data) data = JSON.parse(data)
-                }
-            } catch (e) {
-                // $.logErr(e, resp)
-            } finally {
-                resolve(data || []);
-            }
-        })
-        await $.wait(10000)
-        resolve();
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
     })
+  })
 }
-
 
 function showMsg() {
   return new Promise(async resolve => {
