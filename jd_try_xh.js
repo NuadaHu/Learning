@@ -1,6 +1,6 @@
 /*
  * 由ZCY01二次修改：脚本默认不运行
- * 由 X1a0He 修复：依然保持脚本默认不运行
+ * 由 X1a0He 修复
  * 如需运行请自行添加环境变量：JD_TRY，值填 true 即可运行
  * 脚本兼容: Node.js
  * X1a0He留
@@ -10,7 +10,6 @@
  * 请提前取关至少250个商店确保京东试用脚本正常运行
  *
  * @Address: https://github.com/X1a0He/jd_scripts_fixed/blob/main/jd_try_xh.js
- * @LastEditTime: 2021-09-08 17:20:00
  * @LastEditors: X1a0He
  */
 const $ = new Env('京东试用')
@@ -22,8 +21,12 @@ let size = 1;
 $.isPush = true;
 $.isLimit = false;
 $.isForbidden = false;
+$.wrong = false;
 $.giveupNum = 0;
 $.successNum = 0;
+$.completeNum = 0;
+$.getNum = 0;
+$.try = true;
 //下面很重要，遇到问题请把下面注释看一遍再来问
 let args_xh = {
     /*
@@ -44,14 +47,14 @@ let args_xh = {
      * 下面有一个function是可以获取所有tabId的，名为try_tabList
      * 2021-09-06 12:32:00时获取到 tabId 16个
      * 可设置环境变量：JD_TRY_TABID，用@进行分隔
-     * 默认为 1 到 5
+     * 默认为 1 到 10
      * */
-    tabId: process.env.JD_TRY_TABID && process.env.JD_TRY_TABID.split('@').map(Number) || [1, 2, 3, 4, 5],
+    tabId: process.env.JD_TRY_TABID && process.env.JD_TRY_TABID.split('@').map(Number) || [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     /*
      * 试用商品标题过滤，黑名单，当标题存在关键词时，则不加入试用组
      * 可设置环境变量：JD_TRY_TITLEFILTERS，关键词与关键词之间用@分隔
      * */
-    titleFilters: process.env.JD_TRY_TITLEFILTERS && process.env.JD_TRY_TITLEFILTERS.split('@') || ["幼儿园", "教程", "英语", "辅导", "培训", "孩子", "小学"],
+    titleFilters: process.env.JD_TRY_TITLEFILTERS && process.env.JD_TRY_TITLEFILTERS.split('@') || ["幼儿园", "教程", "英语", "辅导", "培训", "孩子", "小学", "成人用品", "套套", "情趣", "自慰", "阳具", "飞机杯", "男士用品", "女士用品", "内衣", "高潮", "避孕"],
     /*
      * 试用价格(中了要花多少钱)，高于这个价格都不会试用，小于等于才会试用，意思就是
      * A商品原价49元，现在试用价1元，如果下面设置为10，那A商品将会被添加到待提交试用组，因为1 < 10
@@ -74,7 +77,7 @@ let args_xh = {
     /*
      * 商品试用之间和获取商品之间的间隔, 单位：毫秒(1秒=1000毫秒)
      * 可设置环境变量：JD_TRY_APPLYINTERVAL
-     * 默认为3000，也就是3秒
+     * 默认为5000，也就是5秒
      * */
     applyInterval: process.env.JD_TRY_APPLYINTERVAL * 1 || 5000,
     /*
@@ -83,7 +86,7 @@ let args_xh = {
      * 例如是18件，将会进行第三次获取，直到过滤完毕后为20件才会停止，不建议设置太大
      * 可设置环境变量：JD_TRY_MAXLENGTH
      * */
-    maxLength: process.env.JD_TRY_MAXLENGTH * 1 || 50,
+    maxLength: process.env.JD_TRY_MAXLENGTH * 1 || 100,
     /*
      * 过滤种草官类试用，某些试用商品是专属官专属，考虑到部分账号不是种草官账号
      * 例如A商品是种草官专属试用商品，下面设置为true，而你又不是种草官账号，那A商品将不会被添加到待提交试用组
@@ -99,9 +102,9 @@ let args_xh = {
      *
      * 不打印的优点：简短日志长度
      * 不打印的缺点：无法清晰知道每个商品为什么会被过滤，哪个商品被添加到了待提交试用组
-     * 可设置环境变量：JD_TRY_PLOG，默认为true
+     * 可设置环境变量：JD_TRY_PLOG，默认为false
      * */
-    printLog: process.env.JD_TRY_PLOG || true,
+    printLog: process.env.JD_TRY_PLOG || false,
     /*
      * 白名单
      * 可通过环境变量控制：JD_TRY_WHITELIST，默认为false
@@ -116,9 +119,8 @@ let args_xh = {
 //上面很重要，遇到问题请把上面注释看一遍再来问
 !(async() => {
     console.log('X1a0He留：遇到问题请把脚本内的注释看一遍再来问，谢谢')
-    console.log(`本脚本默认不运行，也不建议运行\n如需运行请自行添加环境变量：JD_TRY，值填：true\n`)
-    await $.wait(500)
-    if(process.env.JD_TRY && process.env.JD_TRY === 'true'){
+    // await $.wait(500)
+    // if(process.env.JD_TRY && process.env.JD_TRY === 'true'){
         await requireConfig()
         if(!$.cookiesArr[0]){
             $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
@@ -154,8 +156,9 @@ let args_xh = {
                 // await try_tabList();
                 // return;
                 $.isForbidden = false
+                $.wrong = false
                 size = 1
-                while(trialActivityIdList.length < args_xh.maxLength && $.isForbidden === false){
+                while(trialActivityIdList.length < args_xh.maxLength && $.isForbidden === false && $.wrong === false){
                     if($.nowTabIdIndex === args_xh.tabId.length){
                         console.log(`tabId组已遍历完毕，不在获取商品\n`);
                         break;
@@ -183,6 +186,8 @@ let args_xh = {
                     // await try_MyTrials(1, 1)    //申请中的商品
                     $.giveupNum = 0;
                     $.successNum = 0;
+                    $.getNum = 0;
+                    $.completeNum = 0;
                     await try_MyTrials(1, 2)    //申请成功的商品
                     // await try_MyTrials(1, 3)    //申请失败的商品
                     await showMsg()
@@ -192,9 +197,9 @@ let args_xh = {
         if($.isForbidden === false && $.isLimit === false){
             await $.notify.sendNotify(`${$.name}`, notifyMsg);
         }
-    } else {
-        console.log(`\n您未设置运行【京东试用】脚本，结束运行！\n`)
-    }
+    // } else {
+    //     console.log(`\n您未设置运行【京东试用】脚本，结束运行！\n`)
+    // }
 })().catch((e) => {
     console.error(`❗️ ${$.name} 运行错误！\n${e}`)
 }).finally(() => $.done())
@@ -239,12 +244,6 @@ function requireConfig(){
         console.log(`whiteList: ${typeof args_xh.whiteList}, ${args_xh.whiteList}`)
         console.log(`whiteListKeywords: ${typeof args_xh.whiteListKeywords}, ${args_xh.whiteListKeywords}`)
         console.log('=======================')
-        // for(const key in args_xh){
-        //     if(typeof args_xh[key] == 'string'){
-        //         args_xh[key] = Number(args_xh[key])
-        //     }
-        // }
-        // console.debug(args_xh)
         resolve()
     })
 }
@@ -289,6 +288,7 @@ function try_feedsList(tabId, page){
     return new Promise((resolve, reject) => {
         if(page > $.totalPages){
             console.log("请求页数错误")
+            $.wrong = true;
             return;
         } else if($.nowTabIdIndex > args_xh.tabId.length){
             console.log(`不再获取商品，边缘越界，提交试用中...`)
@@ -404,7 +404,7 @@ function try_feedsList(tabId, page){
 
 function try_apply(title, activityId){
     return new Promise((resolve, reject) => {
-        console.log(`申请试用商品中...`)
+        console.log(`申请试用商品提交中...`)
         args_xh.printLog ? console.log(`商品：${title}`) : ''
         args_xh.printLog ? console.log(`id为：${activityId}`) : ''
         const body = JSON.stringify({
@@ -426,7 +426,7 @@ function try_apply(title, activityId){
                     $.totalTry++
                     data = JSON.parse(data)
                     if(data.success && data.code === "1"){  // 申请成功
-                        console.log(data.message)
+                        console.log("申请提交成功")
                         $.totalSuccess++
                     } else if(data.code === "-106"){
                         console.log(data.message)   // 未在申请时间内！
@@ -486,36 +486,15 @@ function try_MyTrials(page, selected){
                             if(data.success && data.data){
                                 for(let item of data.data.list){
                                     item.status === 4 || item.text.text.includes('已放弃') ? $.giveupNum += 1 : ''
-                                    item.text.text.includes('试用资格将保留') ? $.successNum += 1 : ''
+                                    item.status === 2 && item.text.text.includes('试用资格将保留') ? $.successNum += 1 : ''
+                                    item.status === 2 && item.text.text.includes('请收货后尽快提交报告') ? $.getNum += 1 : ''
+                                    item.status === 2 && item.text.text.includes('试用已完成') ? $.completeNum += 1 : ''
                                 }
-                                console.log(`待领取 | 已放弃：${$.successNum} | ${$.giveupNum}`)
+                                console.log(`待领取 | 已领取 | 已完成 | 已放弃：${$.successNum} | ${$.getNum} | ${$.completeNum} | ${$.giveupNum}`)
                             } else {
                                 console.log(`获得成功列表失败: ${data.message}`)
                             }
                         }
-                        // if(data.data.list.length > 0){
-                        //     for(let item of data.data.list){
-                        //         console.log(`申请时间：${new Date(parseInt(item.applyTime)).toLocaleString()}`)
-                        //         console.log(`申请商品：${item.trialName}`)
-                        //         console.log(`当前状态：${item.text.text}`)
-                        //         console.log(`剩余时间：${remaining(item.leftTime)}`)
-                        //         console.log()
-                        //     }
-                        // } else {
-                        //     switch(selected){
-                        //         case 1:
-                        //             console.log('无已申请的商品\n')
-                        //             break;
-                        //         case 2:
-                        //             console.log('无申请成功的商品\n')
-                        //             break;
-                        //         case 3:
-                        //             console.log('无申请失败的商品\n')
-                        //             break;
-                        //         default:
-                        //             console.log('selected错误')
-                        //     }
-                        // }
                     } else {
                         console.error(`ERROR:try_MyTrials`)
                     }
@@ -550,11 +529,15 @@ async function showMsg(){
     if($.totalSuccess !== 0 && $.totalTry !== 0){
         message += `🎉 本次提交申请：${$.totalSuccess}/${$.totalTry}个商品🛒\n`;
         message += `🎉 ${$.successNum}个商品待领取\n`;
-        message += `🗑 ${$.giveupNum}个商品已放弃\n`;
+        message += `🎉 ${$.getNum}个商品已领取\n`;
+        message += `🎉 ${$.completeNum}个商品已完成\n`;
+        message += `🗑 ${$.giveupNum}个商品已放弃\n\n`;
     } else {
         message += `⚠️ 本次执行没有申请试用商品\n`;
         message += `🎉 ${$.successNum}个商品待领取\n`;
-        message += `🗑 ${$.giveupNum}个商品已放弃\n`;
+        message += `🎉 ${$.getNum}个商品已领取\n`;
+        message += `🎉 ${$.completeNum}个商品已完成\n`;
+        message += `🗑 ${$.giveupNum}个商品已放弃\n\n`;
     }
     if(!args_xh.jdNotify || args_xh.jdNotify === 'false'){
         $.msg($.name, ``, message, {

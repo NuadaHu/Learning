@@ -25,7 +25,7 @@ const $ = new Env('特物Z|万物皆可国创');
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const randomCount = $.isNode() ? 20 : 5;
-const Opencardtw= $.isNode() ? (process.env.Opencardtw?process.env.Opencardtw:false):false
+const Opencardtw = $.isNode() ? (process.env.Opencardtw?process.env.Opencardtw:false):false
 const notify = $.isNode() ? require('./sendNotify') : '';
 let merge = {}
 let codeList = []
@@ -89,7 +89,7 @@ const JD_API_HOST = `https://api.m.jd.com/client.action`;
                         }else{ 
                         if(Opencardtw){  //领取开卡奖励
                             await doTask("secondfloor", $.enpid, task.encryptAssignmentId, task.ext.brandMemberList[0].itemId, 7)
-                        }else{console.log("默认不执行开卡任务") }
+                        }else{console.log("默认不执行开卡任务，如需执行设置环境变量：Opencardtw=true") }
                         }
                     }
                 }
