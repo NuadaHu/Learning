@@ -49,7 +49,7 @@ const JD_API_HOST = "https://api.m.jd.com/";
       $.index = i + 1;
       message = "";
       console.log(`\n******开始【京东账号${$.index}】${$.UserName}*********\n`);
-      await shareCodesFormat()
+      // await shareCodesFormat()
       await main()
       await showMsg()
     }
