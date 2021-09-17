@@ -258,14 +258,19 @@ function interact_template_getLotteryResult() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            let userAwardsCacheDto = data.data.result.userAwardsCacheDto
-            if (userAwardsCacheDto && userAwardsCacheDto.type === 2) {
-              console.log(`抽中：${userAwardsCacheDto.jBeanAwardVo.quantity}${userAwardsCacheDto.jBeanAwardVo.ext}`)
-            } else if (userAwardsCacheDto && userAwardsCacheDto.type === 0) {
-              console.log(`很遗憾未中奖~`)
-            } else {
-              console.log(JSON.stringify(data))
+            if (data.data.hasOwnProperty("result")) {
+                let userAwardsCacheDto = data.data.result.userAwardsCacheDto
+                if (userAwardsCacheDto && userAwardsCacheDto.type === 2) {
+                  console.log(`抽中：${userAwardsCacheDto.jBeanAwardVo.quantity}${userAwardsCacheDto.jBeanAwardVo.ext}`)
+                } else if (userAwardsCacheDto && userAwardsCacheDto.type === 0) {
+                  console.log(`很遗憾未中奖~`)
+                } else {
+                  console.log(JSON.stringify(data))
+                }
+            }else {
+                console.log(JSON.stringify(data));
             }
+            
           }
         }
       } catch (e) {
