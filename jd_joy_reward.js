@@ -146,17 +146,15 @@ async function joyReward() {
         // }
         let giftSaleInfos = 'beanConfigs0';
         const time = (new Date().getUTCHours() + 8) % 24;
-        if (time >= 23 && time < 7) {
+        if (time >= 23 || time < 7) {
           giftSaleInfos = 'beanConfigs0';
           $.Num = 0
           rewardNum = 500
-        }
-        if (time >= 7 && time < 15) {
+        }else if (time >= 7 && time < 15) {
           giftSaleInfos = 'beanConfigs8';
           $.Num = 8
           rewardNum = 500
-        }
-        if (time >= 15 && time < 23) {
+        }else if (time >= 15 && time < 23) {
           giftSaleInfos = 'beanConfigs16';
           $.Num = 16
           rewardNum = 20
@@ -245,7 +243,7 @@ async function joyReward() {
 }
 function getExchangeRewards() {
   let opt = {
-    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=RtKLB8euDo7KwsO0",
+    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5&invokeKey=JL1VTNRadM68cIMQ",
     method: "GET",
     data: {},
     credentials: "include",
