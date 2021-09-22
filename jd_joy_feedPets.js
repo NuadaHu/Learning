@@ -26,7 +26,7 @@ $.get = zooFaker.injectToRequest($.get.bind($));
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const invoke_key = "RtKLB8euDo7KwsO0";
+const invoke_key = "JL1VTNRadM68cIMQ";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -114,7 +114,7 @@ function feedPets(feedNum) {
     }
     const url = "https:"+ taroRequest(opt)['url'] + $.validate;
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
+    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     const options = {
       url,
       headers: {
@@ -187,7 +187,7 @@ function ThreeMeals() {
     }
     const url = "https:"+ taroRequest(opt)['url'] + $.validate;
     let lkt = new Date().getTime()
-    let lks = $.md5('' + 'RtKLB8euDo7KwsO0' + lkt).toString()
+    let lks = $.md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     const options = {
       url,
       headers: {
