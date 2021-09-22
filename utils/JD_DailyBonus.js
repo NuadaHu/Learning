@@ -2,7 +2,7 @@
 
 京东多合一签到脚本
 
-更新时间: 2021.08.15 19:00 v2.1.0
+更新时间: 2021.08.15 19:00 v2.1.1
 有效接口: 20+
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 电报频道: @NobyDa 
@@ -39,7 +39,7 @@ var KEY = '';
 
 const Faker = require('./JDSignValidator')
 const zooFaker = require('./JDJRValidator_Pure')
-let fp = '', eid = ''
+let fp = '', eid = '', md5
 
 $nobyda.get = zooFaker.injectToRequest($nobyda.get.bind($nobyda), 'channelSign')
 $nobyda.post = zooFaker.injectToRequest($nobyda.post.bind($nobyda), 'channelSign')
@@ -83,6 +83,8 @@ async function all(cookie, jrBody) {
         // JingRongDoll(stop, 'XJDouble', '金融现金-双签', 'F68B2C3E71', '', '', '', 'xianjin') //京东金融 现金双签
       ]);
       await Promise.all([
+        JDUserSignPre(stop, 'JDStory', '京东失眠-补贴', 'UcyW9Znv3xeyixW1gofhW2DAoz4'), //失眠补贴
+        JDUserSignPre(stop, 'JDPhone', '京东手机-小时', '4Vh5ybVr98nfJgros5GwvXbmTUpg'), //手机小时达
         JDUserSignPre(stop, 'JDEsports', '京东商城-电竞', 'CHdHQhA5AYDXXQN9FLt3QUAPRsB'), //京东电竞
         // JDUserSignPre(stop, 'JDClothing', '京东商城-服饰', '4RBT3H9jmgYg1k2kBnHF8NAHm7m8'), //京东服饰
         JDUserSignPre(stop, 'JDSuitcase', '京东商城-箱包', 'ZrH7gGAcEkY2gH8wXqyAPoQgk6t'), //京东箱包馆
@@ -96,6 +98,7 @@ async function all(cookie, jrBody) {
         // JDUserSignPre(stop, 'JDMakeup', '京东商城-美妆', '2smCxzLNuam5L14zNJHYu43ovbAP'), //京东美妆馆
         JDUserSignPre(stop, 'JDVege', '京东商城-菜场', 'Wcu2LVCFMkBP3HraRvb7pgSpt64'), //京东菜场
         // JDUserSignPre(stop, 'JDLive', '京东智能-生活', 'KcfFqWvhb5hHtaQkS4SD1UU6RcQ') //京东智能生活
+        JDUserSignPre(stop, 'JDPlus', '京东商城-PLUS', '3bhgbFe5HZcFCjEZf2jzp3umx4ZR'), //京东PLUS
         JDUserSignPre(stop, 'JDStore', '京东超市', 'QPwDgLSops2bcsYqQ57hENGrjgj') //京东超市
       ]);
       await JingRongDoll(stop, 'JDDouble', '金融京豆-双签', 'F68B2C3E71', '', '', '', 'jingdou'); //京东金融 京豆双签
@@ -118,6 +121,8 @@ async function all(cookie, jrBody) {
       // await JingRongDoll(Wait(stop), 'JRDoll', '京东金融-签壹', '4D25A6F482');
       // await JingRongDoll(Wait(stop), 'XJDouble', '金融现金-双签', 'F68B2C3E71', '', '', '', 'xianjin'); //京东金融 现金双签
       await JingRongDoll(Wait(stop), 'JTDouble', '京东金贴-双签', '1DF13833F7'); //京东金融 金贴双签
+      await JDUserSignPre(Wait(stop), 'JDStory', '京东失眠-补贴', 'UcyW9Znv3xeyixW1gofhW2DAoz4'); //失眠补贴
+      await JDUserSignPre(Wait(stop), 'JDPhone', '京东手机-小时', '4Vh5ybVr98nfJgros5GwvXbmTUpg'); //手机小时达
       await JDUserSignPre(Wait(stop), 'JDCard', '京东商城-卡包', '7e5fRnma6RBATV9wNrGXJwihzcD'); //京东卡包
       await JDUserSignPre(Wait(stop), 'JDUndies', '京东商城-内衣', '4PgpL1xqPSW1sVXCJ3xopDbB1f69'); //京东内衣馆
       await JDUserSignPre(Wait(stop), 'JDEsports', '京东商城-电竞', 'CHdHQhA5AYDXXQN9FLt3QUAPRsB'); //京东电竞
@@ -135,6 +140,7 @@ async function all(cookie, jrBody) {
       await JDUserSignPre(Wait(stop), 'JDShand', '京东拍拍-二手', '3S28janPLYmtFxypu37AYAGgivfp'); //京东拍拍二手
       // await JDUserSignPre(Wait(stop), 'JDMakeup', '京东商城-美妆', '2smCxzLNuam5L14zNJHYu43ovbAP'); //京东美妆馆
       await JDUserSignPre(Wait(stop), 'JDVege', '京东商城-菜场', 'Wcu2LVCFMkBP3HraRvb7pgSpt64'); //京东菜场
+      await JDUserSignPre(Wait(stop), 'JDPlus', '京东商城-PLUS', '3bhgbFe5HZcFCjEZf2jzp3umx4ZR'); //京东PLUS
       await JDUserSignPre(Wait(stop), 'JDStore', '京东超市', 'QPwDgLSops2bcsYqQ57hENGrjgj'); //京东超市
       await JDUserSignPre(Wait(stop), 'JDaccompany', '京东商城-陪伴', 'kPM3Xedz1PBiGQjY4ZYGmeVvrts'); //京东陪伴
       // await JDUserSignPre(Wait(stop), 'JDLive', '京东智能-生活', 'KcfFqWvhb5hHtaQkS4SD1UU6RcQ'); //京东智能生活
@@ -202,7 +208,7 @@ function notify() {
       const Name = DualKey || OtherKey.length > 1 ? `【签到号${cnNum[$nobyda.num]||$nobyda.num}】:  ${DName}\n` : ``
       const disables = $nobyda.read("JD_DailyBonusDisables")
       const amount = disables ? disables.split(",").length : 0
-      const disa = !notify || amount ? `【温馨提示】:  检测到${$nobyda.disable?`上次执行意外崩溃, `:``}已禁用${notify?`${amount}个`:`所有`}接口, 如需开启请前往BoxJs或查看脚本内第114行注释.\n` : ``
+      const disa = !notify || amount ? `【温馨提示】:  检测到${$nobyda.disable?`上次执行意外崩溃, `:``}已禁用${notify?`${amount}个`:`所有`}接口, 如需开启请前往BoxJs或查看脚本内第118行注释.\n` : ``
       $nobyda.notify("", "", Name + one + two + three + four + five + disa + notify, {
         'media-url': $nobyda.headUrl || 'https://cdn.jsdelivr.net/gh/NobyDa/mini@master/Color/jd.png'
       });
@@ -744,10 +750,14 @@ function JDUserSign1(s, key, title, body) {
 
 async function JDUserSign2(s, key, title, tid) {
   await new Promise(resolve => {
+    let lkt = new Date().getTime()
+    let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     $nobyda.get({
       url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=JL1VTNRadM68cIMQ`,
       headers: {
-        Cookie: KEY
+        Cookie: KEY,
+        'lkt': lkt,
+        'lks': lks
       }
     }, async function(error, response, data) {
       try {
@@ -756,7 +766,7 @@ async function JDUserSign2(s, key, title, tid) {
           if (data.success && data.data) {
             data = data.data
             if (!data.hasSign) {
-              let ss = await Faker.getBody('', `https://prodev.m.jd.com/mall/active/${tid}/index.html`)
+              let ss = await Faker.getBody(`https://prodev.m.jd.com/mall/active/${tid}/index.html`)
               fp = ss.fp
               await getEid(ss, title)
             }
@@ -772,10 +782,14 @@ async function JDUserSign2(s, key, title, tid) {
   });
   return new Promise(resolve => {
     setTimeout(() => {
+      let lkt = new Date().getTime()
+      let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
       const JDUrl = {
         url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=JL1VTNRadM68cIMQ',
         headers: {
-          Cookie: KEY
+          Cookie: KEY,
+          'lkt': lkt,
+          'lks': lks
         },
         body: `turnTableId=${tid}&fp=${fp}&eid=${eid}`
       };
@@ -1608,6 +1622,7 @@ function checkFormat(value) { //check format and delete duplicates
     k = ((i.cookie || '').match(/(pt_key|pt_pin)=.+?;/g) || []).sort();
     if (k.length == 2) {
       if ((n = k[1]) && !c[n]) {
+        i.userName = i.userName ? i.userName : decodeURIComponent(n.split(/pt_pin=(.+?);/)[1]);
         i.cookie = k.join('')
         if (i.jrBody && !i.jrBody.includes('reqData=')) {
           console.log(`异常钢镚Body已过滤: ${i.jrBody}`)
@@ -1650,7 +1665,7 @@ function CookieUpdate(oldValue, newValue, path = 'cookie') {
     item = total.length;
   }
   return {
-    total,
+    total: checkFormat(total),
     type, //-1: same, 1: add, 2:update
     item,
     name: decodeURIComponent(name)
