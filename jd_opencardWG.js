@@ -1,9 +1,25 @@
 /*
-女神狂欢 大牌盛典
-9-22 ~ 9-30
-https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s
+ 女神狂欢 大牌盛典 [jd_opencardWG.js]
+ 邀请一人20豆 被邀请也有20豆(有可能没有豆
+ 开卡 抽奖可能获得30京豆(有可能有抽到空气💨
+ 关注10京豆 (有可能是空气💨
+ 第一个账号助力作者 其他依次助力CK1
+ 入口：(https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758)
+ IOS等用户直接用NobyDa的jd cookie
+ ============Quantumultx===============
+ [task_local]
+ #女神狂欢 大牌盛典
+ 40 5,21 * 9 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, tag=女神狂欢 大牌盛典, enabled=true
+ ================Loon==============
+ [Script]
+ cron "40 5,21 * 9 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js,tag=女神狂欢 大牌盛典
+ ===============Surge=================
+ 女神狂欢 大牌盛典 = type=cron,cronexp="40 5,21 * 9 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js
+ ============小火箭=========
+ 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, cronexpr="40 5,21 * 9 *", timeout=3600, enable=true
+
 */
-const $ = new Env("女神狂欢 大牌盛典");
+const $ = new Env('女神狂欢 大牌盛典 9.22-30');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
@@ -27,6 +43,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
+    $.log(`9.22-9.30 女神狂欢 大牌盛典 入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758`);
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i]
@@ -45,20 +62,12 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = [
-                'eb1bf557cb804b8f939dd48e80e7b718',
-                'eb20e503cce0401988fca094a9df1166',
-
-            ]
             $.bean = 0;
-            $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
-            $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-            // $.authorCode = authorCodeList[random(0, authorCodeList.length)]
-            $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
+            $.authorCode = ownCode ? ownCode : "90ba0f4937e74181a134a75acfad5758"
             $.authorNum = `${random(1000000, 9999999)}`
-            $.randomCode = random(1000000, 9999999)
             $.activityId = 'fids98g8f798sd787f7gf0g9d8sd9f8s'
             $.activityShopId = '1000193685'
+            $.attrTouXiang = 'https://img10.360buyimg.com/imgzone/jfs/t1/7020/27/13511/6142/5c5138d8E4df2e764/5a1216a3a5043c5d.png'
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await marry();
             await $.wait(3000)
@@ -71,7 +80,7 @@ if ($.isNode()) {
         if ($.isNode()) {
             await notify.sendNotify($.name, message, '', `\n`);
         } else {
-            $.msg($.name, '有点儿收获', message);
+            $.msg($.name, '', message);
         }
     }
 })()
@@ -84,7 +93,6 @@ if ($.isNode()) {
 
 
 async function marry() {
-    $.log('那就开始吧。')
     $.token = null;
     $.secretPin = null;
     $.openCardActivityId = null
@@ -93,13 +101,13 @@ async function marry() {
     if ($.token) {
         await getMyPing();
         if ($.secretPin) {
-            console.log("去助力 -> "+$.authorCode)
+            if ($.index==1) $.authorCode = "90ba0f4937e74181a134a75acfad5758"
             await task('common/accessLogWithAD', `venderId=${$.activityShopId}&code=99&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
             await task('wxActionCommon/getUserInfo', `pin=${encodeURIComponent($.secretPin)}`, 1)
             if ($.index === 1) {
-                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`, 0, 1)
+                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=${$.attrTouXiang}&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`, 0, 1)
             } else {
-                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`)
+                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=${$.attrTouXiang}&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`)
             }
             await task('dz/openCard/checkOpenCard', `activityId=${$.activityId}&actorUuid=${$.actorUuid}&shareUuid=${$.authorCode}&pin=${encodeURIComponent($.secretPin)}`)
             $.log("->关注店铺")
@@ -107,13 +115,16 @@ async function marry() {
                 if (!$.shopTask.allStatus) {
                     await task('dz/openCard/followShop', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&actorUuid=${encodeURIComponent($.actorUuid)}&taskType=23&taskValue=1000002520`)
                 } else {
-                    $.log("    >>>已经关注过了\n")
-                    return
+                    $.log(" 已经关注过了")
+                    if ($.openCardStatus.openCard2==true) {
+                        $.log('开卡任务已完成\n');
+                        return;
+                    }
                 }
             } else {
                 $.log("没有获取到对应的任务。\n")
             }
-            $.log("->->->> 加入店铺会员")
+            $.log("加入店铺会员")
             if ($.openCardStatus) {
                 for (let i = 0; i < ($.openCardStatus.cardList1.length + $.openCardStatus.cardList2.length); i++) {
                     $.log("模拟上报访问记录")
@@ -125,17 +136,17 @@ async function marry() {
                 t2TaskList = []
                 $.openCardStatus.cardList2.filter((x) => { if (x.status === 0) { t2TaskList.push(x) } })
                 if (t1TaskList.length < 1) {
-                    console.log("    >>>已经完成入会任务")
+                    console.log(" 已经完成入会任务")
 
                 } else {
                     for (const vo of t1TaskList) {
-                        $.log(`    >>>去加入${vo.name}`)
+                        $.log(` 去加入${vo.name}`)
                         await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" }, vo.value)
                         await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
                         await $.wait(2000)
                     }
                     for (const vo of t2TaskList) {
-                        $.log(`    >>>${vo.name}`)
+                        $.log(` ${vo.name}`)
                         await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" })
                         await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
                         await $.wait(2000)
@@ -171,6 +182,9 @@ function task(function_id, body, isCommon = 0, own = 0) {
                         if (data.result) {
                             switch (function_id) {
                                 case 'wxActionCommon/getUserInfo':
+                                    if (data.data.yunMidImageUrl && data.data.yunMidImageUrl.length) {
+                                        $.attrTouXiang = data.data.yunMidImageUrl
+                                    }
                                     break;
                                 case 'dz/openCard/activityContent':
                                     if (!data.data.hasEnd) {
@@ -253,7 +267,7 @@ function getShopOpenCardInfo(body, venderId) {
             Accept: '*/*',
             Connection: 'keep-alive',
             Cookie: cookie,
-            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')};network/wifi;ADID/${getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1)};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             'Accept-Language': 'zh-cn',
             Referer: `https://shopmember.m.jd.com/shopcard/?venderId=${venderId}}&channel=801&returnUrl=${encodeURIComponent($.activityUrl)}`,
             'Accept-Encoding': 'gzip, deflate, br'
@@ -289,7 +303,7 @@ function bindWithVender(body, venderId) {
             Accept: '*/*',
             Connection: 'keep-alive',
             Cookie: cookie,
-            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')};network/wifi;ADID/${getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1)};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             'Accept-Language': 'zh-cn',
             Referer: `https://shopmember.m.jd.com/shopcard/?venderId=${venderId}}&channel=401&returnUrl=${encodeURIComponent($.activityUrl)}`,
             'Accept-Encoding': 'gzip, deflate, br'
@@ -333,7 +347,7 @@ function taskUrl(function_id, body, isCommon) {
             'Accept-Encoding': 'gzip, deflate, br',
             'Content-Type': 'application/x-www-form-urlencoded',
             Origin: 'https://lzdz1-isv.isvjcloud.com',
-            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')};network/wifi;ADID/${getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1)};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             Connection: 'keep-alive',
             Referer: $.activityUrl,
             Cookie: cookie
@@ -354,7 +368,7 @@ function getMyPing() {
             'Accept-Encoding': 'gzip, deflate, br',
             'Content-Type': 'application/x-www-form-urlencoded',
             Origin: 'https://lzdz1-isv.isvjcloud.com',
-            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+            'User-Agent': `jdapp;iPhone;9.5.4;13.6;${getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')};network/wifi;ADID/${getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1)};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             Connection: 'keep-alive',
             Referer: $.activityUrl,
             Cookie: cookie,
@@ -394,7 +408,6 @@ function getMyPing() {
                     if (data) {
                         data = JSON.parse(data)
                         if (data.result) {
-                            $.log(`你好：${data.data.nickname}`)
                             $.pin = data.data.nickname;
                             $.secretPin = data.data.secretPin;
                             cookie = `${cookie};AUTH_C_USER=${data.data.secretPin}`
