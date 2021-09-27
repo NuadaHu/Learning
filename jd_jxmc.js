@@ -34,6 +34,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JXUserAgent =  $.isNode() ? (process.env.JX_USER_AGENT ? process.env.JX_USER_AGENT : ``):``;
 $.inviteCodeList = [];
 $.inviteCodeList_hb = [];
+let flag_hb = true
 let cookiesArr = [];
 $.appId = 10028;
 $.helpCkList = [];
@@ -76,22 +77,24 @@ let token ='';
     await pasture();
     await $.wait(2000);
   }
-  console.log('\n##################开始账号内互助(红包)#################\n');
-  await getShareCode('jxmchb.json')
-  $.inviteCodeList_hb = [...($.inviteCodeList_hb || []), ...($.shareCode || [])]
-  for(let i = 0;i<$.helpCkList.length;i++){
-    $.can_help = true
-    $.cookie = $.helpCkList[i]
-    token = await getJxToken()
-    $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
-    for (let j = 0; j < $.inviteCodeList_hb.length && $.can_help; j++) {
-      $.oneCodeInfo = $.inviteCodeList_hb[j]
-      if($.oneCodeInfo.use === $.UserName){
-        continue
+  if (flag_hb) {
+    console.log('\n##################开始账号内互助(红包)#################\n');
+    await getShareCode('jxmc_hb.json')
+    $.inviteCodeList_hb = [...($.inviteCodeList_hb || []), ...($.shareCode || [])]
+    for(let i = 0;i<$.helpCkList.length;i++){
+      $.can_help = true
+      $.cookie = $.helpCkList[i]
+      token = await getJxToken()
+      $.UserName = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1])
+      for (let j = 0; j < $.inviteCodeList_hb.length && $.can_help; j++) {
+        $.oneCodeInfo = $.inviteCodeList_hb[j]
+        if($.oneCodeInfo.use === $.UserName){
+          continue
+        }
+        console.log(`\n${$.UserName}去助力${$.oneCodeInfo.use},助力码：${$.oneCodeInfo.code}\n`);
+        await takeGetRequest('help_hb');
+        await $.wait(2000);
       }
-      console.log(`\n${$.UserName}去助力${$.oneCodeInfo.use},助力码：${$.oneCodeInfo.code}\n`);
-      await takeGetRequest('help_hb');
-      await $.wait(2000);
     }
   }
   console.log('\n##################开始账号内互助#################\n');
@@ -144,7 +147,7 @@ let token ='';
 function getShareCode(name) {
   return new Promise(resolve => {
     $.get({
-      url: "https://raw.githubusercontent.com/he1pu/params/main/"+name,
+      url: "https://raw.fastgit.org/zero205/updateTeam/main/shareCodes/"+name,
       headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }
@@ -154,7 +157,7 @@ function getShareCode(name) {
           console.log(`${JSON.stringify(err)}`);
           console.log(`${$.name} API请求失败，请检查网路重试`);
         } else {
-          console.log(`优先账号内部互助，有剩余助力次数再帮作者助力`);
+          console.log(`优先账号内部互助，有剩余助力次数再帮【zero205】助力`);
           $.shareCode = JSON.parse(data);
         }
       } catch (e) {
