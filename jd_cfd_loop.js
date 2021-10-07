@@ -35,7 +35,7 @@ $.appId = 10028;
   await requestAlgo();
   await $.wait(1000)
   console.log('\n')
-  while (true) {
+  do {
     count++
     console.log(`============开始第${count}次挂机=============`)
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -59,15 +59,15 @@ $.appId = 10028;
         UAInfo[$.UserName] = UA
       }
     }
-  }
+  } while (count < 25)
 })()
-    .catch((e) => $.logErr(e))
-    .finally(() => $.done());
+  .catch((e) => $.logErr(e))
+  .finally(() => $.done());
 
 async function cfd() {
   try {
     const beginInfo = await getUserInfo();
-    if (beginInfo.LeadInfo.ddwFundTargTm === 0) {
+    if (beginInfo.LeadInfo.dwLeadType === 2) {
       console.log(`还未开通活动，请先开通\n`)
       return
     }
@@ -310,12 +310,12 @@ function taskUrl(function_path, body) {
   };
 }
 function randomString(e) {
-   e = e || 32;
-   let t = "0123456789abcdef", a = t.length, n = "";
-   for (let i = 0; i < e; i++)
-     n += t.charAt(Math.floor(Math.random() * a));
-   return n
- }
+  e = e || 32;
+  let t = "0123456789abcdef", a = t.length, n = "";
+  for (let i = 0; i < e; i++)
+    n += t.charAt(Math.floor(Math.random() * a));
+  return n
+}
 
 function jsonParse(str) {
   if (typeof str == "string") {
