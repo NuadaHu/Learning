@@ -305,7 +305,7 @@ async function getInteractionInfo(type = true) {
               data = await getInteractionInfo(false)
               if (data.result.hasFinalLottery === 0) {
                 let num = 0
-                console.log(data.result.taskPoolInfo.taskRecord)
+                console.log(data)
                 for (let key of Object.keys(data.result.taskPoolInfo.taskRecord)) {
                   let vo = data.result.taskPoolInfo.taskRecord[key]
                   num += vo
