@@ -1,8 +1,5 @@
 /*
 *
-Author：zero205
-Data：2021-09-29
-GitHub：https://github.com/zero205/JD_tencent_scf/tree/main
 
 活动入口：京东金融APP-签到-天天拼图
 
@@ -12,17 +9,7 @@ GitHub：https://github.com/zero205/JD_tencent_scf/tree/main
 ============Quantumultx===============
 [task_local]
 京东金融天天拼图
-20 0,16 * * * https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_ttpt.js, tag=京东金融天天拼图, enabled=true
-
-================Loon==============
-[Script]
-cron "20 0,16 * * *" script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_ttpt.js,tag=京东金融天天拼图
-
-===============Surge=================
-京东金融天天拼图 = type=cron,cronexp="20 0,16 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_ttpt.js
-
-============小火箭============
-京东金融天天拼图 = type=cron,script-path=https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_ttpt.js, cronexpr="20 0,16 * * *", timeout=3600, enable=true
+20 2,11,16 * * * jd_ttpt.js, tag=京东金融天天拼图
 *
 */
 const $ = new Env('天天拼图');

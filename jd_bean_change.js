@@ -1,5 +1,5 @@
 /*
-cron "30 21 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
+cron "10 12,22 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
  */
 
  //详细说明参考 https://github.com/ccwav/QLScript2.
@@ -46,7 +46,7 @@ let IndexGp4 = 0;
 
 let notifySkipList = "";
 let IndexAll = 0;
-let EnableMonth = "false";
+let EnableMonth = "true";
 let isSignError = false;
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -56,6 +56,7 @@ let i = 0;
 let DisableCash = "false";
 let llShowMonth = false;
 let Today = new Date();
+let BEANCHANGE_PERSENT="10"
 let RemainMessage ='\n'+"🔪兑换请尽快处理🔪"+'\n';
 RemainMessage+="⭕提醒:⭕"+'\n';
 RemainMessage+='【极速金币】京东极速版->我的->金币(极速版使用)\n';
@@ -68,8 +69,8 @@ RemainMessage+='【京喜工厂】京喜->我的->京喜工厂,完成是商品�
 RemainMessage+='【其他】京喜红包只能在京喜使用,其他同理';
 
 
-if ($.isNode() && process.env.BEANCHANGE_PERSENT) {
-	intPerSent = parseInt(process.env.BEANCHANGE_PERSENT);
+if ($.isNode() && BEANCHANGE_PERSENT) {
+	intPerSent = parseInt(BEANCHANGE_PERSENT);
 	console.log(`检测到设定了分段通知:` + intPerSent);
 }
 
@@ -98,7 +99,7 @@ if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
 	EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
 }
 
-if (EnableMonth == "true" && Today.getDate() == 1 && Today.getHours() > 17)
+if (EnableMonth == "true" && Today.getHours() > 22)
 	llShowMonth = true;
 
 let userIndex2 = -1;
@@ -458,7 +459,9 @@ async function showMsg() {
 		}
 
 	}
-	
+	if ($.errorMsg)
+		ReturnMessage += `\n【数据报错】获取京豆数据异常!`;
+
 	ReturnMessage += `\n【今日京豆】收${$.todayIncomeBean}豆`;
 
 	if ($.todayOutcomeBean != 0) {

@@ -25,7 +25,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let allMessage = '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let coinToBeans = 1000; //兑换多少数量的京豆（20或者1000），0表示不兑换，默认不兑换京豆，如需兑换把0改成20或者1000，或者'商品名称'(商品名称放到单引号内)即可
+let coinToBeans = $.getdata('coinToBeans') || 20; //兑换多少数量的京豆（20或者1000），0表示不兑换，默认不兑换京豆，如需兑换把0改成20或者1000，或者'商品名称'(商品名称放到单引号内)即可
 let jdNotify = false;//是否开启静默运行，默认false关闭(即:奖品兑换成功后会发出通知提示)
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -148,7 +148,7 @@ async function PrizeIndex() {
       }
       //兑换1000京豆
       if ($.totalBlue > $.blueCost) {
-        for (let j = 0; j <= 10; j++) {
+        for (let j = 0; j <= 20; j++) {
           await smtg_obtainPrize(prizeList[1].prizeId);
           if ($.errBizCodeCount >= 20) break
         }
@@ -216,7 +216,7 @@ async function PrizeIndex() {
               if ($.errBizCodeCount >= 20) break
             }
           } else {
-            for (let j = 0; j <= 10; j++) {
+            for (let j = 0; j <= 20; j++) {
               await smtg_obtainPrize(prizeId);
               if ($.errBizCodeCount >= 20) break
             }
