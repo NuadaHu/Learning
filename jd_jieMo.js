@@ -26,7 +26,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
-$.shareCodes = [];
+let appid = "yX3KNttlA6GbZjHuDz0-WQ", typeid = "44782287613952";
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -61,6 +61,8 @@ if ($.isNode()) {
         continue
       }
       await main()
+      await $.wait(2000)
+      await duty()
     }
   }
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
@@ -163,6 +165,187 @@ function apSignIn_day() {
       }
     })
   })
+}
+
+async function duty() {
+    $.reg = false;
+    $.tasklist = [];
+    await task('apTaskList', { "linkId": appid, "uniqueId": "" })
+    await $.wait(500);
+    await task('findPostTagList', { "typeId": typeid })
+    if (!$.reg && $.tasklist) {
+        await task('genzTaskCenter')
+        if ($.genzTask) {
+            $.log(`当前芥么豆：${$.totalPoints}`)
+            for (const vo of $.genzTask) {
+                if (!vo.completionStatus) {
+                    $.log(`去完成：${vo.taskName}新手任务！`)
+                    await task('genzDoNoviceTasks', { "taskId": vo.taskId, "completionStatus": 1 })
+                }
+            }
+        }
+        for (const vo of $.tasklist) {
+            if (vo.taskType != "JOIN_INTERACT_ACT" && vo.taskType != "SHARE_INVITE") {
+                $.log(`去完成：${vo.taskShowTitle}`)
+                for (let x = 0; x < vo.taskLimitTimes; x++) {
+                    if (vo.taskDoTimes != vo.taskLimitTimes) {
+                        await $.wait(500);
+                        await task('apDoTask', { "linkId": appid, "taskType": vo.taskType, "taskId": vo.id, "channel": "2", "itemId": vo.taskSourceUrl })
+                    }
+                }
+            }
+            if ($.taglist) {
+                if (vo.taskType === "JOIN_INTERACT_ACT") {
+                    let taglist = $.taglist[random(0, $.taglist.length)]
+                    await task('findTagPosts', { "tagId": taglist.tagId, "tagCategoryId": taglist.typeId, "page": 1, "pageSize": 10 })
+                    if ($.postlist) {
+                        if (vo.taskShowTitle === '喜欢帖子') {
+                            $.log("去完成点赞任务")
+                            for (let x = 0; x < vo.taskLimitTimes; x++) {
+                                if (vo.taskDoTimes != vo.taskLimitTimes) {
+                                    PostId = [];
+                                    likePostId = $.postlist[random(0, $.postlist.length)]
+                                    PostId.push(likePostId.postId)
+                                    PostIdx = PostId[random(0, PostId.length)]
+                                    await task('likePosts', { "likePostId": PostIdx })
+                                    await $.wait(500);
+                                    await task('cancelLikePosts', { "likePostId": PostIdx })
+                                }
+                            }
+                        }
+                        if (vo.taskShowTitle === '关注芥么er') {
+                            $.log("去完成关注任务")
+                            for (let x = 0; x < vo.taskLimitTimes; x++) {
+                                if (vo.taskDoTimes != vo.taskLimitTimes) {
+                                    userId = [];
+                                    likeuserId = $.postlist[random(0, $.postlist.length)]
+                                    userId.push(likeuserId.userId)
+                                    userIdx = userId[random(0, userId.length)]
+                                    await task('followHim', { "forwardUserId": userIdx })
+                                    await $.wait(500);
+                                    await task('cancelFollowHim', { "forwardUserId": userIdx })
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                $.log("没有获取到列表，不做此任务")
+            }
+            if (vo.taskDoTimes === vo.taskLimitTimes) {
+                $.log(`任务：${vo.taskShowTitle}，已完成`)
+            }
+        }
+    } else { console.log("未注册！请手动进入一次小程序任务\n入口：微信小程序-芥么-赚豪礼") } return;
+}
+function task(function_id, body) {
+    return new Promise(resolve => {
+        $.get(taskUrl(function_id, body), async (err, resp, data) => {
+            try {
+                if (err) {
+                    $.log(err)
+                } else {
+                    data = JSON.parse(data);
+                    switch (function_id) {
+                        case 'apTaskList':
+                            $.tasklist = data.data
+                            break;
+                        case 'apDoTask':
+                            if (data.success) {
+                                if (data.code === 0) {
+                                    console.log("任务完成")
+                                }
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'findPostTagList':
+                            if (data.code === 0) {
+                                $.taglist = data.data;
+                            } else if (data.code === 4001) {
+                                $.reg = true;
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'findTagPosts':
+                            if (data.code === 0) {
+                                $.postlist = data.data.list;
+                            }
+                            break;
+                        case 'likePosts':
+                            if (data.code === 0) {
+                                console.log(data.data);
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'cancelLikePosts':
+                            if (data.code === 0) {
+                                console.log(data.data);
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'followHim':
+                            if (data.code === 0) {
+                                console.log("关注成功");
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'cancelFollowHim':
+                            if (data.code === 0) {
+                                console.log("取消关注");
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        case 'genzTaskCenter':
+                            $.genzTask = data.data.noviceTaskStatusList;
+                            $.totalPoints = data.data.totalPoints;
+                            break;
+                        case 'genzDoNoviceTasks':
+                            if (data.success) {
+                                if (data.data) {
+                                    console.log("任务完成");
+                                } else {
+                                    console.log(JSON.stringify(data));
+                                }
+                            } else {
+                                console.log(JSON.stringify(data));
+                            }
+                            break;
+                        default:
+                            $.log(JSON.stringify(data))
+                            break;
+                    }
+                }
+            } catch (error) {
+                $.log(error)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+function taskUrl(function_id, body) {
+    return {
+        url: `https://api.m.jd.com/?functionId=${function_id}&body=${escape(JSON.stringify(body))}&_t=${new Date().getTime()}&appid=gen-z`,
+        headers: {
+            "Host": "api.m.jd.com",
+            "Connection": "keep-alive",
+            "content-type": "application/json",
+            "Accept-Encoding": "gzip,compress,br,deflate",
+            "User-Agent": UA,
+            "Cookie": cookie,
+            "Referer": "https://servicewechat.com/wx9a412175d4e99f91/42/page-frame.html",
+        },
+    }
+}
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function taskPostUrl(function_id, body) {
