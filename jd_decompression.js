@@ -3,7 +3,7 @@
  * 第一个号会给作者助力，其他号会给第一个号助力，活动期间貌似只有一次助力机会
  cron  5 6,18 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_decompression.js
  */
-const $ = new Env('热血心跳,狂解压');
+const $ = new Env('9.21-10.16 热血心跳,狂解压');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
@@ -23,10 +23,15 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    let res = [
-        "73a399cc10d84fceab85208163f03894",
-        "3ce8f9b89cf149e397f911bd5f6ab58c",
-    ];
+    let res = [];
+    try{res = await getAuthorShareCode('');}catch (e) {}
+    if(!res){
+        try{res = await getAuthorShareCode('');}catch (e) {}
+        if(!res){res = [];}
+    }
+    if(res.length > 0){
+        $.shareUuid = getRandomArrayElements(res,1)[0];
+    }
     for (let i = 0; i < cookiesArr.length; i++) {
         await getUA();
         $.index = i + 1;
@@ -34,8 +39,8 @@ if ($.isNode()) {
         $.oldcookie = cookiesArr[i];
         $.isLogin = true;
         $.nickName = '';
-        await TotalBean();
         $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+        await TotalBean();
         console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
         if (!$.isLogin) {
             $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
@@ -105,10 +110,13 @@ async function main() {
         await takePostRequest('drawContent');
         await $.wait(1000);
     }
-    for (let i = 0; i < score2; i++) {
+    $.score2Flag = true;
+    $.score2Time = 0;
+    for (let i = 0; i < score2 && $.score2Flag && $.score2Time< 10; i++) {
         console.log(`进行第${i+1}次扭蛋`);
         await takePostRequest('draw');
         await $.wait(1500);
+        $.score2Time++;
     }
     if($.index === '1'){
         $.shareUuid = $.activityData.actorUuid;
@@ -285,6 +293,7 @@ function dealReturn(type, data) {
                     console.log(`获得其他`);
                 }
             } else {
+                $.score2Flag = false;
                 //console.log(JSON.stringify(data))
             }
             console.log(JSON.stringify(data))
