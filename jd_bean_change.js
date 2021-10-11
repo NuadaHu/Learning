@@ -99,7 +99,7 @@ if ($.isNode() && process.env.BEANCHANGE_ENABLEMONTH) {
 	EnableMonth = process.env.BEANCHANGE_ENABLEMONTH;
 }
 
-if (EnableMonth == "true" && Today.getHours() > 22)
+if (EnableMonth == "true" && Today.getDate() == 1 && Today.getHours() > 17)
 	llShowMonth = true;
 
 let userIndex2 = -1;
@@ -272,8 +272,8 @@ if ($.isNode()) {
 	}
 
 	if (intPerSent > 0) {
-		console.log("分段通知还剩下" + cookiesArr.length % intPerSent + "个账号需要发送...");
-		if (cookiesArr.length % intPerSent != 0) {
+		//console.log("分段通知还剩下" + cookiesArr.length % intPerSent + "个账号需要发送...");
+		if (allMessage || allMessageMonth) {
 			console.log("分段通知收尾，处理发送通知....");
 			if ($.isNode() && allMessage) {
 				await notify.sendNotify(`${$.name}`, `${allMessage}`, {
@@ -459,9 +459,7 @@ async function showMsg() {
 		}
 
 	}
-	if ($.errorMsg)
-		ReturnMessage += `\n【数据报错】获取京豆数据异常!`;
-
+	
 	ReturnMessage += `\n【今日京豆】收${$.todayIncomeBean}豆`;
 
 	if ($.todayOutcomeBean != 0) {
