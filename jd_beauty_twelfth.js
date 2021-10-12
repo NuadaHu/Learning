@@ -1,3 +1,7 @@
+if (!["card","car"].includes(process.env.FS_LEVEL)) {
+    console.log("请设置通用加购/开卡变量FS_LEVEL=car(或card开卡+加购)来运行加购脚本")
+    return
+}
 /*
 * 活动：美妆馆 --》京东美妆12周年庆
 * 活动时间：9.29 - 10.13
