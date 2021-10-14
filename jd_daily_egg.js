@@ -27,7 +27,14 @@ const dailyEggUrl = "https://active.jd.com/forever/btgoose/?channelLv=yxjh&jrcon
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const { JSDOM } = $.isNode() ? require('jsdom') : '';
 const { window } = new JSDOM(``, { url: dailyEggUrl, runScripts: "outside-only", pretentToBeVisual: true, resources: "usable" })
-const Faker = require('./utils/JDSignValidator.js')
+const Faker = require('./JDSignValidator.js')
+function oc(fn, defaultVal) {//optioanl chaining
+  try {
+    return fn()
+  } catch (e) {
+    return undefined
+  }
+}
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -63,7 +70,8 @@ if ($.isNode()) {
       const fakerBody = Faker.getBody(dailyEggUrl)
       $.fp = fakerBody.fp
       $.eid = await getClientData(fakerBody)
-      $.token = (await downloadUrl("https://gia.jd.com/m.html")).match(/var\s*?jd_risk_token_id\s*?=\s*["`'](\S*?)["`'];?/)?.[1] || ""
+      const temp = (await downloadUrl("https://gia.jd.com/m.html")).match(/var\s*?jd_risk_token_id\s*?=\s*["`'](\S*?)["`'];?/)
+      $.token = oc(() => temp[1]) || ""
       await jdDailyEgg();
     }
   }
