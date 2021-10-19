@@ -41,7 +41,7 @@ var ts_md5_1 = require("ts-md5");
 var date_fns_1 = require("date-fns");
 var sendNotify_1 = require("./sendNotify");
 var validate_single_1 = require("./utils/validate_single");
-var TS_USER_AGENTS_1 = require("./TS_USER_AGENTS");
+var TS_USER_AGENTS_1 = require("./USER_AGENTS");
 var cookie, tasks, UserName, validate = '', message = '';
 !(function () { return __awaiter(void 0, void 0, void 0, function () {
     var j, h, config, _i, config_1, bean, j, e_1;
