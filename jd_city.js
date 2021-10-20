@@ -71,6 +71,7 @@ let inviteCodes = ['']
       }
       await shareCodesFormat()
       await getInfo('', true);
+      console.log($.newShareCodes)
       for (let i = 0; i < $.newShareCodes.length; ++i) {
         console.log(`\n开始助力 【${$.newShareCodes[i]}】`)
         let res = await getInfo($.newShareCodes[i])
