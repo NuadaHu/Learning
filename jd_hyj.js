@@ -9,7 +9,7 @@ let cookiesArr = [],
     cookie = '',
     message;
 let secretp = '',
-    inviteId = []
+    inviteId = ['ZXASTT0225KkcRE8Y913fKEvxkPQNIQFjRWn6u7zB55awQ']
 
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
@@ -49,7 +49,7 @@ $.shareCodesArr = [];
             $.nickName = '';
             message = '';
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-            await shareCodesFormat()
+            // await shareCodesFormat()
             for (let i = 0; i < $.newShareCodes.length && true; ++i) {
                 console.log(`\n开始助力 【${$.newShareCodes[i]}】`)
                 let res = await getInfo($.newShareCodes[i])
