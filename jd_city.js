@@ -71,7 +71,7 @@ let inviteCodes = ['RtGKzL2lQwOrdtKfE9c0gyZ9u3ySYyR8DPaN6696RrTS3HZW2g']
       await $.wait(1000)
     }
   }
-  await shareCodesFormat()
+  // await shareCodesFormat()
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
