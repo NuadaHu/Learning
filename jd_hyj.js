@@ -9,7 +9,7 @@ let cookiesArr = [],
     cookie = '',
     message;
 let secretp = '',
-    inviteId = ['ZXASTT0225KkcRE8Y913fKEvxkPQNIQFjRWn6u7zB55awQ']
+    inviteId = []
 
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
@@ -20,9 +20,7 @@ if ($.isNode()) {
     cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-let inviteCodes = [
-
-]
+let inviteCodes = ['ZXASTT0225KkcRE8Y913fKEvxkPQNIQFjRWn6u7zB55awQ']
 $.shareCodesArr = [];
 
 !(async() => {
