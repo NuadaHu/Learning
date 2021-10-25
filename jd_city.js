@@ -381,7 +381,7 @@ function shareCodesFormat() {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
     $.newShareCodes = [...inviteCodes];
     // const readShareCodeRes = await readShareCode();
-    // $.readShareCode = (readShareCodeRes && readShareCodeRes.data) || []
+    $.readShareCode = []
     // if (readShareCodeRes && readShareCodeRes.code === 200) {
     //   $.newShareCodes = [...new Set([...$.shareCodes, ...inviteCodes, ...$.readShareCode])];
     // } else {
