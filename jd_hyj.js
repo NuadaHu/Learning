@@ -49,7 +49,7 @@ $.shareCodesArr = [];
             $.nickName = '';
             message = '';
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-            // await shareCodesFormat()
+            await shareCodesFormat()
             for (let i = 0; i < $.newShareCodes.length && true; ++i) {
                 console.log(`\n开始助力 【${$.newShareCodes[i]}】`)
                 let res = await getInfo($.newShareCodes[i])
@@ -584,10 +584,10 @@ function taskPostUrl2(functionId, body) {
 function shareCodesFormat() {
     return new Promise(async resolve => {
         // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-        $.newShareCodes = [];
-        if ($.shareCodesArr[$.index - 1]) {
-            $.newShareCodes = [...inviteCodes, ...$.newShareCodes];
-        }
+        $.newShareCodes = [...inviteCodes];
+        // if ($.shareCodesArr[$.index - 1]) {
+        //     $.newShareCodes = [...inviteCodes, ...$.newShareCodes];
+        // }
         //if($.index == 1) $.newShareCodes = [...inviteCodes,...$.newShareCodes]
         console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify($.newShareCodes)}`)
         resolve();

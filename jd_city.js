@@ -71,7 +71,7 @@ let inviteCodes = ['RtGKzL2lQwOrdtKfE9c0gyZ9u3ySYyR8DPaN6696RrTS3HZW2g']
       await $.wait(1000)
     }
   }
-  // await shareCodesFormat()
+  await shareCodesFormat()
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -379,14 +379,14 @@ function readShareCode() {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    $.newShareCodes = [];
-    const readShareCodeRes = await readShareCode();
-    $.readShareCode = (readShareCodeRes && readShareCodeRes.data) || []
-    if (readShareCodeRes && readShareCodeRes.code === 200) {
-      $.newShareCodes = [...new Set([...$.shareCodes, ...inviteCodes, ...$.readShareCode])];
-    } else {
-      $.newShareCodes = [...new Set([...$.shareCodes, ...inviteCodes])];
-    }
+    $.newShareCodes = [...inviteCodes];
+    // const readShareCodeRes = await readShareCode();
+    // $.readShareCode = (readShareCodeRes && readShareCodeRes.data) || []
+    // if (readShareCodeRes && readShareCodeRes.code === 200) {
+    //   $.newShareCodes = [...new Set([...$.shareCodes, ...inviteCodes, ...$.readShareCode])];
+    // } else {
+    //   $.newShareCodes = [...new Set([...$.shareCodes, ...inviteCodes])];
+    // }
     console.log(`\n您将要助力的好友${JSON.stringify($.newShareCodes)}`)
     resolve();
   })
