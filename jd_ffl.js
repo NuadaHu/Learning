@@ -16,7 +16,7 @@ cron "5,35 3-23 * * *" script-path=https://raw.githubusercontent.com/jiulan/plat
 ====================================小火箭=============================
 翻翻乐提现 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_ffl.js, cronexpr="5,35 3-23 * * *", timeout=3600, enable=true
  */
-const $ = new Env('省钱大赢家之翻翻乐');
+const $ = new Env('翻翻乐提现');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
