@@ -48,10 +48,10 @@ let autoCode = '',projectId = '',helpId = '';
     if(JSON.stringify(ownCode) === '{}'){
         return ;
     }
-    if(cookiesArr.length>0){
-        const promiseArr = cookiesArr.map((ck, index) => help(ck));
-        await Promise.all(promiseArr);
-    }
+    // if(cookiesArr.length>0){
+    //     const promiseArr = cookiesArr.map((ck, index) => help(ck));
+    //     await Promise.all(promiseArr);
+    // }
     await $.wait(2000);
     if(cookiesArr.length>0){
         const promiseArr = cookiesArr.map((ck, index) => main(ck));
