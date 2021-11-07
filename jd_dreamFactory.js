@@ -1339,7 +1339,7 @@ function readShareCode() {
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    $.newShareCodes = ['xwYjTjyQJnT1ThJxaV9eWw=='];
+    $.newShareCodes = ['rR0iS78iapcvappblWjrcQ==', 'xwYjTjyQJnT1ThJxaV9eWw==', 'Cz931FDD1J7JVn27ojW8Dg=='];
     // if ($.shareCodesArr[$.index - 1]) {
     //   $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     // } else {
@@ -1379,7 +1379,7 @@ function requireConfig() {
     // }
     console.log(`开始获取${$.name}配置文件\n`);
     //Node.js用户请在jdCookie.js处填写京东ck;
-    $.shareCodesArr = ['xwYjTjyQJnT1ThJxaV9eWw=='];
+    $.shareCodesArr = ['rR0iS78iapcvappblWjrcQ==', 'xwYjTjyQJnT1ThJxaV9eWw==', 'Cz931FDD1J7JVn27ojW8Dg=='];
     // const shareCodes = $.isNode() ? require('./jdDreamFactoryShareCodes.js') : '';
     // console.log(`共${cookiesArr.length}个京东账号\n`);
     // $.shareCodesArr = [];
