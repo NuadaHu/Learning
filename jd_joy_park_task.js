@@ -7,17 +7,17 @@ export HELP_JOYPARK=""
 ============Quantumultx===============
 [task_local]
 #汪汪乐园每日任务
-20 7,9,17,20 * * * jd_joypark_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
+0 0,7,9,17,20 * * * jd_joypark_task.js, tag=汪汪乐园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joypark_task.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "20 7,9,17,20 * * *" script-path=jd_joypark_task.js,tag=汪汪乐园每日任务
+cron "0 0,7,9,17,20 * * *" script-path=jd_joypark_task.js,tag=汪汪乐园每日任务
 
 ===============Surge=================
-汪汪乐园每日任务 = type=cron,cronexp="20 7,9,17,20 * * *",wake-system=1,timeout=3600,script-path=jd_joypark_task.js
+汪汪乐园每日任务 = type=cron,cronexp="0 0,7,9,17,20 * * *",wake-system=1,timeout=3600,script-path=jd_joypark_task.js
 
 ============小火箭=========
-汪汪乐园每日任务 = type=cron,script-path=jd_joypark_task.js, cronexpr="20 7,9,17,20 * * *", timeout=3600, enable=true
+汪汪乐园每日任务 = type=cron,script-path=jd_joypark_task.js, cronexpr="0 0,7,9,17,20 * * *", timeout=3600, enable=true
 */
 const $ = new Env('汪汪乐园每日任务');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -152,7 +152,7 @@ message = ""
           }
         } else if (task.taskType === 'SHARE_INVITE') {
           for (let j = 0; j < 5; j++) {
-            let resp = await apTaskDrawAward(167, 'SHARE_INVITE');
+            let resp = await apTaskDrawAward(261, 'SHARE_INVITE');
 
             if (!resp.success) {
               break
@@ -165,6 +165,9 @@ message = ""
           await apDoTask2(task.id, task.taskType, task.taskSourceUrl);
           $.log(`${task.taskTitle}|${task.taskShowTitle} 领取奖励`)
           await apTaskDrawAward(task.id, task.taskType);
+        }
+        if (task.taskType === 'SHARE_INVITE') {
+          $.yq_taskid = task.id
         }
       }
     }
@@ -191,7 +194,7 @@ message = ""
       $.newinvitePinTaskList = [...($.invitePinTaskList || []), ...($.invitePin || [])]
       for (const invitePinTaskListKey of $.newinvitePinTaskList) {
         $.log(`【京东账号${$.index}】${$.nickName || $.UserName} 助力 ${invitePinTaskListKey}`)
-        let resp = await getJoyBaseInfo(261, 1, invitePinTaskListKey);
+        let resp = await getJoyBaseInfo($.yq_taskid, 1, invitePinTaskListKey);
         if (resp.success) {
           if (resp.data.helpState === 1) {
             $.log("助力成功！");
