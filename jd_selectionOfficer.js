@@ -1,9 +1,24 @@
 
 /*
-* 活动：APP-美妆馆-右侧浮窗
-cron 23 9,10 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_selectionOfficer.js
-* 说明：脚本内互助，无开卡，有加购
-* */
+选品官
+更新时间：2021-10-30  https://raw.githubusercontent.com/star261/jd/main/scripts/jd_selectionOfficer.js
+活动入口：APP-美妆馆-右侧浮窗
+脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+============Quantumultx===============
+[task_local]
+#选品官
+12 9,10 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_selectionOfficer.js, tag=京东超级盒子, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+
+================Loon==============
+[Script]
+cron "12 9,10 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_selectionOfficer.js,tag=选品官
+
+===============Surge=================
+选品官 = type=cron,cronexp="12 9,10 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_selectionOfficer.js
+
+============小火箭=========
+选品官 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_selectionOfficer.js, cronexpr="12 9,10 * * *", timeout=3600, enable=true
+ */
 const $ = new Env('选品官');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
