@@ -1,7 +1,12 @@
 #!/bin/env python3
 # -*- coding: utf-8 -*
 '''
-cron: 59 10 * * * jd_getFollowGift.py
+项目名称: JD-Script / jd_getFollowGift 
+Author: Curtin
+功能：
+Date: 2021/6/6 上午7:57
+建议cron: 0 9 * * *  python3 jd_getFollowGift.py
+new Env('关注有礼');
 '''
 ##################################
 #cookie填写，注意：#ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
@@ -26,44 +31,13 @@ version = 'v1.0.0 Beta'
 readmes = """
 # JD 关注有礼
 
-##  目录结构
-    JD-Script/                  #主仓库
-    |-- getFollowGifts                # 主目录
-    |   |-- jd_getFollowGift.py       # 主代码 （必要）
-    |   |-- JDCookies.txt             # 存放JD cookie，一行一个ck
-    |   |-- Readme.md                 # 说明书
-    |   `-- start.sh                  # shell脚本（非必要）
-    `-- README.md
-
-
-### `【兼容环境】`
-    1.Python3.6+ 环境
-    2.兼容ios设备软件：Pythonista 3、Pyto(已测试正常跑，其他软件自行测试)   
-    3.Windows exe 
-
-    安装依赖模块 :
-    pip3 install requests
-    执行：
-    python3 jd_getFollowGift.py
-
-
-## `【更新记录】`
-    2021.6.6：（v1.0.0 Beta）
-        * Test
-
-
-###### [GitHub仓库 https://github.com/curtinlv/JD-Script](https://github.com/curtinlv/JD-Script) 
-###### [TG频道 https://t.me/TopStyle2021](https://t.me/TopStyle2021)
-###### [TG群 https://t.me/topStyle996](https://t.me/topStyle996)
-###### 关注公众号【TopStyle】
-![TopStyle](https://gitee.com/curtinlv/img/raw/master/gzhcode.jpg)
 # 
     @Last Version: %s
 
     @Last Time: 2021-06-06 07:57
 
     @Author: Curtin
-#### **仅以学习交流为主，请勿商业用途、禁止违反国家法律 ，转载请留个名字，谢谢!** 
+#### **仅以学习交流为主，请勿商业用途、禁止违反国家法律!** 
 
 # End.
 [回到顶部](#readme)
@@ -81,15 +55,13 @@ pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 # 定义一些要用到参数
 requests.packages.urllib3.disable_warnings()
 scriptHeader = """
-
-
 ════════════════════════════════════════
 ║                                      ║
 ║      JD   关   注   有   礼           ║
 ║                                      ║
 ════════════════════════════════════════
 @Version: {}""".format(version)
-remarks = '\n\n\tTG交流 : https://t.me/topstyle996\n\n\tTG频道 : https://t.me/TopStyle2021\n\n\t公众号 : TopStyle\n\n\t\t\t--By Curtin\n'
+remarks = ''
 ######JD Cookie (多账号&分隔)
 
 
@@ -153,22 +125,22 @@ class getJDCookie(object):
 
     # 检测cookie格式是否正确
     def getUserInfo(self, ck, pinName, userNum):
-        url = 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&callback=GetJDUserInfoUnion'
+        url = 'https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2'
         headers = {
             'Cookie': ck,
             'Accept': '*/*',
-            'Connection': 'close',
-            'Referer': 'https://home.m.jd.com/myJd/home.action',
+            'Connection': 'keep-alive',
+            'Referer': 'https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&',
             'Accept-Encoding': 'gzip, deflate, br',
-            'Host': 'me-api.jd.com',
+            'Host': 'wq.jd.com',
             'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1',
             'Accept-Language': 'zh-cn'
         }
         try:
             resp = requests.get(url=url, verify=False, headers=headers, timeout=60).text
-            r = re.compile(r'GetJDUserInfoUnion.*?\((.*?)\)')
-            result = r.findall(resp)
-            userInfo = json.loads(result[0])
+            #r = re.compile(r'GetJDUserInfoUnion.*?\((.*?)\)')
+            #result = r.findall(resp)
+            userInfo = json.loads(resp)
             nickname = userInfo['data']['userInfo']['baseInfo']['nickname']
             return ck, nickname
         except Exception:
@@ -509,9 +481,9 @@ def isUpdate():
         isEnable = result['isEnable']
         uPversion = result['version']
         info = result['info']
-        readme = result['readme']
+        readme = ""
         pError = result['m']
-        footer = result['footer']
+        footer = ""
         getWait = result['s']
         if isEnable > 50 and isEnable < 150:
             if version != uPversion:
@@ -571,7 +543,7 @@ def buildBody(data):
     venderId = data['venderId']
     activityId = data['activityId']
     signbody = data['signbody']
-    body = f'body=%7B%22follow%22%3A0%2C%22shopId%22%3A%22{shopid}%22%2C%22activityId%22%3A%22{activityId}%22%2C%22sourceRpc%22%3A%22shop_app_home_window%22%2C%22venderId%22%3A%22{venderId}%22%7D&client=apple&clientVersion=10.0.1&openudid=809409cbd5bb8a0fa8fff41378c1afe91b8075ad&{signbody}'
+    body = 'body={"follow":0,"shopId":"' + shopid + '","activityId":"' + activityId + '","sourceRpc":"shop_app_home_window","venderId":"'+ venderId + '"}&build=167863&client=apple&clientVersion=10.2.2&d_brand=apple&d_model=iPhone8,1&ef=1&eid=&ep={"ciphertype":5,"cipher":{"screen":"DzUmAtOzCzG=","area":"CJvpCJYmCV8zDtCzXzYzCtGz","wifiBssid":"","osVersion":"CJCkDm==","uuid":"aQf1ZRdxb2r4ovZ1EJZhcxYlVNZSZz09","adid":"","openudid":"Y2O2ZWS5CWO4ENrsZJG4EQYnEJHsEWG5CtO2Y2Y3CJPuZNPsCtSnYG=="},"ts":1636156765,"hdid":"","version":"","appname":"","ridx":-1}&' + signbody
     return body
 
 def drawShopGift(cookie, data):
@@ -579,6 +551,7 @@ def drawShopGift(cookie, data):
         url = 'https://api.m.jd.com/client.action?functionId=drawShopGift'
         body = data
         headers = {
+            'J-E-H' : '%7B%22ciphertype%22:5,%22cipher%22:%7B%22User-Agent%22:%22IuG0aVLeb25vBzO2Dzq2CyUyCMrfUQrlbwU7TJSmaU9JTJSmCJCkDzivCtLJY2PiZI8yBtKmAG==%22%7D,%22ts%22:1636156765,%22hdid%22:%22JM9F1ywUPwflvMIpYPok0tt5k9kW4ArJEU3lfLhxBqw=%22,%22version%22:%221.0.3%22,%22appname%22:%22com.360buy.jdmobile%22,%22ridx%22:-1%7D',
             'Accept-Encoding': 'gzip, deflate, br',
             'Cookie': cookie,
             'Connection': 'close',
@@ -587,6 +560,7 @@ def drawShopGift(cookie, data):
             'Host': 'api.m.jd.com',
             'User-Agent': 'JD4iPhone/167685 (iPhone; iOS 14.3; Scale/3.00)',
             'Referer': '',
+            'J-E-C' : '%7B%22ciphertype%22:5,%22cipher%22:%7B%22pin%22:%22TUU5TJuyTJvQTUU3TUOnTJu1TUU1TUSmTUSnTUU2TJu4TUPQTUU0TUS4TJrOTUU1TUSmTJq2TUU1TUSmTUSn%22%7D,%22ts%22:1636157606,%22hdid%22:%22JM9F1ywUPwflvMIpYPok0tt5k9kW4ArJEU3lfLhxBqw=%22,%22version%22:%221.0.3%22,%22appname%22:%22com.360buy.jdmobile%22,%22ridx%22:-1%7D',
             'Accept-Language': 'zh-Hans-CN;q=1'
         }
         response = requests.post(url, headers=headers, verify=False, data=body, timeout=60)
