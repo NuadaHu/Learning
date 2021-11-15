@@ -17,7 +17,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-let InviterPin = '';
+let InviterPin = ['0JjblhRbczKtHtRZgKnUZYVPJIPGDNINCTTZ76yrsYo='];
 
 if ($.isNode() && process.env.InviterPin) {
   InviterPin = process.env.InviterPin;
@@ -65,7 +65,6 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
       } else {
         await help2("zero205","%2FeNHdfn6fP%2BTFwVda3ipjWwvTFqeKBZaRG38adWABKk%3D")
         await help2("whisper liu","Sev6JWjut6GyaEHJIWpSQQ%3D%3D")
-        
       }
     }
   }
