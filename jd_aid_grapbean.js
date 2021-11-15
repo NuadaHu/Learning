@@ -1,5 +1,5 @@
 let common = require("./function/common");
-let $ = new common.env('全民抢京豆');
+const $ = new common.env('全民抢京豆');
 let min = 2,
     help = $.config[$.filename(__filename)] || Math.min(min, $.config.JdMain) || min;
 $.setOptions({
