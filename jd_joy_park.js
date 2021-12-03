@@ -1,10 +1,12 @@
 // @grant nodejs
 /*
 ENV
-JOYPARK_JOY_START =      只做前几个CK
-JOY_COIN_MAXIMIZE =      最大化硬币收益，如果合成后全部挖土后还有空位，则开启此模式（默认关闭） 0关闭 1开启
+
+JOY_COIN_MAXIMIZE =      最大化硬币收益，如果合成后全部挖土后还有空位，则开启此模式（默认开启） 0关闭 1开启
 
 请确保新用户助力过开工位，否则开启游戏了就不算新用户，后面就不能助力开工位了！！！！！！！！！！
+
+脚本会默认帮zero205助力开工位，如需关闭请添加变量，变量名：HELP_JOYPARK，变量值：false
 
 更新地址：https://github.com/Tsukasa007/my_script
 
@@ -29,19 +31,19 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
-    cookie = '';
+  cookie = '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
-  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => { };
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 
 //最大化硬币收益模式
 $.JOY_COIN_MAXIMIZE = process.env.JOY_COIN_MAXIMIZE === '1'
-$.log(`最大化收益模式: 已${$.JOY_COIN_MAXIMIZE ? `默认已开启` : `关闭`}  `)
+$.log(`最大化收益模式: 已${$.JOY_COIN_MAXIMIZE ? `默认开启` : `关闭`}  `)
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
@@ -58,11 +60,11 @@ message = ""
     return;
   }
   for (let i = 0; i < cookiesArr.length; i++) {
-    //$.wait(50)
-    if (process.env.JOYPARK_JOY_START && i == process.env.JOYPARK_JOY_START){
-      console.log(`\n汪汪乐园养joy 只运行 ${process.env.JOYPARK_JOY_START} 个Cookie\n`);
-      break
-    }
+    //$.wait(50) 
+    // if (process.env.JOYPARK_JOY_START && i == process.env.JOYPARK_JOY_START){
+    //   console.log(`\n汪汪乐园养joy 只运行 ${process.env.JOYPARK_JOY_START} 个Cookie\n`);
+    //   break
+    // }
     cookie = cookiesArr[i];
     if (cookie) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
@@ -72,7 +74,7 @@ message = ""
       $.maxJoyCount = 10
       await TotalBean();
       if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
 
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
@@ -80,9 +82,30 @@ message = ""
         continue
       }
       console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+      if ($.isNode()) {
+        if (process.env.HELP_JOYPARK && process.env.HELP_JOYPARK == "false") {
+        } else {
+          await getShareCode()
+          if ($.kgw_invitePin && $.kgw_invitePin.length) {
+            $.log("开始帮【zero205】助力开工位\n");
+            $.kgw_invitePin = [...($.kgw_invitePin || [])][Math.floor((Math.random() * $.kgw_invitePin.length))];
+            let resp = await getJoyBaseInfo(undefined, 2, $.kgw_invitePin);
+            if (resp.helpState && resp.helpState === 1) {
+              $.log("帮【zero205】开工位成功，感谢！\n");
+            } else if (resp.helpState && resp.helpState === 3) {
+              $.log("你不是新用户！跳过开工位助力\n");
+            } else if (resp.helpState && resp.helpState === 2) {
+              $.log(`他的工位已全部开完啦！\n`);
+            } else {
+              $.log("开工位失败！\n");
+              console.log(`${JSON.stringify(resp)}`)
+            }
+          }
+        }
+      }
       //下地后还有有钱买Joy并且买了Joy
       $.hasJoyCoin = true
-      await getJoyBaseInfo(undefined,undefined,undefined,true);
+      await getJoyBaseInfo(undefined, undefined, undefined, true);
       $.activityJoyList = []
       $.workJoyInfoList = []
       await getJoyList(true);
@@ -95,18 +118,18 @@ message = ""
     }
   }
 })()
-    .catch((e) => $.logErr(e))
-    .finally(() => $.done())
+  .catch((e) => $.logErr(e))
+  .finally(() => $.done())
 
 
-function getJoyBaseInfo(taskId = '',inviteType = '',inviterPin = '',printLog = false) {
+async function getJoyBaseInfo(taskId = '', inviteType = '', inviterPin = '', printLog = false) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.post(taskPostClientActionUrl(`body={"taskId":"${taskId}","inviteType":"${inviteType}","inviterPin":"${inviterPin}","linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&_t=1625480372020&appid=activities_platform`,`joyBaseInfo`), async (err, resp, data) => {
+    $.post(taskPostClientActionUrl(`body={"taskId":"${taskId}","inviteType":"${inviteType}","inviterPin":"${inviterPin}","linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `joyBaseInfo`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} getJoyBaseInfo API请求失败，请检查网路重试`)
         } else {
           data = JSON.parse(data);
           if (printLog) {
@@ -128,10 +151,10 @@ function getJoyBaseInfo(taskId = '',inviteType = '',inviterPin = '',printLog = f
   })
 }
 
-function getJoyList(printLog = false){
+function getJoyList(printLog = false) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.get(taskGetClientActionUrl(`appid=activities_platform&body={"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}`,`joyList`), async (err, resp, data) => {
+    $.get(taskGetClientActionUrl(`appid=activities_platform&body={"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}`, `joyList`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -169,10 +192,10 @@ function getJoyList(printLog = false){
   })
 }
 
-function getGameShopList(){
+function getGameShopList() {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.get(taskGetClientActionUrl(`appid=activities_platform&body={"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}`,`gameShopList`), async (err, resp, data) => {
+    $.get(taskGetClientActionUrl(`appid=activities_platform&body={"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}`, `gameShopList`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -200,9 +223,9 @@ async function doJoyMoveUpAll(activityJoyList, workJoyInfoList) {
     await getJoyList()
     await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList)
   }
-  // else if ($.JOY_COIN_MAXIMIZE) {
-  //   await joyCoinMaximize(workJoyInfoUnlockList)
-  // }
+  else if ($.JOY_COIN_MAXIMIZE) {
+    await joyCoinMaximize(workJoyInfoUnlockList)
+  }
 
 }
 
@@ -214,7 +237,7 @@ async function joyCoinMaximize(workJoyInfoUnlockList) {
     $.log(`还有${joyCoin}金币,看看还能买啥下地`)
     let shopList = await getGameShopList()
     let newBuyCount = false;
-    for (let i = shopList.length - 1;i >= 0 && i - 3 >= 0;i--){ //向下买3级
+    for (let i = shopList.length - 1; i >= 0 && i - 3 >= 0; i--) { //向下买3级
       if (joyCoin > shopList[i].consume) {
         $.log(`买一只 ${shopList[i].userLevel}级的！`);
         joyCoin = joyCoin - shopList[i].consume;
@@ -231,7 +254,7 @@ async function joyCoinMaximize(workJoyInfoUnlockList) {
     $.hasJoyCoin = false
     if (newBuyCount) {
       await getJoyList()
-      await doJoyMoveUpAll($.activityJoyList,$.workJoyInfoList)
+      await doJoyMoveUpAll($.activityJoyList, $.workJoyInfoList)
       await getJoyBaseInfo();
     }
   }
@@ -288,10 +311,10 @@ async function doJoyMergeAll(activityJoyList) {
   }
 }
 
-function doJoyMove(joyId,location){
+function doJoyMove(joyId, location) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.post(taskGetClientActionUrl(`body={"joyId":${joyId},"location":${location},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`,`joyMove`), async (err, resp, data) => {
+    $.post(taskGetClientActionUrl(`body={"joyId":${joyId},"location":${location},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `joyMove`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -311,10 +334,10 @@ function doJoyMove(joyId,location){
   })
 }
 
-function doJoyMerge(joyId1,joyId2){
+function doJoyMerge(joyId1, joyId2) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.get(taskGetClientActionUrl(`body={"joyOneId":${joyId1},"joyTwoId":${joyId2},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`,`joyMergeGet`), async (err, resp, data) => {
+    $.get(taskGetClientActionUrl(`body={"joyOneId":${joyId1},"joyTwoId":${joyId2},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `joyMergeGet`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -333,10 +356,10 @@ function doJoyMerge(joyId1,joyId2){
   })
 }
 
-async function doJoyBuy(level,activityJoyList){
+async function doJoyBuy(level, activityJoyList) {
   //await $.wait(20)
   return new Promise(resolve => {
-    $.post(taskPostClientActionUrl(`body={"level":${level},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`,`joyBuy`), async (err, resp, data) => {
+    $.post(taskPostClientActionUrl(`body={"level":${level},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `joyBuy`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -374,7 +397,7 @@ async function doJoyBuy(level,activityJoyList){
 
 function doJoyRecovery(joyId) {
   return new Promise(resolve => {
-    $.post(taskPostClientActionUrl(`body={"joyId":${joyId},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`,`joyRecovery`), async (err, resp, data) => {
+    $.post(taskPostClientActionUrl(`body={"joyId":${joyId},"linkId":"LsQNxL7iWDlXUs6cFl-AAg"}&appid=activities_platform`, `joyRecovery`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
