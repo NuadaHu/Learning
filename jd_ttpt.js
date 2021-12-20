@@ -9,7 +9,17 @@
 ============Quantumultx===============
 [task_local]
 京东金融天天拼图
-20 2,11,16 * * * jd_ttpt.js, tag=京东金融天天拼图
+20 0,16 * * * jd_ttpt.js, tag=京东金融天天拼图, enabled=true
+
+================Loon==============
+[Script]
+cron "20 0,16 * * *" script-path=jd_ttpt.js,tag=京东金融天天拼图
+
+===============Surge=================
+京东金融天天拼图 = type=cron,cronexp="20 0,16 * * *",wake-system=1,timeout=20,script-path=jd_ttpt.js
+
+============小火箭============
+京东金融天天拼图 = type=cron,script-path=jd_ttpt.js, cronexpr="20 0,16 * * *", timeout=3600, enable=true
 *
 */
 const $ = new Env('天天拼图');
@@ -36,7 +46,7 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  console.log(`\nAuthor：zero205\n活动入口：京东金融APP->签到->天天拼图\n`);
+  console.log(`\n活动入口：京东金融APP->签到->天天拼图\n`);
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -67,7 +77,7 @@ if ($.isNode()) {
 async function main() {
   try {
     await getNewMissions();//领取任务
-    if (!$.canRun) return
+	if (!$.canRun) return
     await getNewMissions();//重新查询任务
     await missions();
     await grantAward();
@@ -132,8 +142,8 @@ function getAwardFromMc(missionId) {
                 if (data.resultData.data) {
                   if (data.resultData.data.nextStatus) {
                     console.log(`\n奖励${data.resultData.data.opMsg}`)
-                  }
                 }
+				} 
               } else {
                 console.log(`其他情况：${JSON.stringify(data)}`)
               }
@@ -181,9 +191,9 @@ async function getNewMissions() {
                       }
                     }
                   }
-                } else {
-                  console.log(`\n获取任务失败：${JSON.stringify(data)}`)
-                  $.canRun = false
+				} else {
+                console.log(`\n获取任务失败：${JSON.stringify(data)}`)
+                $.canRun = false
                 }
               } else {
                 console.log(`其他情况：${JSON.stringify(data)}`)
