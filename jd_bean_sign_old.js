@@ -1,4 +1,89 @@
 /*
+Node.JS专用
+https://raw.githubusercontent.com/zero205/JD_tencent_scf/main/jd_bean_sign.js
+金融签到有一定使用门槛,需要请仔细阅读下方文字:
+JRBODY抓取网站:ms.jr.jd.com/gw/generic/hy/h5/m/appSign(进入金融APP签到页面手动签到);抓取请求body,格式:"reqData=xxx"
+变量填写示例:JRBODY: reqData=xxx&reqData=xxx&&reqData=xxx(比如第三个号没有,则留空,长度要与CK一致)
+
+强烈建议用文件,环境变量太长了
+云函数用户在config分支新建diy/JRBODY.txt即可(也就是diy文件夹下新建JRBODY.txt).每行一个jrbody,结尾行写'Finish'
+例子:
+reqData=xxx
+(这个号没有,这行空着)
+reqData=xxx
+Finish
+
+其他环境用户除了JRBODY环境变量可以选用JRBODY.txt文件,放在同目录下,格式同上.
+注:优先识别环境变量,如使用txt文件请不要设置环境变量.JRBODY换行符(应为unix换行符)可能影响脚本读取!
+
+出现任何问题请先删除CookieSet.json(云函数不用操作)
+云函数提示写入失败正常,无任何影响
+ */
+console.log('京东多合一签到SCF开始')
+const sendNotify = require('./sendNotify.js').sendNotify
+const fs = require('fs')
+const jr_file = 'JRBODY.txt'
+const readline = require('readline')
+let cookiesArr = []
+let notification = ''
+const stopVar = process.env.JD_BEAN_STOP ? process.env.JD_BEAN_STOP : '0';
+console.log('Stop:',stopVar)
+
+async function processLineByLine(jrbodys) {
+  const fileStream = fs.createReadStream(jr_file)
+  const rl = readline.createInterface({
+    input: fileStream,
+    crlfDelay: Infinity
+  })
+  for await (let line of rl) {
+    line = line.trim()
+    if (line == 'Finish'){
+      console.log(`识别到读取结束符号,结束.共读取${jrbodys.length}个`)
+      return
+    }
+    jrbodys.push(line)
+  }
+}
+(async () => {
+  const jdCookieNode = require('./jdCookie.js')
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  let jrbodys = []
+  if(process.env.JRBODY) {
+    jrbodys = process.env.JRBODY.split('&')
+  }else{
+    console.log(`未检测到JRBODY环境变量,开始检测${jr_file}`)
+    try {
+      await fs.accessSync('./'+jr_file, fs.constants.F_OK)
+      console.log(`${jr_file} '存在,读取配置'`)
+      await processLineByLine(jrbodys)
+    } catch (err) {
+      console.log(`${jr_file} '不存在,跳过'`)
+    }
+  }
+  if (jrbodys.length != cookiesArr.length) {
+    console.error(`CK和JRBODY长度不匹配,不使用JRBODY,请阅读脚本开头说明.当前ck长度:${cookiesArr.length},JRBODY长度:${jrbodys.length}`)
+    jrbodys = undefined
+  }
+  for (let i = 0; i < cookiesArr.length; i++) {
+    const data = {
+      'cookie':cookiesArr[i]
+    }
+    if (jrbodys) {
+      if(jrbodys[i].startsWith('reqData=')){
+        data['jrBody'] = jrbodys[i]
+      }else{
+        console.log(`跳过第${i+1}个JRBODY,为空或格式不正确`)
+      }
+    }
+    cookiesArr[i] = data
+  }
+  console.log('main block finished')
+})()
+.then(() => {
+console.log('Nobyda签到部分开始')
+/*
 
 京东多合一签到脚本
 
@@ -16,12 +101,12 @@ var Key = ''; //该参数已废弃; 仅用于下游脚本的兼容, 请使用jso
 
 var DualKey = ''; //该参数已废弃; 仅用于下游脚本的兼容, 请使用json串数据  ↓
 
-var OtherKey = ``; //无限账号Cookie json串数据, 请严格按照json格式填写, 具体格式请看以下样例:
+var OtherKey = JSON.stringify(cookiesArr); //无限账号Cookie json串数据, 请严格按照json格式填写, 具体格式请看以下样例:
 
 
 var LogDetails = false; //是否开启响应日志, true则开启
 
-var stop = '0'; //自定义延迟签到, 单位毫秒. 默认分批并发无延迟; 该参数接受随机或指定延迟(例: '2000'则表示延迟2秒; '2000-5000'则表示延迟最小2秒,最大5秒内的随机延迟), 如填入延迟则切换顺序签到(耗时较长), Surge用户请注意在SurgeUI界面调整脚本超时; 注: 该参数Node.js或JSbox环境下已配置数据持久化, 留空(var stop = '')即可清除.
+var stop = stopVar; //自定义延迟签到, 单位毫秒. 默认分批并发无延迟; 该参数接受随机或指定延迟(例: '2000'则表示延迟2秒; '2000-5000'则表示延迟最小2秒,最大5秒内的随机延迟), 如填入延迟则切换顺序签到(耗时较长), Surge用户请注意在SurgeUI界面调整脚本超时; 注: 该参数Node.js或JSbox环境下已配置数据持久化, 留空(var stop = '')即可清除.
 
 var DeleteCookie = false; //是否清除所有Cookie, true则开启.
 
@@ -37,8 +122,8 @@ var merge = {};
 
 var KEY = '';
 
-const Faker = require('./JDSignValidator')
-const zooFaker = require('./JDJRValidator_Pure')
+const Faker = require('./utils/JDSignValidator')
+const zooFaker = require('./utils/JDJRValidator_Pure')
 let fp = '', eid = '', md5
 
 $nobyda.get = zooFaker.injectToRequest($nobyda.get.bind($nobyda), 'channelSign')
@@ -209,7 +294,7 @@ function notify() {
       const disables = $nobyda.read("JD_DailyBonusDisables")
       const amount = disables ? disables.split(",").length : 0
       const disa = !notify || amount ? `【温馨提示】:  检测到${$nobyda.disable?`上次执行意外崩溃, `:``}已禁用${notify?`${amount}个`:`所有`}接口, 如需开启请前往BoxJs或查看脚本内第118行注释.\n` : ``
-      $nobyda.notify("", "", Name + one + two + three + four + five + disa + notify, {
+      $nobyda.notify("", "", Name + one + two + three + four + five + disa, {
         'media-url': $nobyda.headUrl || 'https://cdn.jsdelivr.net/gh/NobyDa/mini@master/Color/jd.png'
       });
       $nobyda.headUrl = null;
@@ -260,6 +345,7 @@ function notify() {
         throw new Error(`账号Cookie读取失败, 请检查Json格式. \n${e.message}`)
       }
     }
+    sendNotify("京东多合一签到SCF:",notification)
     $nobyda.time();
   } else {
     throw new Error('脚本终止, 未获取Cookie ‼️')
@@ -754,9 +840,9 @@ function JDUserSign1(s, key, title, body) {
 async function JDUserSign2(s, key, title, tid, acData) {
   await new Promise(resolve => {
     let lkt = new Date().getTime()
-    let lks = md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
+    let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
     $nobyda.get({
-      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=q8DNJdpcfRQ69gIx`,
+      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=JL1VTNRadM68cIMQ`,
       headers: {
         Cookie: KEY,
         'lkt': lkt,
@@ -786,9 +872,9 @@ async function JDUserSign2(s, key, title, tid, acData) {
   return new Promise(resolve => {
     setTimeout(() => {
       let lkt = new Date().getTime()
-      let lks = md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
+      let lks = md5('' + 'JL1VTNRadM68cIMQ' + lkt).toString()
       const JDUrl = {
-        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=q8DNJdpcfRQ69gIx',
+        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=JL1VTNRadM68cIMQ',
         headers: {
           Cookie: KEY,
           'lkt': lkt,
@@ -1770,6 +1856,7 @@ function nobyda() {
       }
     }
     console.log(`${title}\n${subtitle}\n${message}`)
+    notification += message
     if (isQuanX) $notify(title, subtitle, message, Opts(rawopts))
     if (isSurge) $notification.post(title, subtitle, message, Opts(rawopts))
     if (isJSBox) $push.schedule({
@@ -1948,3 +2035,7 @@ function nobyda() {
 };
 // md5
 !function(n){function t(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}function r(n,t){return n<<t|n>>>32-t}function e(n,e,o,u,c,f){return t(r(t(t(e,n),t(u,f)),c),o)}function o(n,t,r,o,u,c,f){return e(t&r|~t&o,n,t,u,c,f)}function u(n,t,r,o,u,c,f){return e(t&o|r&~o,n,t,u,c,f)}function c(n,t,r,o,u,c,f){return e(t^r^o,n,t,u,c,f)}function f(n,t,r,o,u,c,f){return e(r^(t|~o),n,t,u,c,f)}function i(n,r){n[r>>5]|=128<<r%32,n[14+(r+64>>>9<<4)]=r;var e,i,a,d,h,l=1732584193,g=-271733879,v=-1732584194,m=271733878;for(e=0;e<n.length;e+=16){i=l,a=g,d=v,h=m,g=f(g=f(g=f(g=f(g=c(g=c(g=c(g=c(g=u(g=u(g=u(g=u(g=o(g=o(g=o(g=o(g,v=o(v,m=o(m,l=o(l,g,v,m,n[e],7,-680876936),g,v,n[e+1],12,-389564586),l,g,n[e+2],17,606105819),m,l,n[e+3],22,-1044525330),v=o(v,m=o(m,l=o(l,g,v,m,n[e+4],7,-176418897),g,v,n[e+5],12,1200080426),l,g,n[e+6],17,-1473231341),m,l,n[e+7],22,-45705983),v=o(v,m=o(m,l=o(l,g,v,m,n[e+8],7,1770035416),g,v,n[e+9],12,-1958414417),l,g,n[e+10],17,-42063),m,l,n[e+11],22,-1990404162),v=o(v,m=o(m,l=o(l,g,v,m,n[e+12],7,1804603682),g,v,n[e+13],12,-40341101),l,g,n[e+14],17,-1502002290),m,l,n[e+15],22,1236535329),v=u(v,m=u(m,l=u(l,g,v,m,n[e+1],5,-165796510),g,v,n[e+6],9,-1069501632),l,g,n[e+11],14,643717713),m,l,n[e],20,-373897302),v=u(v,m=u(m,l=u(l,g,v,m,n[e+5],5,-701558691),g,v,n[e+10],9,38016083),l,g,n[e+15],14,-660478335),m,l,n[e+4],20,-405537848),v=u(v,m=u(m,l=u(l,g,v,m,n[e+9],5,568446438),g,v,n[e+14],9,-1019803690),l,g,n[e+3],14,-187363961),m,l,n[e+8],20,1163531501),v=u(v,m=u(m,l=u(l,g,v,m,n[e+13],5,-1444681467),g,v,n[e+2],9,-51403784),l,g,n[e+7],14,1735328473),m,l,n[e+12],20,-1926607734),v=c(v,m=c(m,l=c(l,g,v,m,n[e+5],4,-378558),g,v,n[e+8],11,-2022574463),l,g,n[e+11],16,1839030562),m,l,n[e+14],23,-35309556),v=c(v,m=c(m,l=c(l,g,v,m,n[e+1],4,-1530992060),g,v,n[e+4],11,1272893353),l,g,n[e+7],16,-155497632),m,l,n[e+10],23,-1094730640),v=c(v,m=c(m,l=c(l,g,v,m,n[e+13],4,681279174),g,v,n[e],11,-358537222),l,g,n[e+3],16,-722521979),m,l,n[e+6],23,76029189),v=c(v,m=c(m,l=c(l,g,v,m,n[e+9],4,-640364487),g,v,n[e+12],11,-421815835),l,g,n[e+15],16,530742520),m,l,n[e+2],23,-995338651),v=f(v,m=f(m,l=f(l,g,v,m,n[e],6,-198630844),g,v,n[e+7],10,1126891415),l,g,n[e+14],15,-1416354905),m,l,n[e+5],21,-57434055),v=f(v,m=f(m,l=f(l,g,v,m,n[e+12],6,1700485571),g,v,n[e+3],10,-1894986606),l,g,n[e+10],15,-1051523),m,l,n[e+1],21,-2054922799),v=f(v,m=f(m,l=f(l,g,v,m,n[e+8],6,1873313359),g,v,n[e+15],10,-30611744),l,g,n[e+6],15,-1560198380),m,l,n[e+13],21,1309151649),v=f(v,m=f(m,l=f(l,g,v,m,n[e+4],6,-145523070),g,v,n[e+11],10,-1120210379),l,g,n[e+2],15,718787259),m,l,n[e+9],21,-343485551),l=t(l,i),g=t(g,a),v=t(v,d),m=t(m,h)}return[l,g,v,m]}function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8){r+=String.fromCharCode(n[t>>5]>>>t%32&255)}return r}function d(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1){r[t]=0}var e=8*n.length;for(t=0;t<e;t+=8){r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32}return r}function h(n){return a(i(d(n),8*n.length))}function l(n,t){var r,e,o=d(n),u=[],c=[];for(u[15]=c[15]=void 0,o.length>16&&(o=i(o,8*n.length)),r=0;r<16;r+=1){u[r]=909522486^o[r],c[r]=1549556828^o[r]}return e=i(u.concat(d(t)),512+8*t.length),a(i(c.concat(e),640))}function g(n){var t,r,e="";for(r=0;r<n.length;r+=1){t=n.charCodeAt(r),e+="0123456789abcdef".charAt(t>>>4&15)+"0123456789abcdef".charAt(15&t)}return e}function v(n){return unescape(encodeURIComponent(n))}function m(n){return h(v(n))}function p(n){return g(m(n))}function s(n,t){return l(v(n),v(t))}function C(n,t){return g(s(n,t))}function A(n,t,r){return t?r?s(t,n):C(t,n):r?m(n):p(n)}md5=A}(this);
+
+}).catch(e => {
+console.error("ERRROR:",e)
+})
