@@ -25,7 +25,7 @@ cron "31 5 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/mai
 运动户外盲盒活动 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_hwmh.js, cronexpr="31 5 * * *", timeout=3600, enable=true
 */
 const $ = new Env('运动户外盲盒活动');
-const Faker=require('./sign_graphics_validate.js') 
+const Faker=require('./utils/sign_graphics_validate.js') 
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
