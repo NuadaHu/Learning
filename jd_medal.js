@@ -1,22 +1,8 @@
-/*
+/**
 农场集勋章
-
-by: TG频道：https://t.me/sheeplost
-活动时间：2021-07-15到2021-0815
-更新时间：2021-06-3 12:00
-脚本兼容: QuantumultX, Surge,Loon, JSBox, Node.js
-=================================Quantumultx=========================
-[task_local]
-#农场集勋章
-16 7,16 * * * https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_medal.js, tag=农场集勋章, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
-=================================Loon===================================
-[Script]
-cron "16 7,16 * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_medal.js,tag=农场集勋章
-===================================Surge================================
-农场集勋章 = type=cron,cronexp="16 7,16 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_medal.js
-====================================小火箭=============================
-农场集勋章 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_medal.js, cronexpr="16 7,16 * * *", timeout=3600, enable=true
- */
+cron 16 7,16 * * * jd_medal.js
+TG频道：https://t.me/sheeplost
+*/
 const $ = new Env('农场集勋章');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;

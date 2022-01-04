@@ -131,15 +131,17 @@ if ($.isNode() && process.env.BEANCHANGE_DISABLECASH) {
 
 if ($.isNode() && process.env.BEANCHANGE_ALLNOTIFY) {
 	
-	var strTempNotify=process.env.BEANCHANGE_ALLNOTIFY ? process.env.BEANCHANGE_ALLNOTIFY.split('&') : [];
+/* 	var strTempNotify=process.env.BEANCHANGE_ALLNOTIFY ? process.env.BEANCHANGE_ALLNOTIFY.split('&') : [];
 	if (strTempNotify.length > 0) {
 		for (var TempNotifyl in strTempNotify) {					
 			strAllNotify+=strTempNotify[TempNotifyl]+'\n';
 		}
-	}
+	} */
+	strAllNotify=process.env.BEANCHANGE_ALLNOTIFY;
 	console.log(`检测到设定了公告,将在推送信息中置顶显示...`);
 	strAllNotify = `【✨✨✨✨公告✨✨✨✨】\n`+strAllNotify;
 	console.log(strAllNotify);
+	strAllNotify +=`\n🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏🎏`
 }
 
 if (EnableMonth == "true" && Today.getDate() == 1 && Today.getHours() > 17)
@@ -558,13 +560,12 @@ async function showMsg() {
 	ReturnMessage += `\n`;
 	strsummary+= `\n`;
 	ReturnMessage += `【昨日京豆】收${$.incomeBean}豆`;
-	strsummary+= `【昨日京豆】收${$.incomeBean}豆`;
+	
 	if ($.expenseBean != 0) {
-		ReturnMessage += `,支${$.expenseBean}豆`;
-		strsummary += `,支${$.expenseBean}豆`;
+		ReturnMessage += `,支${$.expenseBean}豆`;		
 	}
 	ReturnMessage += `\n`;	
-	strsummary += `\n`;	
+	
 	if ($.beanCount){		
 		ReturnMessage += `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;
 		strsummary+= `【当前京豆】${$.beanCount}豆(≈${(($.beanCount-$.beanChangeXi)/ 100).toFixed(2)}元)\n`;	
@@ -578,22 +579,16 @@ async function showMsg() {
 	}
 	
 	if (doCheckJxBeans == "true") {
-		ReturnMessage += `【今日喜豆】收${$.todayinJxBean}豆`;
-		strsummary+= `【今日喜豆】收${$.todayinJxBean}豆`;
+		ReturnMessage += `【今日喜豆】收${$.todayinJxBean}豆`;		
 		if ($.todayOutJxBean != 0) {
-			ReturnMessage += `,支${$.todayOutJxBean}豆`;
-			strsummary += `,支${$.todayOutJxBean}豆`;
+			ReturnMessage += `,支${$.todayOutJxBean}豆`;			
 		}
-		ReturnMessage += `\n`;
-		strsummary += `\n`;
-		ReturnMessage += `【昨日喜豆】收${$.inJxBean}豆`;
-		strsummary += `【昨日喜豆】收${$.inJxBean}豆`;
+		ReturnMessage += `\n`;		
+		ReturnMessage += `【昨日喜豆】收${$.inJxBean}豆`;		
 		if ($.OutJxBean != 0) {
-			ReturnMessage += `,支${$.OutJxBean}豆`;
-			strsummary += `,支${$.OutJxBean}豆`;
+			ReturnMessage += `,支${$.OutJxBean}豆`;			
 		}
-		ReturnMessage += `\n`;
-		strsummary += `\n`;
+		ReturnMessage += `\n`;		
 		ReturnMessage += `【当前喜豆】${$.xibeanCount}喜豆(≈${($.xibeanCount/ 100).toFixed(2)}元)\n`;
 		strsummary += `【当前喜豆】${$.xibeanCount}喜豆(≈${($.xibeanCount/ 100).toFixed(2)}元)\n`;
 	}
@@ -818,13 +813,13 @@ async function showMsg() {
 
 	if ($.isNode() && WP_APP_TOKEN_ONE) {
 		var strTitle="京东资产变动";
+		ReturnMessage=`【账号名称】${$.nickName || $.UserName}\n`+ReturnMessage;
 		
 		if (TempBaipiao) {
-			strsummary=TempBaipiao + `\n` +strsummary;			
+			strsummary=TempBaipiao +strsummary;			
 			TempBaipiao = `【⏰商品白嫖活动提醒⏰】\n` + TempBaipiao;
 			ReturnMessage = TempBaipiao + `\n` + ReturnMessage;			
 		}
-		ReturnMessage=`【账号名称】${$.nickName || $.UserName}\n`+ReturnMessage;
 		
 		ReturnMessage += RemainMessage;
 		if(strAllNotify)
