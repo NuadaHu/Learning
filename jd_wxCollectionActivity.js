@@ -7,13 +7,12 @@ TG https://t.me/duckjobs
 
 JD_CART_REMOVESIZE || 20; // 运行一次取消多全部已关注的商品。数字0表示不取关任何商品
 JD_CART_REMOVEALL || true;    //是否清空，如果为false，则上面设置了多少就只删除多少条
-
 */
 const $ = new Env('加购物车抽奖');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
-let cookiesArr = [], cookie = '', message = '' ,isPush = false;
-let activityIdList = ['11b4d4d13fa24062bb0cb45c0abd3301', 'f0ffa62f09f6447b8fcfddaeafd15810', '421c0b9e90f2423d8ef980c2508bc7b2', 'c475a9c7b08545b9b359d1a97f14ec8c', '47d527740de74ed88f65e946b4d0500a', '4363aec53aac44309e8afa5cf58ce950']
+let cookiesArr = [], cookie = '', message = '' ;
+let activityIdList = ['fe646b9fda604d40932aab0ccecb0042', '713d25a249554ff1a3940fc1dcb56ac5']
 let lz_cookie = {}
 
 if (process.env.ACTIVITY_ID && process.env.ACTIVITY_ID != "") {
@@ -85,19 +84,19 @@ $.keywordsNum = 0;
                     break
                 }
                 await $.wait(2000)
-                // await requireConfig();
-                // do {
-                //     await getCart_xh();
-                //     $.keywordsNum = 0
-                //     if($.beforeRemove !== "0"){
-                //         await cartFilter_xh(venderCart);
-                //         if(parseInt($.beforeRemove) !== $.keywordsNum) await removeCart();
-                //         else {
-                //             console.log('由于购物车内的商品均包含关键字，本次执行将不删除购物车数据')
-                //             break;
-                //         }
-                //     } else break;
-                // } while(isRemoveAll && $.keywordsNum !== $.beforeRemove)
+                await requireConfig();
+                do {
+                    await getCart_xh();
+                    $.keywordsNum = 0
+                    if($.beforeRemove !== "0"){
+                        await cartFilter_xh(venderCart);
+                        if(parseInt($.beforeRemove) !== $.keywordsNum) await removeCart();
+                        else {
+                            console.log('由于购物车内的商品均包含关键字，本次执行将不删除购物车数据')
+                            break;
+                        }
+                    } else break;
+                } while(isRemoveAll && $.keywordsNum !== $.beforeRemove)
                 if ($.bean > 0) {
                     message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
                 }
@@ -359,6 +358,10 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 
 }
+function strToJson(str){
+	var json = eval('(' + str + ')');
+	return json;
+}
 function requireConfig(){
     return new Promise(resolve => {
         if($.isNode() && process.env.JD_CART){
@@ -381,7 +384,7 @@ function getCart_xh(){
         }
         $.get(option, async(err, resp, data) => {
             try{
-                data = JSON.parse(getSubstr(data, "window.cartData = ", "window._PFM_TIMING"));
+                data = strToJson(getSubstr(data, "window.cartData = ", "window._PFM_TIMING"));
                 $.areaId = data.areaId;   // locationId的传值
                 $.traceId = data.traceId; // traceid的传值
                 venderCart = data.cart.venderCart;

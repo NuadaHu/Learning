@@ -14,7 +14,7 @@ const querystring = require('querystring');
 const exec = require('child_process').exec;
 const $ = new Env();
 const timeout = 15000; //超时时间(单位毫秒)
-console.log("加载sendNotify，当前版本: 20220128");
+console.log("加载sendNotify，当前版本: 20220119");
 // =======================================go-cqhttp通知设置区域===========================================
 //gobot_url 填写请求地址http://127.0.0.1/send_private_msg
 //gobot_token 填写在go-cqhttp文件设置的访问密钥
@@ -122,7 +122,7 @@ let GOTIFY_PRIORITY = 0;
  */
 let PushErrorTime = 0;
 let strTitle = "";
-let ShowRemarkType = "1";
+let ShowRemarkType = "3";
 let Notify_NoCKFalse = "false";
 let Notify_NoLoginSuccess = "false";
 let UseGroupNotify = 1;
@@ -160,7 +160,7 @@ let boolneedUpdate = false;
 let strCustom = "";
 let strCustomArr = [];
 let strCustomTempArr = [];
-let Notify_CKTask = "";
+let Notify_CKTask = "/ql/scripts/LJMX996_jd_aaron/ck_check_up.py";
 let Notify_SkipText = [];
 let isLogin = false;
 if (process.env.NOTIFY_SHOWNAMETYPE) {
@@ -172,7 +172,7 @@ if (process.env.NOTIFY_SHOWNAMETYPE) {
     if (ShowRemarkType == "4")
         console.log("检测到显示备注名称，格式为: 备注");
 }
-async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By ccwav Mod', strsummary = "") {
+async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By JOJO', strsummary = "") {
     console.log(`开始发送通知...`); 
 	
 	//NOTIFY_FILTERBYFILE代码来自Ca11back.
@@ -218,7 +218,7 @@ async function sendNotify(text, desp, params = {}, author = '\n\n本通知 By cc
         PUSH_PLUS_USER = '';
         PUSH_PLUS_TOKEN_hxtrip = '';
         PUSH_PLUS_USER_hxtrip = '';
-        Notify_CKTask = "";
+        Notify_CKTask = "/ql/scripts/LJMX996_jd_aaron/ck_check_up.py";
         Notify_SkipText = [];
 
         //变量开关
@@ -1487,21 +1487,20 @@ function getQLinfo(strCK, intcreated, strTimestamp, strRemark) {
                     if (TempRemarkList[j]) {
                         if (TempRemarkList[j].length == 13) {
                             DateTimestamp = new Date(parseInt(TempRemarkList[j]));
-                            //console.log(strPtPin + ": 获取登录时间成功:" + GetDateTime(DateTimestamp));                            
+                            //console.log(strPtPin + ": 获取登录时间成功:" + GetDateTime(DateTimestamp));
+                            //过期时间
+                            var UseDay = Math.ceil((DateToday.getTime() - DateCreated.getTime()) / 86400000);
+                            var LogoutDay = 30 - Math.ceil((DateToday.getTime() - DateTimestamp.getTime()) / 86400000);
+                            if (LogoutDay < 1) {
+                                strReturn = "\n【登录信息】总挂机" + UseDay + "天(账号即将到期，请重登续期)"
+                            } else {
+                                strReturn = "\n【登录信息】总挂机" + UseDay + "天(有效期约剩" + LogoutDay + "天)"
+                            }
                             break;
                         }
                     }
                 }
             }
-        }
-		
-		//过期时间
-        var UseDay = Math.ceil((DateToday.getTime() - DateCreated.getTime()) / 86400000);
-        var LogoutDay = 30 - Math.ceil((DateToday.getTime() - DateTimestamp.getTime()) / 86400000);
-        if (LogoutDay < 1) {
-            strReturn = "\n【登录信息】总挂机" + UseDay + "天(账号即将到期，请重登续期)"
-        } else {
-            strReturn = "\n【登录信息】总挂机" + UseDay + "天(有效期约剩" + LogoutDay + "天)"
         }
 
     }
@@ -1525,7 +1524,7 @@ function getRemark(strRemark) {
     }
 }
 
-async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n\n本通知 By ccwav Mod', strsummary = "") {
+async function sendNotifybyWxPucher(text, desp, PtPin, author = '\n\n本通知 By JOJO', strsummary = "") {
 
     try {
         var Uid = "";

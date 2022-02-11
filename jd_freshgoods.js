@@ -1,8 +1,12 @@
-const $ = new Env('搞基大神-饭粒');
+/*
+活动地址：https://u.jd.com/Pw49x5p
+cron 0-59/8 1,2,3 * * *
+*/
+const $ = new Env('搞鸡玩家-春节游戏互动');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const JD_API_HOST = 'https://ifanli.m.jd.com';
+const JD_API_HOST = 'https://jdjoy.jd.com/';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 var timestamp = Math.round(new Date().getTime()/1000).toString();
@@ -47,10 +51,15 @@ if ($.isNode()) {
     
     
     }
+await queryInteractiveRewardInfo()
 
-await getTaskFinishCount()  
+
+for(let i=1;i<10;i++){
+await getTaskList()
+await $.wait(3000)
 
 
+}
   }
  
 
@@ -63,40 +72,32 @@ await getTaskFinishCount()
   .finally(() => {
     $.done();
   })
-
-    function getTaskFinishCount() {
+function queryInteractiveRewardInfo() {
  return new Promise((resolve) => {
+     let aa = {
+    url: `https://h5.m.jd.com/babelDiy/Zeus/42CC2AdvzUnXheP1CmTXrm7vHYSp/index.html?code=90542d6a09e34c8f9ae37ec768efd875&tttparams=6X3y13myeyJnTGF0IjoiMjkuNTQ0NTgiLCJnTG5nIjoiMTE0LjA2MzI3MSIsImdwc19hcmVhIjoiMTdfMTQ1OF8xNDYzXzQzODk0IiwibGF0IjoyOS41NDE1MTIsImxuZyI6MTE0LjA2MjY0MSwibW9kZWwiOiJQQ0FNMDAiLCJwcnN0YXRlIjoiMCIsInVuX2FyZWEiOiIxN18xNDU4XzE0NjNfNDM4OTQifQ8==&sid=31386eb65a9268a386382b4b5338237w&un_area=17_1458_1463_43894&hideyl=1&cu=true&utm_source=kong&utm_medium=jingfen&utm_campaign=t_2024117194_&utm_term=55850d8a60b74a79b65f126e8e043d1c`,
+
+    headers: {
+'Referer': 'https://u.jd.com/Pw49x5p',
+'Host': 'h5.m.jd.com',
+'Connection': 'keep-alive',
+'Upgrade-Insecure-Requests': '1',
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat(0x6304051b)',
+'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+cookie: cookie,        
+
+    }
+  } 
+
+  $.get(aa, async (err, resp, data) => {
  
-  $.get(taskurl('getTaskFinishCount'), async (err, resp, data) => {
- 
+
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-             if(data.code==1){
 
-                 
-             
-               console.log(`总任务:${data.content.maxTaskCount}`)  
-               console.log(`当前已做${data.content.finishCount}个`)  
-if(data.content.finishCount==8){
- console.log('今天任务已做完')   
-}else 
-var task=data.content.maxTaskCount-data.content.finishCount
-for(let i=0;i<task;i++){
- await getTaskList()   
-}
-
-             }             
-             else if(data.code==0){
-             console.log('黑号 快去买吧 叼毛')
-              
-          }
-
-          }
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -106,11 +107,12 @@ for(let i=0;i<task;i++){
     })
   })
 }
+
  
   function getTaskList() {
  return new Promise((resolve) => {
   
-  $.get(taskurl('getTaskList'), async (err, resp, data) => {
+  $.get(taskurl(), async (err, resp, data) => {
       
       try {
         if (err) {
@@ -119,59 +121,35 @@ for(let i=0;i<task;i++){
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-             if(data.code==1){
-             list = data.content
-             for(let i=0;i<list.length;i++){
-             taskName = list[i].taskName 
-             taskId = list[i].taskId
-             taskType = list[i].taskType
-             if(taskId!=null){
-              console.log(taskName)
-              await saveTask(taskId,taskType)
-              await $.wait(20000)
-              await saveTaskRecord(taskId,taskType)
-             }
-             }
-             }else if(data.code==0){
-             console.log('任务已经完成')}
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
-function saveTaskRecord(taskId,taskType) {
- return new Promise((resolve) => {
-  let body = {"taskId":taskId,"taskType":taskType,"uid":uid,"tt":tt}
-  
-  $.post(taskposturl('saveTaskRecord',body), async (err, resp, data) => {
- //$.log(data)
-
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-             if(data.code==1){
-
-                 
-             
-               console.log(`${data.content.msg}`)  
-               
-
-             }             
-             else if(data.code==0){
-             console.log(`任务已做完`)
+             if(data.success==true){
+                pin = data.data.pin
+                $.log('邀请码：'+pin)
+             list = data.data.myTasks
+if(list[0].finishCount !== list[0].itemCount){
+    $.log(list[0].finishCount+"/"+list[0].itemCount)
+              await saveTask(list[0].taskType,list[0].taskId,list[0].taskItem.itemId)
               
+}
+if(list[1].finishCount !== list[1].itemCount){
+            $.log(list[1].finishCount+"/"+list[1].itemCount) 
+              await saveTask(list[1].taskType,list[1].taskId,list[1].taskItem.itemId)
+              
+}  
+if(list[2].finishCount !== list[2].itemCount){
+              $.log(list[2].finishCount+"/"+list[2].itemCount)
+              await saveTask(list[2].taskType,list[2].taskId,list[2].taskItem.itemId)
+             
+}
+ if(list[3].finishCount !== list[3].itemCount){
+     $.log(list[3].finishCount+"/"+list[3].itemCount)
+              await saveTask(list[3].taskType,list[3].taskId,'')
+              
+}           
+  await ddrea()           
+             }else if(data.success==false){
+             console.log(`${data.errorMessage}`)
           }
-
-          }
+        }
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -182,11 +160,40 @@ function saveTaskRecord(taskId,taskType) {
   })
 }
 
-function saveTask(taskId,taskType) {
+function ddrea() {
  return new Promise((resolve) => {
   
-  let body = {taskId: taskId, taskType: taskType}
-  $.post(taskposturl('saveTaskRecord',body), async (err, resp, data) => {
+  $.get(ddrw(), async (err, resp, data) => {
+      
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+if (safeGet(data)) {
+            data = JSON.parse(data);
+            if(data.success==true){
+$.log('ddrw:'+data.data.rewardNum+' '+data.data.rewardName)
+            }else   if(data.success==false){ 
+             console.log(`${data.errorMessage}`)   
+            }
+}
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+
+function saveTask(taskType,taskId,itemId) {
+ return new Promise((resolve) => {
+  
+  
+  $.post(taskposturl(`code=90542d6a09e34c8f9ae37ec768efd875&taskType=${taskType}&taskId=${taskId}&eid=undefined&fp=undefined&itemId=${itemId}`), async (err, resp, data) => {
 
 
       try {
@@ -196,16 +203,15 @@ function saveTask(taskId,taskType) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-             if(data.code==1){
+             if(data.success==true){
 
-                uid=data.content.uid 
-                tt=data.content.tt
-               console.log(`等待10S`)  
+               console.log(data.data.rewardPoints)  
                
 
              }             
-             else if(data.code==0){
-             //console.log(`${data.content.msg}`)
+             else if(data.success==false){
+             console.log(`${data.errorMessage}`)
+             
               
           }
 
@@ -297,38 +303,73 @@ function jsonParse(str) {
   }
 }
 
-  
-  function taskurl(functionId) {
+function add(shopId) {
   return {
-    url: `${JD_API_HOST}/rebateapi/task/${functionId}`,
+    url: `https://wq.jd.com/deal/mshopcart/addcmdy?callback=addCartCBA&sceneval=2&reg=1&scene=2&type=0&commlist=${shopId},,1,${shopId},1,0,0&locationid=1-72-2819&t=0.1751513608530415`,
    
     headers: {
-
+        'Host': 'wq.jd.com',
         "Cookie": cookie,
-        "Origin": "https://ifanli.m.jd.com",
+        "Origin": "https://item.m.jd.com/",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
-
+'Referer': 'https://item.m.jd.com/',
     }
   }
 }
 
-function taskposturl(functionId,body) {
+  function follow(shopId) {
   return {
-    url: `${JD_API_HOST}/rebateapi/task/${functionId}`,
-    body:`${unescape(JSON.stringify(body))}`,
+    url: `https://wq.jd.com/fav/shop/AddShopFav?shopId=${shopId}&venderId=${shopId}&_=1643979556228&sceneval=2&g_login_type=1&callback=jsonpCBKJ&g_ty=ls`,
+   
     headers: {
-'Host': 'ifanli.m.jd.com',
-'Accept': 'application/json, text/plain, */*',
-'Accept-Language': 'zh-cn',
-'Accept-Encoding':' gzip, deflate, br',
-'Cache-Control': 'no-cache',
-'Content-Type': 'application/json;charset=utf-8',
-'Origin': 'https://ifanli.m.jd.com',
-'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x1800102a) NetType/4G Language/zh_CN',
-'Connection': 'keep-alive',
-'Referer': 'https://ifanli.m.jd.com/rebate/earnBean.html?cu=true&utm_source=kong&utm_medium=jingfen&utm_campaign=t_1000126035_&utm_term=addceb25a70d4aa1ba19344b2577a850',
-cookie: cookie,        
+        'Host': 'wq.jd.com',
+        "Cookie": cookie,
+        "Origin": "https://shop.m.jd.com/",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
 
+'Referer': 'https://shop.m.jd.com/',
+
+    }
+  }
+}
+ function ddrw() {
+  return {
+    url: `${JD_API_HOST}module/freshgoods/draw?code=90542d6a09e34c8f9ae37ec768efd875&eid=&fp=`,
+   
+    headers: {
+        'Host': 'jdjoy.jd.com',
+        "Cookie": cookie,
+        "Origin": "https://h5.m.jd.com/",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+'Referer': 'https://h5.m.jd.com/',
+    }
+  }
+} 
+  function taskurl() {
+  return {
+    url: `${JD_API_HOST}module/freshgoods/getMyTask?code=90542d6a09e34c8f9ae37ec768efd875`,
+   
+    headers: {
+        'Host': 'jdjoy.jd.com',
+        "Cookie": cookie,
+        "Origin": "https://h5.m.jd.com/",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+'Referer': 'https://h5.m.jd.com/',
+    }
+  }
+}
+
+function taskposturl(body) {
+  return {
+    url: `${JD_API_HOST}module/freshgoods/doTask`,
+    body:`${body}`,
+    headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'Host': 'jdjoy.jd.com',
+        "Cookie": cookie,
+        "Origin": "https://h5.m.jd.com/",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),      
+'Referer': 'https://h5.m.jd.com/',
     }
   }
 }

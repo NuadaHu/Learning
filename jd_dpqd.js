@@ -1,23 +1,19 @@
 /*
-cron 0 0 * * * jd_dpqd.js
+1 0,1,8 * * * jd_dpqd.js
+
 店铺签到，各类店铺签到，有新的店铺直接添加token即可
-搬运cui521大佬脚本，请勿外传！！！
-环境变量:
-DPQDTK: token1&token2
-仓库不再提供token
+============Quantumultx===============
+[task_local]
+#店铺签到
+15 2,14 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js, tag=店铺签到, enabled=true
+===========Loon============
+[Script]
+cron "15 2,14 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js,tag=店铺签到
+============Surge=============
+店铺签到 = type=cron,cronexp="15 2,14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.js
+===========小火箭========
+店铺签到 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_shop_sign.jss, cronexpr="15 2,14 * * *", timeout=3600, enable=true
 */
-let token = []
-if (process.env.DPQDTK) {
-  if (process.env.DPQDTK.includes('\n')) {
-    token = [...process.env.DPQDTK.split('\n'),...token]
-  } else {
-    token = [...process.env.DPQDTK.split('&'),...token]
-  }
-}
-if (!token.length) {
-  console.log('无店铺签到token,不执行.需自备token:环境变DPQDTK: tk1&tk2.')
-  return
-}
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -30,6 +26,20 @@ let activityId=''
 let vender=''
 let num=0
 let shopname=''
+const token = [
+"72E86C6A4BF83ED5DAB5696B126A4F3D",
+"EDDEC3265AA4AA5AB434B5C134B0EC67",
+"69B31DB107B9FE242E286E4E8B3E0E75",
+"F3D4A0EF164515A9A90F03DF6964A1A6",
+"1071B720BDB54B6ED8163A6B4116F35F",
+"494AF6FBBCA18925C0BFDB87562C5106",
+"EE19DA0EE109843655ED51468D6F1A20",
+"5F8880D8C7118B422FF327C44CD03055",
+"73A2C9E7D71BB453FDD076E90295A5A4",
+"EC519D173D371D156FCB3EB3D07D0CF2",
+"A4211642777968D9ECBF453A11851593",
+"2FB868C5EECA6778C66F5A0C7AA1493D"
+]
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
