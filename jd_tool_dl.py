@@ -49,4 +49,3 @@ if __name__ == '__main__':
             os.remove(f)
         print(f"开始下载依赖：{f}")
         getTool(f)
-
