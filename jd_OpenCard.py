@@ -1343,7 +1343,7 @@ def start():
     time.sleep(1)
     message("\n------- 入会总耗时 : %.03f 秒 seconds -------" % (endtime - starttime))
     print("{0}\n{1}\n{2}".format("*" * 30, scriptHeader, remarks))
-    send("【JD入会领豆】", message_info)
+    # send("【JD入会领豆】", message_info)
     exitCodeFun(0)
 if __name__ == '__main__':
     start()

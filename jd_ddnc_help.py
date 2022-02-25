@@ -255,8 +255,8 @@ def start():
         for i in count:
             msg(f"💧账号【{i}】本次助力收获水滴:{count[i]}g 💧")
         msg("*" * 30)
-        if isNotice:
-            send(scriptName, msg_info)
+        # if isNotice:
+        #     send(scriptName, msg_info)
     except Exception as e:
         print(e)
 

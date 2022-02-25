@@ -225,10 +225,10 @@ def start():
                         msg(f"☺️[{master}]已完成助力~")
                         getHelpAddedBonus(cookiesList[ckNum])
                         break
-        if isNotice:
-            send(scriptName, msg_info)
-        else:
-            print("\n", scriptName, "\n", msg_info)
+        # if isNotice:
+        #     send(scriptName, msg_info)
+        # else:
+        #     print("\n", scriptName, "\n", msg_info)
     except Exception as e:
         print(e)
 
