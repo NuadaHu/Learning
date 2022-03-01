@@ -1,5 +1,5 @@
 /*
-cron "30 * * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
+cron "30 0-23/3 * * *" jd_CheckCK.js, tag:京东CK检测by-ccwav
  */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 const $ = new Env('京东CK检测');
@@ -12,6 +12,7 @@ const {
 	getEnvById,
     DisableCk,
     EnableCk,
+    updateEnv,
     getstatus
 } = require('./ql');
 const api = got.extend({
@@ -205,6 +206,11 @@ if ($.isNode() && process.env.CHECKCK_ALLNOTIFY) {
                         await isLoginByX1a0He();
                     } else {
                         console.log(`成功获取到别名: ${$.nickName},Pass!\n`);
+                if(envs[i].remarks == null || envs[i].remarks =="" || envs[i].remarks == "未知")
+                        {
+                        await updateEnv(envs[i].value,envs[i]._id,$.nickName);
+                        console.log(`成功更新别名进备注: ${$.nickName},Pass!\n`);
+                        }
                     }
                 }
             }

@@ -1,33 +1,24 @@
 /*
-女装盲盒
-活动入口：京东app-女装馆-赢京豆
-已支持IOS双京东账号,Node.js支持N个京东账号
-脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
-============Quantumultx===============
-[task_local]
-#女装盲盒
-35 1,23 * * * jd_nzmh.js, tag=女装盲盒, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+#盲盒任务抽京豆，自行加入以下环境变量，多个活动用@连接
+export jd_mhurlList=""
 
-================Loon==============
-[Script]
-cron "35 1,23 * * *" script-path=jd_nzmh.js,tag=女装盲盒
-
-===============Surge=================
-女装盲盒 = type=cron,cronexp="35 1,23 * * *",wake-system=1,timeout=3600,script-path=jd_nzmh.js
-
-============小火箭=========
-女装盲盒 = type=cron,script-path=jd_nzmh.js, cronexpr="35 1,23 * * *", timeout=3600, enable=true
+即时任务，无需cron
  */
-const $ = new Env('女装盲盒抽京豆');
+
+const $ = new Env('盲盒任务抽京豆');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
+let jd_mhurlList = '';
+let jd_mhurlArr = [];  
+let jd_mhurl = '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
   })
+  if (process.env.jd_mhurlList) jd_mhurlList = process.env.jd_mhurlList
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
@@ -37,9 +28,10 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
     return;
   }
-  console.log('女装盲盒\n' +
-      '活动时间：2022-1-29至2022-2-28\n' +
-      '活动地址：https://anmp.jd.com/babelDiy/Zeus/3ZHWXfEDpu5GyX1BgCEN3qQwrC4K/index.html');
+  if (!jd_mhurlList) {
+    $.log(`暂时没有盲盒任务，改日再来～`);
+    return;
+  }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -58,13 +50,22 @@ if ($.isNode()) {
         }
         continue
       }
-      try {
-        await jdMh('https://anmp.jd.com/babelDiy/Zeus/3ZHWXfEDpu5GyX1BgCEN3qQwrC4K/index.html')
-      } catch (e) {
+      let jd_mhurlArr = jd_mhurlList.split("@");
+      for (let j = 0; j < jd_mhurlArr.length; j++) {
+      jd_mhurl = jd_mhurlArr[j]
+      console.log(`新的盲盒任务已经准备好: ${jd_mhurl}，准备开始薅豆`);
+        try {
+        await jdMh(jd_mhurl)
+        } catch (e) {
         $.logErr(e)
+        }
       }
     }
   }
+  if (allMessage) {
+    if ($.isNode()) await notify.sendNotify(`${$.name}`, `${allMessage}`);
+    $.msg($.name, '', allMessage);
+    }
 })()
   .catch((e) => {
     $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -93,6 +94,7 @@ function showMsg() {
   return new Promise(resolve => {
     if ($.beans) {
       message += `本次运行获得${$.beans}京豆`
+      allMessage += `京东账号${$.index}-${$.nickName}：   获得【${$.beans}】京豆\n`
       $.msg($.name, '', `京东账号${$.index}${$.nickName}\n${message}`);
     }
     resolve()
@@ -100,7 +102,7 @@ function showMsg() {
 }
 
 function getInfo(url) {
-  console.log(`url:${url}`)
+  console.log(`\n盲盒任务url:${url}\n`)
   return new Promise(resolve => {
     $.get({
       url,
@@ -209,7 +211,7 @@ function taskUrl(function_id, body = '') {
       'Content-Type': 'application/json;charset=utf-8',
       'Origin': 'wq.jd.com',
       'User-Agent': 'JD4iPhone/167490 (iPhone; iOS 14.2; Scale/3.00)',
-      'Referer': `https://anmp.jd.com/babelDiy/Zeus/2x36jyruNVDWxUiAiGAgHRrkqVX2/index.html?wxAppName=jd`,
+      'Referer': `${jd_mhurl}?wxAppName=jd`,
       'Cookie': cookie
     }
   }
