@@ -1,6 +1,6 @@
 /*
 ck1 助力作者, 后续助力ck1, ck1别黑号
-
+7 7 7 7 7 jd_lzdz1_customized2.js
 */
 const $ = new Env("女王驾到 钜惠来袭");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -29,11 +29,11 @@ if ($.isNode()) {
         return;
     }
     // authorCodeList = await getAuthorCodeList('https://gitee.com/fatelight/Code/raw/master/lzdz1.json')
-    if($.getAuthorCodeListerr === false){
-        authorCodeList = [
-            // '980f55cfc5494ff895ddf9a3b2d3ff3b',
-        ]
-    }
+    // if($.getAuthorCodeListerr === false){
+    //     authorCodeList = [
+    //         // '980f55cfc5494ff895ddf9a3b2d3ff3b',
+    //     ]
+    // }
     // console.log(authorCodeList)
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -57,7 +57,6 @@ if ($.isNode()) {
             $.ADID = getUUID('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', 1);
             $.UUID = getUUID('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
             authorCodeList = [
-                '3bb2a33661eb4828ad2d192b553e6ab2',
                 '941e785650c544eebef20bf2d7ae91a6',
                 '325885af5ae745a298058bd2c905cdab',
                 '29ffcf5f13974af994d36a0cb10ad99a'
