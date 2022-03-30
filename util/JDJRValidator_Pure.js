@@ -203,7 +203,7 @@ const DATA = {
   "product": "embed",
   "lang": "zh_CN",
 };
-const SERVER = '61.49.99.122';
+const SERVER = 'iv.jd.com';
 
 class JDJRValidator {
   constructor() {
@@ -295,19 +295,20 @@ class JDJRValidator {
     return new Promise((resolve, reject) => {
       const fnId = `jsonp_${String(Math.random()).replace('.', '')}`;
       const extraData = {callback: fnId};
-      const query = new URLSearchParams({...DATA, ...{"scene": scene}, ...extraData, ...data}).toString();
-      const url = `http://${SERVER}${api}?${query}`;
+      const query = new URLSearchParams({...DATA,...{"scene": scene}, ...extraData, ...data}).toString();
+      const url = `https://${SERVER}${api}?${query}`;
       const headers = {
         'Accept': '*/*',
         'Accept-Encoding': 'gzip,deflate,br',
-        'Accept-Language': 'zh-CN,en-US',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
         'Connection': 'keep-alive',
-        'Host': SERVER,
+        'Host': "iv.jd.com",
         'Proxy-Connection': 'keep-alive',
-        'Referer': 'https://h5.m.jd.com/babelDiy/Zeus/2wuqXrZrhygTQzYA7VufBEpj4amH/index.html',
+        'Referer': 'https://h5.m.jd.com/',
         'User-Agent': UA,
       };
-      const req = http.get(url, {headers}, (response) => {
+
+      const req = https.get(url, {headers}, (response) => {
         let res = response;
         if (res.headers['content-encoding'] === 'gzip') {
           const unzipStream = new stream.PassThrough();
@@ -395,7 +396,7 @@ function getCoordinate(c) {
   return b.join("")
 }
 
-const HZ = 5;
+const HZ = 20;
 
 class MousePosFaker {
   constructor(puzzleX) {
@@ -529,4 +530,3 @@ function injectToRequest(fn,scene = 'cww', ua = '') {
 }
 
 exports.injectToRequest = injectToRequest;
-exports.sleep = sleep;
