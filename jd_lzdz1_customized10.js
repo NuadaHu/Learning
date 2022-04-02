@@ -27,7 +27,7 @@ if ($.isNode()) {
     $.msg($.name, "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取", "https://bean.m.jd.com/bean/signIndex.action", { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
   }
-  // authorCodeList = await getAuthorCodeList('https://raw.githubusercontent.com/okyyds/duck/master/code/lzdz10.json')
+  // authorCodeList = await getAuthorCodeList('https://raw.githubusercontent.com/11111130/duck/master/code/lzdz10.json')
   // if ($.getAuthorCodeListerr === false) {
   //     authorCodeList = [
   //       'f7d7bcdc4d3e408ea0a584f27f617e4b',
