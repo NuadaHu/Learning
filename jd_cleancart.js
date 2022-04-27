@@ -22,12 +22,12 @@ let args_xh = {
      * 控制脚本是否执行，设置为true时才会执行删除购物车 
      * 环境变量名称：JD_CART
      */
-    clean: process.env.JD_CART === 'true' || true,
+    clean: process.env.JD_CART === 'true' || false,
     /*
      * 控制脚本运行一次取消多少条购物车数据，为0则不删除，默认为100
      * 环境变量名称：XH_CLEAN_REMOVESIZE
      */
-    removeSize: process.env.XH_CLEAN_REMOVESIZE * 1 || 200,
+    removeSize: process.env.XH_CLEAN_REMOVESIZE * 1 || 100,
     /*
      * 关键字/关键词设置，当购物车商品标题包含关键字/关键词时，跳过该条数据，多个则用@分隔，例如 旺仔牛奶@红外线@紫光
      * 环境变量名称：XH_CLEAN_KEYWORDS
