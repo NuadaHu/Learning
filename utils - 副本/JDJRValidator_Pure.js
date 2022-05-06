@@ -1,4 +1,5 @@
 const https = require('https');
+const http = require('http');
 const stream = require('stream');
 const zlib = require('zlib');
 const vm = require('vm');
