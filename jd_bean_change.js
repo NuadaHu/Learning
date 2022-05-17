@@ -1,5 +1,5 @@
 /*
-cron "10 12,22 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
+cron "30 21 * * *" jd_bean_change.js, tag:资产变化强化版by-ccwav
  */
 
 //详细说明参考 https://github.com/ccwav/QLScript2
@@ -72,7 +72,6 @@ RemainMessage += '【东东农场】京东->我的->东东农场,完成是京东
 RemainMessage += '【京喜工厂】京喜->我的->京喜工厂,完成是商品红包,用于购买指定商品(不兑换会过期)\n';
 RemainMessage += '【京东金融】京东金融app->我的->养猪猪,完成是白条支付券,支付方式选白条支付时立减.\n';
 RemainMessage += '【其他】京喜红包只能在京喜使用,其他同理';
-let BEANCHANGE_PERSENT="130"
 
 let WP_APP_TOKEN_ONE = "";
 
@@ -99,8 +98,8 @@ if(WP_APP_TOKEN_ONE)
 else
 	console.log(`检测到未配置Wxpusher的Token，禁用一对一推送...`);
 		
-if ($.isNode() && BEANCHANGE_PERSENT) {
-	intPerSent = parseInt(BEANCHANGE_PERSENT);
+if ($.isNode() && process.env.BEANCHANGE_PERSENT) {
+	intPerSent = parseInt(process.env.BEANCHANGE_PERSENT);
 	console.log(`检测到设定了分段通知:` + intPerSent);
 }
 
@@ -163,7 +162,7 @@ if ($.isNode()) {
 }
 
 //查询开关
-let strDisableList = "金融养猪&东东农场";
+let strDisableList = "";
 let DisableIndex=-1;
 if ($.isNode()) {	
 	strDisableList = process.env.BEANCHANGE_DISABLELIST ? process.env.BEANCHANGE_DISABLELIST.split('&') : [];
@@ -284,6 +283,13 @@ if(DisableIndex!=-1){
 	RemainMessage="";
 }
 
+//汪汪赛跑
+let EnableJoyRun=true;
+DisableIndex=strDisableList.findIndex((item) => item === "汪汪赛跑");
+if(DisableIndex!=-1){
+	console.log("检测到设定关闭汪汪赛跑查询");
+	EnableJoyRun=false
+}
 	
 !(async() => {
 	if (!cookiesArr[0]) {
@@ -345,6 +351,8 @@ if(DisableIndex!=-1){
 			$.YunFeiTitle2="";
 			$.YunFeiQuan2 = 0;
 			$.YunFeiQuanEndTime2 = "";
+			$.JoyRunningAmount = "";
+			
 			TempBaipiao = "";
 			strGuoqi="";
 			console.log(`******开始查询【京东账号${$.index}】${$.nickName || $.UserName}*********`);
@@ -379,7 +387,8 @@ if(DisableIndex!=-1){
 		         getDdFactoryInfo(), // 京东工厂
 		         jdCash(), //领现金
 		         GetJxBeaninfo(), //喜豆查询
-		         GetPigPetInfo() //金融养猪
+		         GetPigPetInfo(), //金融养猪
+				 GetJoyRuninginfo() //汪汪赛跑
 		     ])
 			
 			await showMsg();
@@ -721,18 +730,24 @@ async function showMsg() {
 		ReturnMessage += `【京东秒杀】${$.JdMsScore}币(≈${($.JdMsScore / 1000).toFixed(2)}元)\n`;
 	}
 
-	if ($.joylevel || $.jdCash) {
+	if ($.joylevel || $.jdCash || $.JoyRunningAmount) {
 		ReturnMessage += `【其他信息】`;
 		if ($.joylevel) {
-			ReturnMessage += `汪汪:${$.joylevel}级`;
-			if ($.jdCash) {
-				ReturnMessage += ",";
-			}
+			ReturnMessage += `汪汪:${$.joylevel}级`;			
 		}
 		if ($.jdCash) {
+			if ($.joylevel) {
+				ReturnMessage += ",";
+			}			
 			ReturnMessage += `领现金:${$.jdCash}元`;
 		}
-
+		if ($.JoyRunningAmount) {
+			if ($.joylevel || $.jdCash) {
+				ReturnMessage += ",";
+			}			
+			ReturnMessage += `汪汪赛跑:${$.JoyRunningAmount}元`;
+		}
+		
 		ReturnMessage += `\n`;
 
 	}
@@ -2483,7 +2498,57 @@ async function jxbean() {
 
 }
 
-
+function GetJoyRuninginfo() {
+	if (!EnableJoyRun)
+		return;
+	
+    const headers = {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-CN,zh-Hans;q=0.9",
+        "Connection": "keep-alive",
+        "Content-Length": "376",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cookie": cookie,
+        "Host": "api.m.jd.com",
+        "Origin": "https://joypark.jd.com",
+        "Referer": "https://joypark.jd.com/",
+        "User-Agent": $.UA
+		}
+	var DateToday = new Date();
+	const body = {
+        'linkId': 'L-sOanK_5RJCz7I314FpnQ',
+		'isFromJoyPark':true,
+		'joyLinkId':'LsQNxL7iWDlXUs6cFl-AAg'
+    };
+    const options = {
+        url: `https://api.m.jd.com/?functionId=runningPageHome&body=${encodeURIComponent(JSON.stringify(body))}&t=${DateToday.getTime()}&appid=activities_platform&client=ios&clientVersion=3.8.12`,
+        headers,
+    }
+    return new Promise(resolve => {
+        $.get(options, (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`)
+                    console.log(`${$.name} API请求失败，请检查网路重试`)
+                } else {
+                    if (data) {
+						//console.log(data);
+                        data = JSON.parse(data);
+                        if (data.data.runningHomeInfo.prizeValue) {
+							$.JoyRunningAmount=data.data.runningHomeInfo.prizeValue * 1;							
+						}
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            }
+            finally {
+                resolve(data)
+            }
+        })
+    })
+}
 	
 function randomString(e) {
 	e = e || 32;
