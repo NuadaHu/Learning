@@ -1,23 +1,16 @@
 /*
-
 只做任务，邀请貌似不行
-
 手动进入活动完成引导，否则领取不了奖励
-
 入口：APP首页下拉-JOY庄园
-
 ============Quantumultx===============
 [task_local]
 #JOY庄园每日任务
 11 1,15 * * * jd_joymanor_task.js, tag=JOY庄园每日任务, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_joymanor_task.png, enabled=true
-
 ================Loon==============
 [Script]
 cron "11 1,15 * * *" script-path=jd_joymanor_task.js,tag=JOY庄园每日任务
-
 ===============Surge=================
 JOY庄园每日任务 = type=cron,cronexp="11 1,15 * * *",wake-system=1,timeout=3600,script-path=jd_joymanor_task.js
-
 ============小火箭=========
 JOY庄园每日任务 = type=cron,script-path=jd_joymanor_task.js, cronexpr="11 1,15 * * *", timeout=3600, enable=true
 */
@@ -36,11 +29,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 $.invitePinTaskList = []
-$.invitePin = [
-  "VxQJC6Sr0QZkcOHwxoTjrw",
-  "oRY9YryofcNg71MZeKSZseKD6P6BJzKv2NBGxfiuJ20",
-  "EDPUVDhR7nUPh3jUGDJ_GyiLt77-wROqWVP2aesRUt8"
-]
+$.invitePin = []
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
 !(async () => {
