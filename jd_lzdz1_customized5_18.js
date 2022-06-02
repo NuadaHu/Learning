@@ -1,9 +1,6 @@
 /*
 五月宠爱季 和你在一起
-<<<<<<< HEAD
-=======
 7 7 7 7 7 jd_lzdz1_customized5_18.js
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
 */
 const $ = new Env("五月宠爱季 和你在一起");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -62,11 +59,6 @@ if ($.isNode()) {
         '7dd1468579244d55a45af7a6a5ef51c1',
         'ad712ab8ddfd4c62908b50cc438e6f9f',
         '12795868bf034968b53039dce7d8a260',
-<<<<<<< HEAD
-        '42df88ffaf5a4822956b2d86c23add81',
-        '74fd7cb699c14eacbdf4ad1c3ba4f1d9'
-=======
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
       ];
       // $.authorCode = authorCodeList[random(0, authorCodeList.length)];
       $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
@@ -331,11 +323,7 @@ function taskUrl(function_id, body, isCommon) {
       "User-Agent": `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
       Connection: "keep-alive",
       Referer: $.activityUrl,
-<<<<<<< HEAD
-      Cookie: cookie,
-=======
       Cookie: $.cookie,
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     },
     body: body,
   };
@@ -449,10 +437,7 @@ function getFirstLZCK() {
                 }
               }
             }
-<<<<<<< HEAD
-=======
             $.cookie = cookie
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
           }
         } catch (error) {
           console.log(error);
