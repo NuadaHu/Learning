@@ -3,22 +3,23 @@
 活动结束时间未知
 活动入口：京东APP首页-京东直播
 地址：https://h5.m.jd.com/babelDiy/Zeus/2zwQnu4WHRNfqMSdv69UPgpZMnE2/index.html/
+<<<<<<< HEAD
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 ============Quantumultx===============
 [task_local]
 #京东直播
-50 12-14 * * * https://raw.githubusercontent.com/KingRan/JDJB/main/jd_live.js, tag=京东直播, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+50 12-14 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_live.js, tag=京东直播, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "50 12-14 * * *" script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_live.js,tag=京东直播
+cron "50 12-14 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_live.js,tag=京东直播
 
 ===============Surge=================
-京东直播 = type=cron,cronexp="50 12-14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_live.js
+京东直播 = type=cron,cronexp="50 12-14 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_live.js
 
 ============小火箭=========
-京东直播 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/JDJB/main/jd_live.js, cronexpr="50 12-14 * * *", timeout=3600, enable=true
+京东直播 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_live.js, cronexpr="50 12-14 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东直播');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -28,6 +29,23 @@ let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭�
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
 let uuid
+=======
+随机定时跑一次 或者自行定时
+5 12
+ */
+
+const $ = new Env('京东直播');
+const notify = $.isNode() ? require('./sendNotify') : '';
+
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
+
+let cookiesArr = [], cookie = '', message;
+let uuid
+let jdPandaToken = '';
+jdPandaToken = $.isNode() ? (process.env.PandaToken ? process.env.PandaToken : `${jdPandaToken}`) : ($.getdata('PandaToken') ? $.getdata('PandaToken') : `${jdPandaToken}`);
+
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -42,6 +60,13 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+<<<<<<< HEAD
+=======
+  if (!jdPandaToken) {
+    console.log('请填写Panda获取的Token,变量是PandaToken');
+    return;
+  }
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -50,6 +75,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       $.isLogin = true;
       $.nickName = '';
       message = '';
+<<<<<<< HEAD
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
@@ -62,6 +88,13 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
       }
       uuid = randomString(40)
       await jdHealth()
+=======
+      uuid = randomString(40)
+
+      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+      await jdHealth()
+      await $.wait(15000)
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     }
   }
 })()
@@ -117,10 +150,21 @@ function getTaskList() {
             }
             console.log(`去做分享直播间任务`)
             await shareTask()
+<<<<<<< HEAD
             await awardTask()
             console.log(`去做浏览直播间任务`)
             await viewTask()
             await awardTask("commonViewTask")
+=======
+            await $.wait(1500);
+            await awardTask()
+            await $.wait(1500);
+            console.log(`去做浏览直播间任务`)
+            await viewTask()
+            await $.wait(1500);
+            await awardTask("commonViewTask")
+            await $.wait(1500);
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
           }
         }
       } catch (e) {
@@ -134,10 +178,20 @@ function getTaskList() {
 
 async function getauthorId(liveId) {
   let functionId = `liveDetailV910`
+<<<<<<< HEAD
   let body = {"liveId":liveId,"fromId":"","liveList":[],"sku":"","source":"17","d":"","direction":"","isNeedVideo":1}
   let sign = await getSign(functionId, body)
   return new Promise(resolve => {
     $.post(taskPostUrl(functionId, sign), async (err, resp, data) => {
+=======
+  let body = encodeURIComponent(JSON.stringify({"liveId":liveId,"fromId":"","liveList":[],"sku":"","source":"17","d":"","direction":"","isNeedVideo":1}))
+  let uuid = randomString(16)
+  // let sign = await getSign(functionId, decodeURIComponent(body), uuid)
+  let sign = await getSignfromPanda(functionId, body)
+  let url = `https://api.m.jd.com/client.action?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
+  return new Promise(resolve => {
+    $.post(taskPostUrl(functionId, body, url), async (err, resp, data) => {
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -158,10 +212,20 @@ async function getauthorId(liveId) {
 
 async function superTask(liveId, authorId) {
   let functionId = `liveChannelReportDataV912`
+<<<<<<< HEAD
   let body = {"liveId":liveId,"type":"viewTask","authorId":authorId,"extra":{"time":60}}
   let sign = await getSign(functionId, body)
   return new Promise(resolve => {
     $.post(taskPostUrl(functionId, sign), async (err, resp, data) => {
+=======
+  let body = encodeURIComponent(JSON.stringify({"liveId":liveId,"type":"viewTask","authorId":authorId,"extra":{"time":60}}))
+  let uuid = randomString(16)
+  // let sign = await getSign(functionId, decodeURIComponent(body), uuid)
+  let sign = await getSignfromPanda(functionId, body)
+  let url = `https://api.m.jd.com/client.action?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
+  return new Promise(resolve => {
+    $.post(taskPostUrl(functionId, body, url), async (err, resp, data) => {
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -250,6 +314,10 @@ function awardTask(type="shareTask", liveId = '2942545') {
     })
   })
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
 function sign() {
   return new Promise(resolve => {
     $.get(taskUrl("getChannelTaskRewardToM", {"type":"signTask","itemId":"1"}), async (err, resp, data) => {
@@ -278,6 +346,7 @@ function sign() {
   })
 }
 
+<<<<<<< HEAD
 function getSign(functionId, body) {
   return new Promise(async resolve => {
     let data = {
@@ -288,6 +357,24 @@ function getSign(functionId, body) {
     }
     let HostArr = ['jdsign.cf', 'signer.nz.lu']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
+=======
+function getSign(functionid, body, uuid) {
+  return new Promise(async resolve => {
+    let data = {
+      "functionId":functionid,
+      "body":body,
+      "uuid":uuid,
+      "client":"apple",
+      "clientVersion":"10.1.0"
+    }
+    let Host = ""
+    let HostArr = ['jdsign.cf', 'signer.nz.lu']
+    if (process.env.SIGN_URL) {
+      Host = process.env.SIGN_URL
+    } else {
+      Host = HostArr[Math.floor((Math.random() * HostArr.length))]
+    }
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     let options = {
       url: `https://cdn.nz.lu/ddo`,
       body: JSON.stringify(data),
@@ -295,7 +382,11 @@ function getSign(functionId, body) {
         Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       },
+<<<<<<< HEAD
       timeout: 30 * 1000
+=======
+      timeout: 15000
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     }
     $.post(options, (err, resp, data) => {
       try {
@@ -314,10 +405,19 @@ function getSign(functionId, body) {
   })
 }
 
+<<<<<<< HEAD
 function taskPostUrl(function_id, body = "") {
   return {
     url: `https://api.m.jd.com/client.action?functionId=${function_id}`,
     body,
+=======
+function taskPostUrl(function_id, body = {}, url=null) {
+  if (url && (function_id === "liveChannelReportDataV912" || function_id === "liveDetailV910")) body = `body=${body}`
+  if(!url) url = `https://api.m.jd.com/client.action?functionId=${function_id}`
+  return {
+    url: url,
+    body: body,
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     headers: {
       "Host": "api.m.jd.com",
       "Content-Type": "application/x-www-form-urlencoded",
@@ -325,7 +425,12 @@ function taskPostUrl(function_id, body = "") {
       "Referer": "",
       "Cookie": cookie,
       "Origin": "https://h5.m.jd.com",
+<<<<<<< HEAD
       "Content-Type": 'application/x-www-form-urlencoded',
+=======
+      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Length": "996",
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
       "User-Agent": "JD4iPhone/167774 (iPhone; iOS 14.7.1; Scale/3.00)",
       "Accept-Language": "zh-Hans-CN;q=1",
       "Accept-Encoding": "gzip, deflate, br"
@@ -360,6 +465,7 @@ function randomString(e) {
   return n
 }
 
+<<<<<<< HEAD
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
@@ -404,6 +510,8 @@ function TotalBean() {
     })
   })
 }
+=======
+>>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
 function safeGet(data) {
   try {
     if (typeof JSON.parse(data) == "object") {
