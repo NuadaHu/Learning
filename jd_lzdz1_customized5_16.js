@@ -56,15 +56,9 @@ if ($.isNode()) {
       $.ADID = getUUID("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", 1);
       $.UUID = getUUID("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
       authorCodeList = [
-<<<<<<< HEAD
-        'cc358f6a41914e97ae423ba79da8f2bd',
-        '9438549386c944f6a72349b449449772',
-        'c0aef4c799ee443c829204bfd3b3b31f',
-=======
         // 'cc358f6a41914e97ae423ba79da8f2bd',
         '9438549386c944f6a72349b449449772',
         // 'c0aef4c799ee443c829204bfd3b3b31f',
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
       ];
       // $.authorCode = authorCodeList[random(0, authorCodeList.length)];
       $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
@@ -348,11 +342,7 @@ function getMyPing() {
       "User-Agent": `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
       Connection: "keep-alive",
       Referer: $.activityUrl,
-<<<<<<< HEAD
-      Cookie: cookie,
-=======
       Cookie: $.cookie,
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     },
     body: `userId=${$.activityShopId}&token=${$.token}&fromType=APP&riskType=1`,
   };
@@ -446,10 +436,7 @@ function getFirstLZCK() {
                 }
               }
             }
-<<<<<<< HEAD
-=======
             $.cookie = cookie
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
           }
         } catch (error) {
           console.log(error);
