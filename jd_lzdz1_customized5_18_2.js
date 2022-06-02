@@ -1,9 +1,6 @@
 /*
 一见倾芯 天长地久
-<<<<<<< HEAD
-=======
 7 7 7 7 7 jd_lzdz1_customized5_18_2.js
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
 */
 const $ = new Env("一见倾芯 天长地久");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -326,11 +323,7 @@ function taskUrl(function_id, body, isCommon) {
       "User-Agent": `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
       Connection: "keep-alive",
       Referer: $.activityUrl,
-<<<<<<< HEAD
-      Cookie: cookie,
-=======
       Cookie: $.cookie,
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
     },
     body: body,
   };
@@ -444,10 +437,7 @@ function getFirstLZCK() {
                 }
               }
             }
-<<<<<<< HEAD
-=======
             $.cookie = cookie
->>>>>>> 14d284972ef567f9bdf1469c72cee448a3c008ed
           }
         } catch (error) {
           console.log(error);
