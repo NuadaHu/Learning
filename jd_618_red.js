@@ -1,9 +1,16 @@
 /*
-设置了环境变量FLCODE
-cron 0 0,10,20 * * * jd_618_red.js
-* */
-const $ = new Env('618红包');
-$.flCode = $.isNode() ? (process.env.FLCODE ? process.env.FLCODE : '') : '';
+618 Red
+变量
+JMku2FH换成自己的Code
+export RedCode="JMku2FH"
+多个请用@分割
+export RedCode="JMku2FH@JMku2FH"
+建议禁用，避免其他问题 需要的请填写自己的码子，
+定时自定义吧
+*/
+
+const $ = new Env('618红包-算法加密');
+$.RedCode = $.isNode() ? (process.env.RedCode ? process.env.RedCode : '') : '';
 const jdCookieNode = require('./jdCookie.js');
 let cookiesArr = [];
 if ($.isNode()) {
@@ -17,6 +24,11 @@ if ($.isNode()) {
         $.getdata("CookieJD2"),
         ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
+
+let rebateCodes = ''
+rebateCodes = $.isNode() ? process.env.RedCode : `${rebateCodes}`
+let rebateCodeArr = rebateCodes && rebateCodes.split('@') || []
+if (rebateCodeArr.length === 0) {console.log('请填写你的Code！');return}
 let appId, fingerprint, token, enCryptMethodJD;
 !(async () => {
     if (!cookiesArr[0]) {
@@ -28,7 +40,7 @@ let appId, fingerprint, token, enCryptMethodJD;
     let fglist = ['6289931560897925', '0403403318679778', '1390288884563462'];
     fingerprint = getRandomArrayElements(fglist, 1)[0];
     await requestAlgo();
-    if ($.flCode !== '9999') {
+    if ($.RedCode !== '9999') {
         $.show = false;
     } else {
         $.show = true;
@@ -43,16 +55,15 @@ let appId, fingerprint, token, enCryptMethodJD;
     }
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
 
-async function main(ck, code = 'JdhENNw') {
-    const codes = ['JdhENNw','JKhfec3']
-    code = $.flCode ? $.flCode : codes[random(0, codes.length)]
-    // console.log(code)
+async function main(ck, code) {
+    const codes = [...new Set([...rebateCodeArr])];
+    code = codes[random(0, codes.length)]
     let userName = decodeURIComponent(ck.match(/pt_pin=([^; ]+)(?=;?)/) && ck.match(/pt_pin=([^; ]+)(?=;?)/)[1])
     let jfInfo = await getInfoByUrl($, ck, code);
     ck = jfInfo['ck'];
     let url2 = jfInfo['url'];
     let UA = getUA();
-    let actId = url2.match(/mall\/active\/([^/]+)\/index\.html/) && url2.match(/mall\/active\/([^/]+)\/index\.html/)[1] || '2UboZe4RXkJPrpkp6SkpJJgtRmod';
+    let actId = url2.match(/mall\/active\/([^/]+)\/index\.html/) && url2.match(/mall\/active\/([^/]+)\/index\.html/)[1] || '31e6keDr2FdaUEVSvNZM2kjD7QVx';
     await getHtml(url2, ck, UA)
     await takeRequest(ck, UA, userName, actId, code);
 }
@@ -186,18 +197,18 @@ async function takeRequest(ck, UA, userName, actId, code) {
     return new Promise(async resolve => {
         $.get(myRequest, (err, resp, data) => {
             try {
-                if ($.show) {
                     if (err) {
                         console.log(`${$.toStr(err)}`)
                         console.log(`${userName} API请求失败，请检查网路重试`)
                     } else {
                         let res = $.toObj(data, data);
                         if (typeof res == 'object') {
-                            // if(res.msg){
-                            //     console.log('结果：'+res.msg)
-                            // }
+                             if(res.msg){
+                                 //console.log('结果：'+res.msg)
+                             }
                             if (res.msg.indexOf('上限') !== -1) {
                                 $.max = true;
+                                console.log('今日已达领取上限，明日再来吧！')
                             }
                             if ($.shareId && typeof res.data !== 'undefined' && typeof res.data.joinNum !== 'undefined') {
                                 console.log(`当前${res.data.joinSuffix}:${res.data.joinNum}`)
@@ -219,7 +230,6 @@ async function takeRequest(ck, UA, userName, actId, code) {
                             console.log(data)
                         }
                     }
-                }
             } catch (e) {
 
                 $.logErr(e, resp)
