@@ -1,12 +1,12 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time : 2022/04/04
-# 京豆7天趋势统计
-# 用不着每天跑，配合desi指定账号
-# https://github.com/6dylan6/jdpro
+# Modify : 2022/5/13
+# 京豆近7天输出表格统计
+# 用不着每天跑,定时自行设置吧，配合desi可指定账号
+# https://raw.githubusercontent.com/6dylan6/jdpro/main/jd_beans_7days.py
 '''
 new Env('豆子7天统计');
-1 15 1 4 * jd_beans_7days.py
+1 8 13 5 * jd_beans_7days.py
 '''
 
 import requests
@@ -44,6 +44,11 @@ def gen_body(page):
 def printf(text):
     print(text)
     sys.stdout.flush()
+
+def column_pad(*columns):
+  max_len = max([len(x) for x in columns])
+  for y in columns:
+      y.extend(['NaN']*(max_len-len(y)))
 
 class getJDCookie(object):
 
@@ -183,7 +188,7 @@ def get_beans_7days(ck):
             page = page + 1
             resp = session.get(url, params=gen_params(page), headers=headers, timeout=100).text
             res = json.loads(resp)
-            if res['resultCode'] == 0:
+            if res['resultCode'] == 0 and res['data']['list'] != []:
                 for i in res['data']['list']:
                     for date in days:
                         if str(date) in i['createDate'] and i['amount'] > 0:
@@ -195,6 +200,7 @@ def get_beans_7days(ck):
                     if i['createDate'].split(' ')[0] not in str(days):
                         day_7 = False
             else:
+                print("未获取到数据，原因未知！！\n")
                 return {'code': 400, 'data': res}
         return {'code': 200, 'data': [beans_in, beans_out, days]}
     except Exception as e:
@@ -242,13 +248,20 @@ def get_bean_data(i,ck):
         print(str(e))
 
 def query():
-    global cookiesList, userNameList, pinNameList, ckNum, beanCount, userCount
-    cookiesList, userNameList, pinNameList = getCk.iscookie()
-    for i,ck,user,pin in zip(range(1,len(cookiesList)+1),cookiesList,userNameList,pinNameList):
-       printf(f"\n****** [账号{i}]-{user} ******")
-       res=get_bean_data(i,ck)
-       creat_bean_count(res['data'][3], res['data'][0], res['data'][1], res['data'][2][1:])
-       time.sleep(2)
+    try:
+        global cookiesList, userNameList, pinNameList, ckNum, beanCount, userCount
+        cookiesList, userNameList, pinNameList = getCk.iscookie()
+        for i,ck,user,pin in zip(range(1,len(cookiesList)+1),cookiesList,userNameList,pinNameList):
+           printf(f"\n****** [账号{i}]-{user} ******")
+           res=get_bean_data(i,ck)
+           if res['code'] != 200:
+                printf(res['data'])
+                continue
+           if res['data'][2][1:] != []:
+               creat_bean_count(res['data'][3], res['data'][0], res['data'][1], res['data'][2][1:])
+           time.sleep(2)
+    except Exception as e:
+        printf(str(e))  
 
 
 if __name__ == "__main__":

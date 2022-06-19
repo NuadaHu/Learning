@@ -4,7 +4,7 @@
 活动入口：美食馆-右侧悬浮
 活动时间：5月17-6月16
 宝箱陆续开放
-来自：6dylan6/jdpro
+来自：11111129/jdpro
 31 0,13 26-31,1-16 5,6 * jd_tanwei.js
  */
 
@@ -63,17 +63,19 @@ async function twqyj() {
     let tk = await queryInteractiveInfo();
     for (let key of Object.keys(tk.assignmentList).reverse()){
         let vo = tk.assignmentList[key]
-        if (vo.completionFlag || vo.assignmentType == 30) {
+        if (vo.completionFlag && vo.assignmentType != 30) {
             console.log('此任务已完成')
         } else if (new Date(vo.assignmentStartTime).getTime() > Date.now()) {
             console.log('此任务还没到开放时间:',vo.assignmentStartTime)
+        } else if (vo.assignmentType == 30) {
+            await dotask(encryptProjectId,vo.encryptAssignmentId,{"ext":{"exchangeNum":1}})
         } else {
-		    if (vo.ext && vo.ext.extraType == 'sign1'){
+		    if (vo.ext && vo.ext.extraType == 'sign1') {
 	              await sign(encryptProjectId,vo.encryptAssignmentId)
             } else {
 			      await dotask(encryptProjectId,vo.encryptAssignmentId)
-	               }
-               }
+	          }
+          }
 	    await $.wait(1000)    
 	}
   } catch (e) {
@@ -133,9 +135,10 @@ async function sign(encryptProjectId, AssignmentId) {
   })
 }
 
-async function dotask(encryptProjectId, AssignmentId) {
+async function dotask(encryptProjectId, AssignmentId, body1 = {}) {
+  let body = { "encryptProjectId": encryptProjectId, "encryptAssignmentId": AssignmentId, "sourceCode": "acemsg0406", "completionFlag": true,...body1}
   return new Promise(async (resolve) => {
-    $.post(taskUrl("doInteractiveAssignment", { "encryptProjectId": encryptProjectId, "encryptAssignmentId": AssignmentId, "sourceCode": "acemsg0406", "completionFlag": true }), async (err, resp, data) => {
+    $.post(taskUrl("doInteractiveAssignment", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)

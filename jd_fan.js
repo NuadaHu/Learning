@@ -1,6 +1,6 @@
 /*
  粉丝互动
- cron 10 1 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_fan.js
+ cron 10 1 * * * https://raw.githubusercontent.com/333333/jd/main/scripts/jd_fan.js
  蚊子腿活动，不定时更新
  环境变量：RUHUI,是否自动入会，开卡算法已失效，默认不开卡了
  环境变量：RUNCK,执行多少CK，默认全执行，设置RUNCK=10，则脚本只会运行前10个CK
@@ -23,7 +23,10 @@ if ($.isNode()) {
         ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 let activityList = [
-    {'id':'b4a30e4b5b3c4a07aa879afd8e9de3f0','endTime':1656626274000},//
+    {'id':'cebd38c28cf0468c8082082eebde4c32','endTime':1656626274000},//
+		{'id':'c88ffa4a17b04cc994a6e66f161471','endTime':1656626274000},//
+    {'id':'4f49c21967e24e62aa60efc28b015c82','endTime':1656626274000},//
+		
 ];
 !(async()=>{
 	activityList=getRandomArrayElements(activityList,activityList.length);
