@@ -18,7 +18,7 @@ salt = "cXRofWK6"
 me = ""  # 小程序openid 留空
 group_size = 200 # 并发数建议 50-1500 
 
-inveteck = ''  # 车头子ck
+inveteck = 'pt_key=AAJijs93ADDIpHtxmfT_aHivaJhdHi85MPq9PVhSeW2pru17kfB_s1odpmG7aM6CHRzOukVQxjA;pt_pin=jd_4a12988a5437e;'  # 车头子ck
 
 logging.basicConfig(
     level=logging.INFO,
