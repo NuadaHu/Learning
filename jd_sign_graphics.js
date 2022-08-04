@@ -6,7 +6,7 @@ npm i png-js 或者 npm i png-js -S
 
 */
 
-const Faker = require('./utils/sign_graphics_validate.js')
+const Faker = require('./sign_graphics_validate.js')
 const $ = new Env('京东签到翻牌');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -29,9 +29,9 @@ let successNum = 0
 let errorNum = 0
 let JD_API_HOST = 'https://sendbeans.jd.com'
 const turnTableId = [
-   { "name": "翻牌", "id": 1082, "shopid": 1000004123, "url": "https://sendbeans.jd.com/jump/index/" },
-   { "name": "翻牌", "id": 1440, "shopid": 1000005670, "url": "https://sendbeans.jd.com/jump/index/" },
-   //{ "name": "翻牌", "id": 1419, "shopid": 1000007205, "url": "https://sendbeans.jd.com/jump/index/" },
+  { "name": "翻牌", "id": 1082, "shopid": 1000004123, "url": "https://sendbeans.jd.com/jump/index/" },
+  { "name": "翻牌", "id": 815, "shopid": 887726, "url": "https://sendbeans.jd.com/jump/index/" },
+  //{ "name": "翻牌", "id": 1419, "shopid": 1000007205, "url": "https://sendbeans.jd.com/jump/index/" },
 ]
 
 !(async () => {
